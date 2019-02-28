@@ -1,0 +1,368 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Install &#8212; Chorus 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorial" href="tutorial.html" />
+    <link rel="prev" title="Welcome to Chorus’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="install">
+<h1>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="docker">
+<h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
+<p>Install <a class="reference external" href="https://docs.docker.com/engine/installation/">Docker</a></p>
+<div class="section" id="terminal-version">
+<h3>Terminal version<a class="headerlink" href="#terminal-version" title="Permalink to this headline">¶</a></h3>
+<p>Download Chorus:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ docker pull forrestzhang/docker-chorus
+
+$ docker run -v <span class="nv">$PWD</span>:/home/chorus -e <span class="nv">CHORUS_USER</span><span class="o">=</span><span class="nv">$USER</span> -e <span class="nv">CHORUS_UID</span><span class="o">=</span><span class="nv">$UID</span> forrestzhang/docker-chorus -h
+
+usage: Chorus <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--version<span class="o">]</span> <span class="o">[</span>-j JELLYFISH<span class="o">]</span> <span class="o">[</span>-b BWA<span class="o">]</span> -g GENOME -i INPUT
+          <span class="o">[</span>-s SAVED<span class="o">]</span> <span class="o">[</span>-p PRIMER<span class="o">]</span> <span class="o">[</span>-t THREADS<span class="o">]</span> <span class="o">[</span>-l LENGTH<span class="o">]</span>
+          <span class="o">[</span>--homology HOMOLOGY<span class="o">]</span> <span class="o">[</span>-d DTM<span class="o">]</span> <span class="o">[</span>--docker DOCKER<span class="o">]</span>
+
+Chorus Software <span class="k">for</span> Oligo FISH probe design
+
+optional arguments:
+-h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+--version             show program<span class="s1">&#39;s version number and exit</span>
+<span class="s1">-j JELLYFISH, --jellyfish JELLYFISH</span>
+<span class="s1">                        jellyfish path</span>
+<span class="s1">-b BWA, --bwa BWA     bwa path</span>
+<span class="s1">-g GENOME, --genome GENOME</span>
+<span class="s1">                        fasta format genome file</span>
+<span class="s1">-i INPUT, --input INPUT</span>
+<span class="s1">                        fasta format input file</span>
+<span class="s1">-s SAVED, --save SAVED</span>
+<span class="s1">                        result saved folder</span>
+<span class="s1">-p PRIMER, --primer PRIMER</span>
+<span class="s1">                        5&#39;</span> labeled R primer
+-t THREADS, --threads THREADS
+                        threads number or how may cpu you wanna use
+-l LENGTH, --length LENGTH
+                        probe length
+--homology HOMOLOGY   homology, from <span class="m">50</span> to <span class="m">100</span>
+-d DTM, --dtm DTM     dTm, from <span class="m">0</span> to <span class="m">37</span>
+--docker DOCKER
+</pre></div>
+</div>
+</div>
+<div class="section" id="gui-test-version">
+<h3>GUI (Test Version)<a class="headerlink" href="#gui-test-version" title="Permalink to this headline">¶</a></h3>
+<p>Download Chorus:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ docker pull forrestzhang/chorus-gui
+
+$ docker run -i -t -p <span class="m">6080</span>:6080 -v <span class="nv">$PWD</span>:/home/ubuntu/Data forrestzhang/chorus-gui
+</pre></div>
+</div>
+<p>Open your web browse, enter <a class="reference external" href="http://localhost:6080">http://localhost:6080</a></p>
+<p>In your web browse, open a LXTerminal</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python3 /opt/software/Chorus/ChorusGUI.py
+</pre></div>
+</div>
+<img alt="_images/docker_GUI.jpg" src="_images/docker_GUI.jpg" />
+</div>
+</div>
+<div class="section" id="manually-install">
+<h2>Manually Install<a class="headerlink" href="#manually-install" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="ubuntu-14-04-terminal">
+<h3>Ubuntu 14.04 (terminal)<a class="headerlink" href="#ubuntu-14-04-terminal" title="Permalink to this headline">¶</a></h3>
+<p>Install dependent package</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ apt-get update <span class="o">&amp;&amp;</span> apt-get install  -y build-essential <span class="se">\</span>
+    cython3 <span class="se">\</span>
+    zlib1g-dev <span class="se">\</span>
+    zlibc <span class="se">\</span>
+    openjdk-7-jre <span class="se">\</span>
+    git <span class="se">\</span>
+    libboost-dev <span class="se">\</span>
+    autoconf <span class="se">\</span>
+    libncursesw5-dev <span class="se">\</span>
+    libncurses5 <span class="se">\</span>
+    ncurses-dev <span class="se">\</span>
+    libboost-thread-dev <span class="se">\</span>
+    python3-pip <span class="se">\</span>
+    samtools <span class="se">\</span>
+    unzip <span class="se">\</span>
+    python <span class="se">\</span>
+    curl <span class="se">\</span>
+    wget
+</pre></div>
+</div>
+<p>Install jellyfish</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ mkdir /opt/software
+
+$ <span class="nb">cd</span> /opt/software
+
+$ wget https://github.com/gmarcais/Jellyfish/releases/download/v2.2.3/jellyfish-2.2.3.tar.gz
+
+$ tar zxvf jellyfish-2.2.3.tar.gz
+
+$ mv jellyfish-2.2.3  jellyfish
+
+$ <span class="nb">cd</span> jellyfish
+
+$ ./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> make install
+</pre></div>
+</div>
+<p>Install bwa</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /opt/software
+
+$ git clone https://github.com/lh3/bwa.git
+
+$ <span class="nb">cd</span> bwa
+
+$ make
+</pre></div>
+</div>
+<p>Install primer3-py</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /opt/software
+
+$ wget https://github.com/forrestzhang/primer3-py/archive/unicode.zip
+
+$ unzip unicode.zip
+
+$ <span class="nb">cd</span> primer3-py-unicode
+
+$ python3 setup.py install
+</pre></div>
+</div>
+<p>Download Chorus</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /opt/software
+
+$ git clone https://github.com/forrestzhang/Chorus.git
+
+$ python3 python3 /opt/software/Chorus/Chorus.py -h
+
+
+
+usage: Chorus <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--version<span class="o">]</span> <span class="o">[</span>-j JELLYFISH<span class="o">]</span> <span class="o">[</span>-b BWA<span class="o">]</span> -g GENOME -i INPUT
+          <span class="o">[</span>-s SAVED<span class="o">]</span> <span class="o">[</span>-p PRIMER<span class="o">]</span> <span class="o">[</span>-t THREADS<span class="o">]</span> <span class="o">[</span>-l LENGTH<span class="o">]</span>
+          <span class="o">[</span>--homology HOMOLOGY<span class="o">]</span> <span class="o">[</span>-d DTM<span class="o">]</span> <span class="o">[</span>--step STEP<span class="o">]</span> <span class="o">[</span>--docker DOCKER<span class="o">]</span>
+
+Chorus Software <span class="k">for</span> Oligo FISH probe design
+
+optional arguments:
+-h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+--version             show program<span class="s1">&#39;s version number and exit</span>
+<span class="s1">-j JELLYFISH, --jellyfish JELLYFISH</span>
+<span class="s1">                        jellyfish path</span>
+<span class="s1">-b BWA, --bwa BWA     bwa path</span>
+<span class="s1">-g GENOME, --genome GENOME</span>
+<span class="s1">                        fasta format genome file</span>
+<span class="s1">-i INPUT, --input INPUT</span>
+<span class="s1">                        fasta format input file</span>
+<span class="s1">-s SAVED, --save SAVED</span>
+<span class="s1">                        result saved folder</span>
+<span class="s1">-p PRIMER, --primer PRIMER</span>
+<span class="s1">                        5&#39;</span> labeled R primer
+-t THREADS, --threads THREADS
+                        threads number or how may cpu you wanna use
+-l LENGTH, --length LENGTH
+                        probe length
+--homology HOMOLOGY   homology, from <span class="m">50</span> to <span class="m">100</span>
+-d DTM, --dtm DTM     dTm, from <span class="m">0</span> to <span class="m">37</span>
+--step STEP           step length, <span class="nv">min</span><span class="o">=</span><span class="m">1</span>
+--docker DOCKER
+</pre></div>
+</div>
+</div>
+<div class="section" id="anaconda-terminal">
+<h3>Anaconda (Terminal)<a class="headerlink" href="#anaconda-terminal" title="Permalink to this headline">¶</a></h3>
+<p>Download and Install <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a> (python 3.x verison)</p>
+<p>Add bioconda</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda config --add channels conda-forge
+conda config --add channels defaults
+conda config --add channels r
+conda config --add channels bioconda
+</pre></div>
+</div>
+<p>Install dependent package</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install bwa
+conda install jellyfish
+pip install Cython
+pip install primer3-py
+pip install pyfasta
+</pre></div>
+</div>
+</div>
+<div class="section" id="ubuntu-14-04-gui-test-version">
+<h3>Ubuntu 14.04 (GUI) Test Version<a class="headerlink" href="#ubuntu-14-04-gui-test-version" title="Permalink to this headline">¶</a></h3>
+<p>Install dependent package</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ apt-get update <span class="o">&amp;&amp;</span> apt-get install -y cython3  build-essential <span class="se">\</span>
+    zlib1g-dev <span class="se">\</span>
+    zlibc <span class="se">\</span>
+    git <span class="se">\</span>
+    libboost-dev <span class="se">\</span>
+    autoconf <span class="se">\</span>
+    libncursesw5-dev <span class="se">\</span>
+    libncurses5 <span class="se">\</span>
+    ncurses-dev <span class="se">\</span>
+    libboost-thread-dev <span class="se">\</span>
+    python3-pip <span class="se">\</span>
+    samtools <span class="se">\</span>
+    unzip <span class="se">\</span>
+    python <span class="se">\</span>
+    curl <span class="se">\</span>
+    wget <span class="se">\</span>
+    python3-pyqt5 <span class="se">\</span>
+    libfreetype6-dev <span class="se">\</span>
+    libxft-dev <span class="se">\</span>
+    python3-matplotlib
+
+$ apt-get remove -y python3-matplotlib
+</pre></div>
+</div>
+<p>Install jellyfish</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ mkdir /opt/software
+
+$ <span class="nb">cd</span> /opt/software
+
+$ wget https://github.com/gmarcais/Jellyfish/releases/download/v2.2.3/jellyfish-2.2.3.tar.gz
+
+$ tar zxvf jellyfish-2.2.3.tar.gz
+
+$ mv jellyfish-2.2.3  jellyfish
+
+$ <span class="nb">cd</span> jellyfish
+
+$ ./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> make install
+</pre></div>
+</div>
+<p>Install bwa</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /opt/software
+
+$ git clone https://github.com/lh3/bwa.git
+
+$ <span class="nb">cd</span> bwa
+
+$ make
+</pre></div>
+</div>
+<p>Install primer3-py</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /opt/software
+
+$ wget https://github.com/forrestzhang/primer3-py/archive/unicode.zip
+
+$ unzip unicode.zip
+
+$ <span class="nb">cd</span> primer3-py-unicode
+
+$ python3 setup.py install
+</pre></div>
+</div>
+<p>Install Python dependent package</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip3 install numpy pyfasta matplotlib
+
+$ pip3 install pandas
+</pre></div>
+</div>
+<p>Download and run Chorus</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /opt/software
+
+$ git clone https://github.com/forrestzhang/Chorus.git
+
+$ python3 /opt/software/Chorus/ChorusGUI.py
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Install</a><ul>
+<li><a class="reference internal" href="#docker">Docker</a><ul>
+<li><a class="reference internal" href="#terminal-version">Terminal version</a></li>
+<li><a class="reference internal" href="#gui-test-version">GUI (Test Version)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#manually-install">Manually Install</a><ul>
+<li><a class="reference internal" href="#ubuntu-14-04-terminal">Ubuntu 14.04 (terminal)</a></li>
+<li><a class="reference internal" href="#anaconda-terminal">Anaconda (Terminal)</a></li>
+<li><a class="reference internal" href="#ubuntu-14-04-gui-test-version">Ubuntu 14.04 (GUI) Test Version</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to Chorus’s documentation!</a></li>
+      <li>Next: <a href="tutorial.html" title="next chapter">Tutorial</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/install.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Tao Zhang.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/install.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

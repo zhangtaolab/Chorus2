@@ -1,0 +1,66 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2016, Tao Zhang
+# This file is distributed under the same license as the Chorus package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Chorus 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-08-25 11:27-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../tutorial.rst:2
+msgid "Tutorial"
+msgstr ""
+
+#: ../../tutorial.rst:4
+msgid "In this tutorial, we will build oligo porbe set for Arabidopsis genome."
+msgstr ""
+
+#: ../../tutorial.rst:7
+msgid "Using Docker Terminal Version"
+msgstr ""
+
+#: ../../tutorial.rst:10
+msgid "Install"
+msgstr ""
+
+#: ../../tutorial.rst:12
+msgid "Install Docker_"
+msgstr ""
+
+#: ../../tutorial.rst:16
+msgid "Download Chorus:"
+msgstr ""
+
+#: ../../tutorial.rst:22
+msgid "Parameter of Chorus:"
+msgstr ""
+
+#: ../../tutorial.rst:41
+msgid "Download Reference Genome file:"
+msgstr ""
+
+#: ../../tutorial.rst:50
+msgid "Please wait unit all precess done. There are some logs:"
+msgstr ""
+
+#: ../../tutorial.rst:83
+msgid "When process done:"
+msgstr ""
+
+#: ../../tutorial.rst:101
+msgid "*TAIR10_chr_all.fas.bed* is the probe file."
+msgstr ""
+
+#: ../../tutorial.rst:113
+msgid "There are four columns in a row, first column is chromosome name, second is oligo start site, third is oligo end site, last one is oligo probe sequence. You can use excel or text editor to open this file."
+msgstr ""
+

@@ -1,0 +1,95 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2016, Tao Zhang
+# This file is distributed under the same license as the Chorus package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Chorus 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-08-25 11:27-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../install.rst:2
+msgid "Install"
+msgstr ""
+
+#: ../../install.rst:5
+msgid "Docker"
+msgstr ""
+
+#: ../../install.rst:7
+msgid "Install Docker_"
+msgstr ""
+
+#: ../../install.rst:12
+msgid "Terminal version"
+msgstr ""
+
+#: ../../install.rst:14
+#: ../../install.rst:53
+msgid "Download Chorus:"
+msgstr ""
+
+#: ../../install.rst:51
+msgid "GUI (Test Version)"
+msgstr ""
+
+#: ../../install.rst:61
+msgid "Open your web browse, enter http://localhost:6080"
+msgstr ""
+
+#: ../../install.rst:63
+msgid "In your web browse, open a LXTerminal"
+msgstr ""
+
+#: ../../install.rst:72
+msgid "Manually Install"
+msgstr ""
+
+#: ../../install.rst:75
+msgid "Ubuntu 14.04 (terminal)"
+msgstr ""
+
+#: ../../install.rst:77
+#: ../../install.rst:193
+msgid "Install dependent package"
+msgstr ""
+
+#: ../../install.rst:101
+#: ../../install.rst:221
+msgid "Install jellyfish"
+msgstr ""
+
+#: ../../install.rst:120
+#: ../../install.rst:240
+msgid "Install bwa"
+msgstr ""
+
+#: ../../install.rst:133
+#: ../../install.rst:253
+msgid "Install primer3-py"
+msgstr ""
+
+#: ../../install.rst:147
+msgid "Download Chorus"
+msgstr ""
+
+#: ../../install.rst:191
+msgid "Ubuntu 14.04 (GUI) Test Version"
+msgstr ""
+
+#: ../../install.rst:268
+msgid "Install Python dependent package"
+msgstr ""
+
+#: ../../install.rst:276
+msgid "Download and run Chorus"
+msgstr ""
+
