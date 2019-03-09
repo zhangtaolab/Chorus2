@@ -1,9 +1,9 @@
 # Chorus
 FISH Oligo design
 
-[Documentation](http://chorus.readthedocs.io/en/latest/)
+[Documentation](https://chorus2.readthedocs.io/en/dev/)
 
-[![Documentation Status](https://readthedocs.org/projects/chorus/badge/?version=dev)](http://chorus.readthedocs.io/en/dev/?badge=dev)
+[![Documentation Status](https://readthedocs.org/projects/chorus2/badge/?version=dev)](http://chorus2.readthedocs.io/en/dev/?badge=dev)
 
 Oligo design with Chorus/Chorus2
 - **Populus**: Xin H†, Zhang T†, Han Y, Wu YF, Shi JS, Xi ML*, and Jiang JM. (2018)  Chromosome painting and comparative physical mapping of the sex chromosomes in Populus tomentosa and Populus deltoides. _Chromosoma_  [doi.org/10.1007/s00412-018-0664-y](https://link.springer.com/article/10.1007/s00412-018-0664-y)
