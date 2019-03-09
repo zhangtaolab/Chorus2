@@ -1,4 +1,4 @@
-# Chorus
+# Chorus2
 FISH Oligo design
 
 [Documentation](https://chorus2.readthedocs.io/en/dev/)
