@@ -594,8 +594,11 @@ def check_options(parser):
     if os.path.exists(args.saved):
 
         if not args.docker:
-
-            print(args.saved, "exists. Everything in this folder will be remove. Press Y or N to continue: ")
+            print("The output folder ",args.saved, " already exists.")
+            print('''
+                Press Y to use it for output files. Everything in this folder will be removed.
+                Press N and set -s/--saved to a different folder:
+                ''')
 
             while True:
 
