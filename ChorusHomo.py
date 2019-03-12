@@ -34,7 +34,7 @@ def main():
     for op in bwafiltedpb:
         seq, chr, st = op.strip().split()
         head = chr + st
-        hom_probe_dict[head] = 1
+        hom_probe_dict[head] = [chr,st,str(st+len(seq)-1)]
 
 
 # add homology information after each oligos
