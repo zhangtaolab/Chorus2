@@ -1,0 +1,6 @@
+include *.txt
+include README.md
+exclude ChorusGUI/*
+include docs/*.rst
+exclude img/*
+exclude Docker/*

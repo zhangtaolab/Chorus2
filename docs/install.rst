@@ -11,7 +11,7 @@ Install Docker_
 Terminal version
 *****************
 
-Download Chorus:
+Download Chorus2:
 
 .. code-block:: bash
 
@@ -50,7 +50,7 @@ Download Chorus:
 GUI (Test Version)
 *******************
 
-Download Chorus:
+Download Chorus2:
 
 .. code-block:: bash
 
@@ -144,46 +144,57 @@ Install primer3-py
 
     $ python3 setup.py install
 
-Download Chorus
+Download Chorus2
 
 .. code-block:: bash
 
     $ cd /opt/software
 
-    $ git clone https://github.com/forrestzhang/Chorus.git
+    $ git clone https://github.com/zhangtaolab/Chorus2.git
 
-    $ python3 python3 /opt/software/Chorus/Chorus.py -h
-
-
+    $ python3 /opt/software/Chorus2/Chorus.py -h
 
     usage: Chorus [-h] [--version] [-j JELLYFISH] [-b BWA] -g GENOME -i INPUT
-              [-s SAVED] [-p PRIMER] [-t THREADS] [-l LENGTH]
-              [--homology HOMOLOGY] [-d DTM] [--step STEP] [--docker DOCKER]
+                  [-s SAVED] [-p PRIMER] [-t THREADS] [-l LENGTH]
+                  [--homology HOMOLOGY] [-d DTM] [--step STEP] [--docker DOCKER]
+                  [--ploidy PLOIDY]
 
     Chorus Software for Oligo FISH probe design
 
     optional arguments:
-    -h, --help            show this help message and exit
-    --version             show program's version number and exit
-    -j JELLYFISH, --jellyfish JELLYFISH
-                            jellyfish path
-    -b BWA, --bwa BWA     bwa path
-    -g GENOME, --genome GENOME
-                            fasta format genome file
-    -i INPUT, --input INPUT
-                            fasta format input file
-    -s SAVED, --save SAVED
-                            result saved folder
-    -p PRIMER, --primer PRIMER
-                            5' labeled R primer
-    -t THREADS, --threads THREADS
-                            threads number or how may cpu you wanna use
-    -l LENGTH, --length LENGTH
-                            probe length
-    --homology HOMOLOGY   homology, from 50 to 100
-    -d DTM, --dtm DTM     dTm, from 0 to 37
-    --step STEP           step length, min=1
-    --docker DOCKER
+      -h, --help            show this help message and exit
+      --version             show program's version number and exit
+      -j JELLYFISH, --jellyfish JELLYFISH
+                            The path where Jellyfish software installed
+      -b BWA, --bwa BWA     The path where BWA software installed
+      -g GENOME, --genome GENOME
+                            Fasta format genome file, should include all sequences
+                            from genome
+      -i INPUT, --input INPUT
+                            Fasta format input file, can be whole genome, a
+                            chromosome or one region from genome
+      -s SAVED, --save SAVED
+                            The output folder for saving results
+      -p PRIMER, --primer PRIMER
+                            A specific 5' labeled R primer for PCR reaction. For
+                            example: CGTGGTCGCGTCTCA. (Default is none)
+      -t THREADS, --threads THREADS
+                            Number of threads or CPUs to use. (Default: 1)
+      -l LENGTH, --length LENGTH
+                            The probe length. (Default: 45)
+      --homology HOMOLOGY   The maximum homology(%) between target sequence and
+                            probe, range from 50 to 100. (Default: 75)
+      -d DTM, --dtm DTM     The minimum value of dTm (hybrid Tm - hairpin Tm),
+                            range from 0 to 37. (Default: 10)
+      --step STEP           The step length for k-mer searching in a sliding
+                            window, step length>=1. (Default: 5)
+      --docker DOCKER       Only used in Docker version of Chorus
+      --ploidy PLOIDY       The ploidy of the given genome (test version).
+                            (Default: 2)
+
+    Example:
+      python3 Chorus.py -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t 4 \
+                        -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample
 
 Anaconda (Terminal)
 ********************************
@@ -212,6 +223,7 @@ Install dependent package
     pip install Cython 
     pip install primer3-py
     pip install pyfasta
+    pip install pyBigWig
 
 
 Ubuntu 14.04 (GUI) Test Version
@@ -300,12 +312,12 @@ Install Python dependent package
 
     $ pip3 install pandas
 
-Download and run Chorus
+Download and run ChorusGUI
 
 .. code-block:: bash
 
         $ cd /opt/software
 
-        $ git clone https://github.com/forrestzhang/Chorus.git
+        $ git clone https://github.com/zhangtaolab/Chorus2.git
 
-        $ python3 /opt/software/Chorus/ChorusGUI.py
+        $ python3 /opt/software/Chorus2/ChorusGUI.py
