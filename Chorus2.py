@@ -670,14 +670,14 @@ def which(filename):
 
 def get_options():
 
-    parser = argparse.ArgumentParser(description="Chorus Software for Oligo FISH probe design", prog='Chorus',
+    parser = argparse.ArgumentParser(description="Chorus2 Software for Oligo FISH probe design", prog='Chorus2',
                                      formatter_class=argparse.RawDescriptionHelpFormatter,
                                      epilog="Example:\n"
-                                            "  python3 Chorus.py -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t 4 \\ \n"
-                                            "                    -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample"
+                                            "  Chorus2 -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t 4 \\ \n"
+                                            "          -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample"
                                      )
 
-    parser.add_argument('--version', action='version', version='%(prog)s 1.0')
+    parser.add_argument('--version', action='version', version='%(prog)s 2.0')
 
     parser.add_argument('-j', '--jellyfish', dest='jellyfish', help='The path where Jellyfish software installed')
 
