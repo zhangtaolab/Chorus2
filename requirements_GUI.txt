@@ -1,0 +1,9 @@
+Cython
+numpy
+pyfasta
+primer3-py
+pandas
+pyBigWig
+matplotlib
+PyQt5<5.11
+SIP>=4

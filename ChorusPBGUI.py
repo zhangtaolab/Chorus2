@@ -594,7 +594,7 @@ class DesMainWD(QtWidgets.QMainWindow, Ui_MainWindow):
 
             nowprobes.to_csv(path_or_buf=absfile, sep='\t', index = False, index_label= False, header=False)
 
-if __name__ == '__main__':
+def main():
 
     app = QtWidgets.QApplication(sys.argv)
 
@@ -606,3 +606,8 @@ if __name__ == '__main__':
                                  rectprops=dict(alpha=0.3, facecolor='grey'))
 
     sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
+
+    main()
