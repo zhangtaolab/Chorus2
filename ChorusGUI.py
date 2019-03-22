@@ -883,7 +883,7 @@ def probefilter(nowpbcounter):
 #         pass
 
 
-def main():
+if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
 
@@ -892,9 +892,3 @@ def main():
     chsetup.show()
 
     sys.exit(app.exec_())
-
-
-
-if __name__ == "__main__":
-
-    main()
