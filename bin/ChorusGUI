@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 __author__ = 'Forrest'
 from ChorusGUI.ChorusUI import Ui_MainWindow
 import sys
