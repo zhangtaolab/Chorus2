@@ -115,11 +115,11 @@ def check_options(parser):
 
 def get_options():
 
-    parser = argparse.ArgumentParser(description="Chorus Software for Oligo FISH probe selection by NGS k-mer score", prog='ChorusNGSselect',
+    parser = argparse.ArgumentParser(description="ChorusNGSselect for Oligo FISH probe selection by NGS k-mer score", prog='ChorusNGSselect',
                                      formatter_class=argparse.RawDescriptionHelpFormatter,
                                      epilog="Example:\n"
-                                            "  python3 ChorusNGSselect.py -i ChorusNGSfilter_output.bed -q 0.1 -p 0.9 -d 25 \\ \n"
-                                            "                             -o filtered_output.bed"
+                                            "  ChorusNGSselect -i ChorusNGSfilter_output.bed -q 0.1 -p 0.9 -d 25 \\ \n"
+                                            "                  -o filtered_output.bed"
                                      )
 
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')

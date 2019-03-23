@@ -1,4 +1,6 @@
 Cython
 numpy
 pyfasta
+primer3-py
+pandas
 pyBigWig

@@ -285,11 +285,11 @@ def which(filename):
 
 def get_options():
 
-    parser = argparse.ArgumentParser(description="Chorus Software for counting Oligo FISH probe k-mer score using NGS data", prog='ChorusNGSfilter',
+    parser = argparse.ArgumentParser(description="ChorusNGSfilter for counting Oligo FISH probe k-mer score using NGS data", prog='ChorusNGSfilter',
                                      formatter_class=argparse.RawDescriptionHelpFormatter,
                                      epilog="Example:\n"
-                                            "  python3 ChorusNGSfilter.py -i 1.fq.gz,2.fq.gz -z gz -t 4 -g TAIR10_chr_all.fas \\ \n"
-                                            "                             -j /opt/software/jellyfish/bin/jellyfish -p probe.bed -o output.bed"
+                                            "  ChorusNGSfilter -i 1.fq.gz,2.fq.gz -z gz -t 4 -g TAIR10_chr_all.fas \\ \n"
+                                            "                  -j /opt/software/jellyfish/bin/jellyfish -p probe.bed -o output.bed"
                                      )
 
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')
