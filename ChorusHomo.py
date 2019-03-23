@@ -25,7 +25,7 @@ def main():
 
     probe_file = args.input
     probe_fasta = bed_to_fa(probe_file, args.saved)
-    homo_probe = make_saved_file(args.saved, probe_file, "homo.bed")
+    homo_probe = make_saved_file(args.saved, probe_file, "homo.csv")
 
     sys.stderr.write("input probe {}\n".format(probe_file))
 
@@ -91,9 +91,10 @@ def bwa_mem(bwabin, reffile, inputfile, threadnumber=1):
         lin = lin.decode('utf-8').rstrip('\n')
         # print("after decode", lin)
         if not re.search(pat, lin):
-            idx = idx + 1
-
+            
             infor = lin.split('\t')
+            map_qual = infor
+            idx = idx + 1
             query_name = infor[0]
             query_chr,query_st,query_ed=query_name.split('_')
             seqname = infor[2]
