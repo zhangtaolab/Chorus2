@@ -1,12 +1,11 @@
 import os
 import sys
-from Choruslib import jellyfish
-from Choruslib import bwa
 import argparse
-from subprocess import Popen
-from subprocess import PIPE
 from subprocess import call
 import re
+
+from Choruslib import jellyfish
+from Choruslib import bwa
 from Choruslib import subprocesspath
 
 
@@ -19,25 +18,31 @@ def main():
     related_genome = args.genome
     target = args.target
 
-    # generate fai file for each genome
-    make_fai(related_genome)
-    make_fai(target)
-
     probe_file = args.input
     probe_fasta = bed_to_fa(probe_file, args.saved)
     homo_probe = make_saved_file(args.saved, probe_file, "homo.csv")
 
     sys.stderr.write("input probe {}\n".format(probe_file))
 
-    # align probes to genome
+    # Check related genome bwa index or build it
     if not check_bwa_index(related_genome, args.bwa, args.saved):
         sys.stderr.write("Failed to get index for ", related_genome, "\n")
         sys.exit(0)
 
+    indexed_genome = os.path.join(args.saved, os.path.basename(related_genome))
+
+    # generate fai file for each genome
+    make_fai(indexed_genome)
+    make_fai(target)
+
+    tmp_sam_file = os.path.join(args.saved, 'tmp_align.sam')
+
+    # align probes to genome
     bwafiltedpb = bwa_mem(
         bwabin=args.bwa,
-        reffile=related_genome,
+        reffile=indexed_genome,
         inputfile=probe_fasta,
+        outfile=tmp_sam_file,
         threadnumber=args.threads)
     #
     hom_probe_dict = dict()
@@ -63,37 +68,38 @@ def make_fai(genome):
     call(cmd, shell=True)
 
 
-def bwa_mem(bwabin, reffile, inputfile, threadnumber=1):
+def bwa_mem(bwabin, reffile, inputfile, outfile, threadnumber=1):
 
     pat = re.compile('^@')
 
-    bwabin = subprocesspath.subprocesspath(bwabin)
+    # bwabin = subprocesspath.subprocesspath(bwabin)
 
-    reffile = subprocesspath.subprocesspath(reffile)
+    # reffile = subprocesspath.subprocesspath(reffile)
 
-    inputfile = subprocesspath.subprocesspath(inputfile)
+    # inputfile = subprocesspath.subprocesspath(inputfile)
 
-    bwacmd = ' '.join([bwabin, 'mem', '-O',' 0',' -B',' 0',' -E',' 0',' -k',' 5', '-t',str(threadnumber), reffile, inputfile])
+    # bwacmd = ' '.join([bwabin, 'mem', '-O',' 0',' -B',' 0',' -E',' 0',' -k',' 5', '-t',str(threadnumber), reffile, inputfile])
 
-    print(bwacmd)
+    # print(bwacmd)
+
+    bwa.bwaalign(bwabin, reffile, inputfile, outfile, threadnumber)
 
 #    aspat = re.compile('AS:i:(\d.)')
 #
 #    xspat = re.compile('XS:i:(\d.)')
 
-    runbwaalign = Popen(bwacmd, shell=True, stdout=PIPE)
-
     res = list()
     idx=0
 
-    for lin in runbwaalign.stdout.readlines():
+    tmp_sam_in = open(outfile, 'r')
+
+    for lin in tmp_sam_in.readlines():
         # print("before decode",lin)
-        lin = lin.decode('utf-8').rstrip('\n')
+        lin = lin.rstrip('\n')
         # print("after decode", lin)
         if not re.search(pat, lin):
             
             infor = lin.split('\t')
-            map_qual = infor
             idx = idx + 1
             query_name = infor[0]
             query_chr,query_st,query_ed=query_name.split('_')
@@ -107,7 +113,14 @@ def bwa_mem(bwabin, reffile, inputfile, threadnumber=1):
 
             aln_matches = sum([int(item) for item in re.split('[ACTG^]', md) if not item == ''])
             aln_mismatches = sum([len(item) for item in re.split('[\d+^]', md) if not item == ''])
-            identity = aln_matches / (aln_matches + aln_mismatches)
+
+            if (aln_matches + aln_mismatches) == 0:
+
+                identity = 0
+
+            else:
+
+                identity = aln_matches / (aln_matches + aln_mismatches)
 
 #            asmatch = re.search(aspat, lin)
 #
@@ -132,11 +145,12 @@ def bwa_mem(bwabin, reffile, inputfile, threadnumber=1):
 #            if (asscore >= minas) & (xsscore < maxxs):
 
             end = str(int(start) + aln_matches + aln_mismatches -1)
-            res.append(','.join([str(idx), probeseq, query_chr, query_st, query_ed, '0.99',  seqname, start, end, str(f'{identity:.2f}')]))
+            res.append(','.join([str(idx), probeseq, query_chr, query_st, query_ed, '0.99',
+                                 seqname, start, end, str(f'{identity:.2f}')]))
 
-    runbwaalign.stdout.close()
+    tmp_sam_in.close()
 
-    runbwaalign.wait()
+    os.remove(outfile)
 
     return res
 
@@ -149,7 +163,7 @@ def make_saved_file(saved_path, file, extention):
     return saved_file
 
 
-def check_bwa_index(related_genome, bwa, saved_path):
+def check_bwa_index(related_genome, bwabin, saved_path):
     ''' check if bwa index exist '''
     index = related_genome + ".sa"
     if os.path.isfile(index):
@@ -157,7 +171,7 @@ def check_bwa_index(related_genome, bwa, saved_path):
         return True
     else:
         sys.stderr.write("make index file for genome\n")
-        bwa.bwaindex(bwa, related_genome, saved_path)
+        bwa.bwaindex(bwabin, related_genome, saved_path)
         return True
 
     return False
@@ -406,8 +420,9 @@ def get_options():
         prog='ChorusHomo',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="Example:\n"
-        "  python3 ChorusHomo.py -i probe.bed -g close_related_genome.fasta -t 4 \\ \n"
-        "                    -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample"
+        "  ChorusHomo -i probe.bed -g close_related_genome.fasta -tg target_genome.fasta \\ \n"
+        "             -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa \\ \n"
+        "             -t 4 -s sample"
     )
 
     parser.add_argument('--version', action='version', version='%(prog)s 1.0')
@@ -445,7 +460,7 @@ def get_options():
         '--input',
         dest='input',
         help=
-        'Fasta format input file, can be whole genome, a chromosome or one region from genome',
+        'BED format input file, contains oligo probes generated from Chorus2',
         required=True)
 
     parser.add_argument(
