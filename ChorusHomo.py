@@ -3,6 +3,7 @@ import sys
 import argparse
 from subprocess import call
 import re
+import shutil
 
 from Choruslib import jellyfish
 from Choruslib import bwa
@@ -165,7 +166,8 @@ def make_saved_file(saved_path, file, extention):
 
 def check_bwa_index(related_genome, bwabin, saved_path):
     ''' check if bwa index exist '''
-    index = related_genome + ".sa"
+    index = os.path.join(saved_path, os.path.basename(related_genome)) + ".sa"
+    print(index)
     if os.path.isfile(index):
         sys.stderr.write("index already existed\n")
         return True
