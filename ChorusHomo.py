@@ -184,8 +184,12 @@ def bed_to_fa(probe_file, saved_path):
     with open(fasta, "w") as o:
         with open(probe_file, "r") as i:
             for line in i:
-                chr, st, ed, seq = line.strip().split()
-                header = "_".join((chr, st, ed))
+                infor = line.strip().split()
+                chrom = infor[0]
+                st = infor[1]
+                ed = infor[2]
+                seq = infor[3]
+                header = "_".join((chrom, st, ed))
                 o.write(">" + header + "\n" + seq + "\n")
 
     return fasta
