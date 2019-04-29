@@ -15,10 +15,10 @@ def main():
     print(args)
 
     # init input and output files
-    related_genome = args.genome
-    target = args.target
+    related_genome = os.path.abspath(os.path.expanduser(args.genome))
+    target = os.path.abspath(os.path.expanduser(args.target))
 
-    probe_file = args.input
+    probe_file = os.path.abspath(os.path.expanduser(args.input))
     probe_fasta = bed_to_fa(probe_file, args.saved)
     homo_probe = make_saved_file(args.saved, probe_file, "homo.csv")
 
@@ -369,15 +369,15 @@ def check_options(parser):
     # Print Checked information
     print("#" * 40)
 
-    print("bwa version:", args.bwa, bwaversion)
+    print("bwa version:", os.path.abspath(os.path.expanduser(args.bwa)), bwaversion)
 
-    print("jellyfish version:", args.jellyfish, jellyfishversion)
+    print("jellyfish version:", os.path.abspath(os.path.expanduser(args.jellyfish)), jellyfishversion)
 
-    print("close related genome file:", args.genome)
+    print("close related genome file:", os.path.abspath(os.path.expanduser(args.genome)))
 
-    print("target genome file:", args.target)
+    print("target genome file:", os.path.abspath(os.path.expanduser(args.target)))
 
-    print("input file:", args.input)
+    print("input file:", os.path.abspath(os.path.expanduser(args.input)))
 
     print("result output folder:", os.path.realpath(args.saved))
 
