@@ -3,7 +3,6 @@ import sys
 import argparse
 from subprocess import call
 import re
-import shutil
 
 from Choruslib import jellyfish
 from Choruslib import bwa
@@ -54,12 +53,16 @@ def main():
 
 # add homology information after each oligos
     with open(homo_probe, "w") as o:
+        header = ['index', 'probe_seq', 'query_chr', 'query_start', 'query_end', '0.99', 'target_chr', 'target_start', 'target_end', 'identity']
+        save_probe([','.join(header)], o)
         with open(probe_file, "r") as i:
             for line in i:
                 arr = line.strip().split()
                 hh = arr[0] + arr[1]
                 if hh in hom_probe_dict:
                     save_probe([hom_probe_dict[hh]], o)
+        i.close()
+    o.close()
 
     sys.stderr.write("record homologous oligos\n")
 
@@ -99,7 +102,7 @@ def bwa_mem(bwabin, reffile, inputfile, outfile, threadnumber=1):
         lin = lin.rstrip('\n')
         # print("after decode", lin)
         if not re.search(pat, lin):
-            
+
             infor = lin.split('\t')
             idx = idx + 1
             query_name = infor[0]
@@ -357,7 +360,7 @@ def check_options(parser):
 
                 print(char)
 
-                if char == 'n':
+                if char.lower() == 'n':
 
                     sys.exit(1)
 
@@ -498,3 +501,4 @@ if __name__ == "__main__":
         sys.stderr.write("User interrupt\n")
 
         sys.exit(0)
+
