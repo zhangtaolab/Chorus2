@@ -608,7 +608,7 @@ def check_options(parser):
 
                     print(char)
 
-                    if char == 'n':
+                    if char.lower() == 'n':
 
                         sys.exit(1)
 
