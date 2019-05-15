@@ -15,8 +15,8 @@ def main():
     print(args)
 
     # init input and output files
-    related_genome = os.path.abspath(os.path.expanduser(args.genome))
-    target = os.path.abspath(os.path.expanduser(args.target))
+    genomeA = os.path.abspath(os.path.expanduser(args.source))
+    genomeB = os.path.abspath(os.path.expanduser(args.target))
 
     probe_file = os.path.abspath(os.path.expanduser(args.input))
     probe_fasta = bed_to_fa(probe_file, args.saved)
@@ -25,15 +25,15 @@ def main():
     sys.stderr.write("input probe {}\n".format(probe_file))
 
     # Check related genome bwa index or build it
-    if not check_bwa_index(related_genome, args.bwa, args.saved):
-        sys.stderr.write("Failed to get index for ", related_genome, "\n")
+    if not check_bwa_index(genomeB, args.bwa, args.saved):
+        sys.stderr.write("Failed to get index for ", genomeB, "\n")
         sys.exit(0)
 
-    indexed_genome = os.path.join(args.saved, os.path.basename(related_genome))
+    indexed_genome = os.path.join(args.saved, os.path.basename(genomeB))
 
     # generate fai file for each genome
     make_fai(indexed_genome)
-    make_fai(target)
+    make_fai(genomeA)
 
     tmp_sam_file = os.path.join(args.saved, 'tmp_align.sam')
 
@@ -53,7 +53,8 @@ def main():
 
 # add homology information after each oligos
     with open(homo_probe, "w") as o:
-        header = ['index', 'probe_seq', 'query_chr', 'query_start', 'query_end', '0.99', 'target_chr', 'target_start', 'target_end', 'identity']
+        header = ['index', 'probe_seq', 'genomeA_chr', 'genomeA_start', 'genomeA_end', 'genomeA_identity', 
+                  'genomeB_chr', 'genomeB_start', 'genomeB_end', 'genomeB_identity']
         save_probe([','.join(header)], o)
         with open(probe_file, "r") as i:
             for line in i:
@@ -149,7 +150,7 @@ def bwa_mem(bwabin, reffile, inputfile, outfile, threadnumber=1):
 #            if (asscore >= minas) & (xsscore < maxxs):
 
             end = str(int(start) + aln_matches + aln_mismatches -1)
-            res.append(','.join([str(idx), probeseq, query_chr, query_st, query_ed, '0.99',
+            res.append(','.join([str(idx), probeseq, query_chr, query_st, query_ed, '1.00',
                                  seqname, start, end, str(f'{identity:.2f}')]))
 
     tmp_sam_in.close()
@@ -170,7 +171,7 @@ def make_saved_file(saved_path, file, extention):
 def check_bwa_index(related_genome, bwabin, saved_path):
     ''' check if bwa index exist '''
     index = os.path.join(saved_path, os.path.basename(related_genome)) + ".sa"
-    print(index)
+    # print(index)
     if os.path.isfile(index):
         sys.stderr.write("index already existed\n")
         return True
@@ -319,9 +320,9 @@ def check_options(parser):
             sys.exit(1)
     # End check jellyfish
 
-    if not os.path.exists(args.genome):
+    if not os.path.exists(args.source):
 
-        print("Can not locate close related genome file, please input a close related genome file.\n")
+        print("Can not locate source genome (GenomeA) file, please input a source genome file.\n")
 
         parser.print_help()
 
@@ -329,7 +330,7 @@ def check_options(parser):
 
     if not os.path.exists(args.target):
 
-        print("Can not locate target genome file, please input target genome file.\n")
+        print("Can not locate target genome (GenomeB) file, please input a target genome file.\n")
 
         parser.print_help()
 
@@ -378,9 +379,9 @@ def check_options(parser):
 
     print("jellyfish version:", os.path.abspath(os.path.expanduser(args.jellyfish)), jellyfishversion)
 
-    print("close related genome file:", os.path.abspath(os.path.expanduser(args.genome)))
+    print("source genome (GenomeA) file:", os.path.abspath(os.path.expanduser(args.source)))
 
-    print("target genome file:", os.path.abspath(os.path.expanduser(args.target)))
+    print("target genome (GenomeB) file:", os.path.abspath(os.path.expanduser(args.target)))
 
     print("input file:", os.path.abspath(os.path.expanduser(args.input)))
 
@@ -429,7 +430,7 @@ def get_options():
         prog='ChorusHomo',
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="Example:\n"
-        "  ChorusHomo -i probe.bed -g close_related_genome.fasta -tg target_genome.fasta \\ \n"
+        "  ChorusHomo -i probe.bed -ga source_genome.fasta -gb target_genome.fasta \\ \n"
         "             -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa \\ \n"
         "             -t 4 -s sample"
     )
@@ -449,19 +450,19 @@ def get_options():
         help='The path where BWA software installed')
 
     parser.add_argument(
-        '-g',
-        '--genome',
-        dest='genome',
+        '-ga',
+        '--source',
+        dest='source',
         help=
-        'Fasta format genome file which the probe will align to, should include all sequences from genome',
+        'Fasta format genome file (GenomeA) which the probe were generated from, should include all sequences from genome',
         required=True)
 
     parser.add_argument(
-        '-tg',
+        '-gb',
         '--target',
         dest='target',
         help=
-        'Fasta format genome file which the probe were generated from, should include all sequences from genome',
+        'Fasta format genome file (GenomeB) which the probe will be aligned to, should include all sequences from genome',
         required=True)
 
     parser.add_argument(
