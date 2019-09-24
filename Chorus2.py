@@ -423,6 +423,10 @@ def probefilter(nowpbcounter):
         # print(self.sequence, " not pass atcg")
         pass
 
+    elif dTm == -1:
+
+        keep = True
+
     else:
         if rPrimer:
 
@@ -574,13 +578,25 @@ def check_options(parser):
 
         sys.exit(1)
 
-    if args.dtm > 37 or args.dtm < 0:
-
+    if args.dtm > 37 or args.dtm < -1:
+    # dtm = -1 skip calculate dtm
         print("Please set dtm between 0 and 37.\n")
 
         parser.print_help()
 
         sys.exit(1)
+
+    if args.skipdtm == True:
+
+        args.dtm = -1
+
+        print("skip calculate dtm")
+
+    if args.length > 50:
+
+        args.dtm = -1
+
+        print("oligo length longer than 50nt, skip calculate dtm")
 
     if args.step < 1:
 
@@ -639,6 +655,10 @@ def check_options(parser):
     print("homology:", args.homology)
 
     print("dtm:", args.dtm)
+
+    if args.dtm == -1:
+
+        print("Warning: skip calculate dtm.")
 
     print("#"*40)
 
@@ -702,6 +722,8 @@ def get_options():
     parser.add_argument('--homology', dest='homology', help='The maximum homology(%%) between target sequence and probe, range from 50 to 100. (Default: 75)', default=75, type=float)
 
     parser.add_argument('-d', '--dtm', dest='dtm', help='The minimum value of dTm (hybrid Tm - hairpin Tm), range from 0 to 37. (Default: 10)', default=10, type=float)
+
+    parser.add_argument('--skipdtm', dest='skipdtm', help='skip calculate dtm, for oligo longer than 50.', default=False, type=bool)
 
     parser.add_argument('--step', dest='step', help='The step length for k-mer searching in a sliding window, step length>=1. (Default: 5)', default=5, type=int)
 
