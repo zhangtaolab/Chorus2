@@ -135,9 +135,9 @@ def samfilter(samfile, minas, maxxs):
 
     inio = open(samfile,'r')
 
-    aspat = re.compile('AS:i:(\d.)')
+    aspat = re.compile('AS:i:(\d*)')
 
-    xspat = re.compile('XS:i:(\d.)')
+    xspat = re.compile('XS:i:(\d*)')
 
     for i in inio.readlines():
 
@@ -258,9 +258,9 @@ def bwafilter(bwabin, reffile, inputfile, minas, maxxs ,threadnumber=1 ):
 
     print(bwacmd)
 
-    aspat = re.compile('AS:i:(\d.)')
+    aspat = re.compile('AS:i:(\d*)')
 
-    xspat = re.compile('XS:i:(\d.)')
+    xspat = re.compile('XS:i:(\d*)')
 
     runbwaalign = Popen(bwacmd, shell=True, stdout=PIPE)
 

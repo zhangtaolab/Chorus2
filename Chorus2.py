@@ -294,10 +294,15 @@ def main():
 
     del jffilteredprobe
 
+    print("run bwafilter")
+    print("maxxs:", int(args.length*args.homology/100))
+
     bwafiltedpb = bwa.bwafilter(bwabin=args.bwa, reffile=bwaindex, inputfile=tmppbfa, minas=args.length,
                                 maxxs=int(args.length*args.homology/100), threadnumber=args.threads)
 
-    # print(bwafiltedpb)
+    print("bwafiltedpb len",len(bwafiltedpb))
+
+    print(bwafiltedpb[0:10])
 
     tmpbwaftlist = os.path.join(args.saved, os.path.basename(args.input)+'.bed')
 
