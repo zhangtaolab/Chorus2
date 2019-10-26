@@ -322,7 +322,7 @@ def get_options():
     parser.add_argument('-jfile','--jellyfishfile', dest='jfile',
                         help='prebuild jellyfish index file, conflict with input argument.', type=str)
 
-    parser.add_argument('-z', '--gzipped', dest='gzip', help='Input fastq file is gzipped(gz) or uncompressed(text). (Default: gz)', choices=('gz', 'text'), default='gz', required=True)
+    parser.add_argument('-z', '--gzipped', dest='gzip', help='Input fastq file is gzipped(gz) or uncompressed(text). (Default: gz)', choices=('gz', 'text'), default='gz')
 
     # parser.add_argument('-s', '--save', dest='saved', help='result saved folder', default='probes')
 
