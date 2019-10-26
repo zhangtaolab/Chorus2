@@ -17,16 +17,23 @@ def main():
 
     print(args.input)
 
-    jellyfish.makegenerator(filenames=args.input.split(','), type=args.gzip, generators='generators')
+    if args.jfile:
+        # args.jfile
+        jfkmerfile = args.jfile
 
-    jfkmerfile = args.output+'.jf'
+    else:
 
-    bwfile = args.output+'.bw'
+        jellyfish.makegenerator(filenames=args.input.split(','), type=args.gzip, generators='generators')
+
+        jfkmerfile = args.output+'.jf'
+
+        jellyfish.jfgeneratorscount(jfpath=args.jellyfish, mer=args.kmer, output=jfkmerfile,
+                                    generators='generators',threads=args.threads,  size='100M')
+
+    bwfile = args.output + '.bw'
 
     outfilename = args.output
 
-    jellyfish.jfgeneratorscount(jfpath=args.jellyfish, mer=args.kmer, output=jfkmerfile,
-                                generators='generators',threads=args.threads,  size='100M')
 
     spsize = 10000000
 
@@ -262,9 +269,19 @@ def check_options(parser):
 
                 sys.exit(1)
 
+    elif args.jfile:
+
+        if not os.path.exists(args.jfile):
+
+            print("Can not locate %s file.\n" % args.jfile)
+
+            parser.print_help()
+
+            sys.exit(1)
+
     else:
 
-        print("Can not locate input file, please input input file.\n")
+        print("Can not locate input or jellyfish index file, please input jellyfish index or input file.\n")
 
         parser.print_help()
 
@@ -300,7 +317,10 @@ def get_options():
 
     parser.add_argument('-i', '--input', dest='input',
                         help='Fastq format input files contain reads from whole genome shotgun sequencing, files can be gzipped.'
-                             ' Multiple files separate with \",\". For example: 1.fq.gz,2.fq.gz ', required=True, type=str)
+                             ' Multiple files separate with \",\". For example: 1.fq.gz,2.fq.gz ',  type=str)
+
+    parser.add_argument('-jfile','--jellyfishfile', dest='jfile',
+                        help='prebuild jellyfish index file, conflict with input argument.', type=str)
 
     parser.add_argument('-z', '--gzipped', dest='gzip', help='Input fastq file is gzipped(gz) or uncompressed(text). (Default: gz)', choices=('gz', 'text'), default='gz', required=True)
 
