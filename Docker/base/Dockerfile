@@ -25,7 +25,7 @@ RUN pip3 install numpy pyfasta
 # ADD Chorus.py Chorus/
 # ADD Choruslib/* Chorus/Choruslib/
 WORKDIR /opt/software
-RUN git clone https://github.com/forrestzhang/Chorus.git
+RUN git clone https://github.com/zhangtaolab/Chorus2.git
 
 
 ENV PATH /opt/software/bwa:/opt/software/jellyfish/bin:$PATH
