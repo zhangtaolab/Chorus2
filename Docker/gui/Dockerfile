@@ -34,15 +34,15 @@ RUN ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
 ENV PATH $PATH:/opt/conda/bin
 RUN mkdir /opt/software
 WORKDIR /opt/software
-RUN git clone -b GUIv2 https://github.com/forrestzhang/Chorus.git
+RUN git clone https://github.com/zhangtaolab/Chorus2.git
 
-RUN echo "/opt/conda/bin/python /opt/software/Chorus/ChorusGUI.py" > /home/ubuntu/Desktop/ChorusGUI.sh
-RUN echo "/opt/conda/bin/python /opt/software/Chorus/ChorusPBselect.py" > /home/ubuntu/Desktop/ChorusPBselect.sh
+RUN echo "/opt/conda/bin/python /opt/software/Chorus2/ChorusGUI.py" > /home/ubuntu/Desktop/ChorusGUI.sh
+RUN echo "/opt/conda/bin/python /opt/software/Chorus2/ChorusPBselect.py" > /home/ubuntu/Desktop/ChorusPBselect.sh
 RUN chmod +x /home/ubuntu/Desktop/ChorusGUI.sh /home/ubuntu/Desktop/ChorusPBselect.sh
 
 RUN mkdir /root/Desktop
-RUN echo "/opt/conda/bin/python /opt/software/Chorus/ChorusGUI.py" > /root/Desktop/ChorusGUI.sh
-RUN echo "/opt/conda/bin/python /opt/software/Chorus/ChorusPBselect.py" > /root/Desktop/ChorusPBselect.sh
+RUN echo "/opt/conda/bin/python /opt/software/Chorus2/ChorusGUI.py" > /root/Desktop/ChorusGUI.sh
+RUN echo "/opt/conda/bin/python /opt/software/Chorus2/ChorusPBselect.py" > /root/Desktop/ChorusPBselect.sh
 RUN chmod +x /root/Desktop/ChorusGUI.sh /root/Desktop/ChorusPBselect.sh
 
 

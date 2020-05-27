@@ -23,5 +23,5 @@ fi
 
 for arg in "$*"
 do
-  	exec python3 /opt/software/Chorus/Chorus.py --docker True $*
+  	exec python3 /opt/software/Chorus2/Chorus2.py --docker True $*
 done
