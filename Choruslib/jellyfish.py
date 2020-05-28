@@ -705,6 +705,54 @@ def jfseqNGSkmer(jfpath, jfkmerfile, mer, sequence, bfcount=False):
     return jfkmercount
 
 
+def jfquerylist(jfpath, jfkmerfile, seqlist, bfcount=False):
+
+    """
+    :param jfpath: jellyfish bin path
+    :param jfkmerfile: jellyfish kmer count file
+    :param seqlist: list of sequences
+    :param bfcount:
+    :return: list, kmerscore list
+    """
+
+
+    jfpath = subprocesspath.subprocesspath(jfpath)
+
+    jfkmerfile = subprocesspath.subprocesspath(jfkmerfile)
+
+    jfquerycommand = ' '.join([jfpath, 'query', '-i', '-l', jfkmerfile])
+
+    print(jfquerycommand)
+
+    kmerct = subprocess.Popen(jfquerycommand, shell=True, stdout=subprocess.PIPE,
+                              stdin=subprocess.PIPE)
+
+
+    jfkmercount = list()
+
+    for subseq in seqlist:
+
+        kmerct.stdin.write(subseq.encode('ascii'))
+
+        kmerct.stdin.flush()
+
+        lin = kmerct.stdout.readline().decode('utf-8').rstrip('\n')
+
+        number = int(lin)
+
+        jfkmercount.append(number)
+
+
+    kmerct.stdin.close()
+
+    kmerct.stdout.close()
+
+    kmerct.wait()
+
+    return jfkmercount
+
+
+
 def jfngsscoer(jfngsscoer):
 
     """
