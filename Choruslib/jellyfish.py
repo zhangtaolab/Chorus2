@@ -732,6 +732,8 @@ def jfquerylist(jfpath, jfkmerfile, seqlist, bfcount=False):
 
     for subseq in seqlist:
 
+        subseq = subseq+'\n'
+
         kmerct.stdin.write(subseq.encode('ascii'))
 
         kmerct.stdin.flush()
