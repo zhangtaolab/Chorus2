@@ -2,14 +2,6 @@ from Choruslib import openBam
 
 
 class Baminfo:
-    """
-    :Example:
-    >>> from bagatelle.ngs import Baminfo
-    >>> baminfo = Baminfo.Baminfo("testbamfile.bam")
-    >>> baminfo.chrlen['Chr1']
-    30427671
-
-    """
 
     def __init__(self, bamfile):
         self.bamfile = bamfile

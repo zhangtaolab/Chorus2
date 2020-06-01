@@ -8,6 +8,41 @@ import time
 import signal
 
 
+def bwamem_paired(bwabin, samtoolsbin, reffile, outfile, inputfile1, inputfile2, samplename, threadnumber=1):
+    bwabin = subprocesspath.subprocesspath(bwabin)
+
+    samtoolsbin = subprocesspath.subprocesspath(samtoolsbin)
+
+    reffile = subprocesspath.subprocesspath(reffile)
+
+    inputfile = subprocesspath.subprocesspath(inputfile1)
+
+    inputfile = subprocesspath.subprocesspath(inputfile2)
+
+    outfile = subprocesspath.subprocesspath(outfile)
+
+    samplestr = '\'@RG\\tID:' + samplename + '\\tSM:' + samplename + '\\tLB:WGS\\tPL:Illumina\''
+
+    bwacmd = ' '.join(
+        [bwabin, 'mem', '-M', '-R', samplestr, '-t', str(threadnumber), reffile, inputfile1, inputfile2, '| ',
+         samtoolsbin, 'sort -@', str(threadnumber), '-o', outfile])
+
+    print(bwacmd)
+
+    runbwaalign = Popen(bwacmd, shell=True)
+
+    runbwaalign.communicate()
+
+    samidxcmd = ' '.join([samtoolsbin, 'index', outfile])
+
+    print(samidxcmd)
+
+    samidx = Popen(samidxcmd, shell=True)
+
+    samidx.communicate()
+
+    return True
+
 def testbwa(bwabin):
     """
 

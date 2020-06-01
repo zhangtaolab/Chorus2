@@ -1,4 +1,5 @@
 from Choruslib import Baminfo
+from Choruslib import subprocesspath
 import pysam
 
 
