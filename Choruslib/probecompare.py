@@ -19,6 +19,7 @@ def compareseq(seq1, seq2):
 
 
 def getconsensusprobe(probelist):
+
     probelen0 = len(probelist[0])
 
     consensusprobe = ''

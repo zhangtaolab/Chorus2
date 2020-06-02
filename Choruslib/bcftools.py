@@ -56,3 +56,31 @@ def getconsensus(bcftoolspath, bcffile, chrom, start, end, seq, strand='+'):
             consensus = i
     #             print('c:',consensus)
     return str(consensus)
+
+
+def bcftoolsversion(bcftoolsbin):
+    """
+
+    :param bcftoolsbin: bwa bin path
+    :return: string, version of bcftools
+    """
+
+    bcftoolscmd = [bcftoolsbin]
+
+    bcftoolsrun = Popen(bcftoolscmd, stdout=PIPE, stderr=PIPE)
+
+    pat = re.compile('Version')
+
+    version = 'None'
+
+    for i in bcftoolsrun.stderr.readlines():
+
+        i = i.decode('utf-8').rstrip('\n')
+
+        if re.search(pat, i):
+
+            version = i
+
+    bcftoolsrun.communicate()
+
+    return version

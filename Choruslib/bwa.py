@@ -72,6 +72,32 @@ def testbwa(bwabin):
 
     return testres
 
+def samtoolsversion(samtoolsbin):
+    """
+
+    :param samtoolsbin: bwa bin path
+    :return: string, version of samtools
+    """
+
+    samtoolscmd = [samtoolsbin]
+
+    samtoolsrun = Popen(samtoolscmd, stdout=PIPE, stderr=PIPE)
+
+    pat = re.compile('Version')
+
+    version = 'None'
+
+    for i in samtoolsrun.stderr.readlines():
+
+        i = i.decode('utf-8').rstrip('\n')
+
+        if re.search(pat, i):
+
+            version = i
+
+    samtoolsrun.communicate()
+
+    return version
 
 def bwaversion(bwabin):
     """
@@ -108,7 +134,7 @@ def bwaindex(bwabin, reffile, samplefolder):
     :param samplefolder: sample dir
     :return: no retrun
     """
-
+    print(bwabin, reffile, samplefolder)
     refbasename = os.path.basename(os.path.abspath(reffile))
 
     dscopy = os.path.join(samplefolder, refbasename)
@@ -119,7 +145,7 @@ def bwaindex(bwabin, reffile, samplefolder):
     bwabin = os.path.abspath(bwabin)
 
     bwacmd = [bwabin, 'index', refbasename]
-    # print(bwacmd)
+    print(bwacmd)
     runbwaindex = Popen(bwacmd, cwd=samplefolder)
 
     runbwaindex.communicate()

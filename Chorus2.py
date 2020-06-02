@@ -705,7 +705,7 @@ def get_options():
                                             "          -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample"
                                      )
 
-    parser.add_argument('--version', action='version', version='%(prog)s 2.0')
+    parser.add_argument('--version', action='version', version='%(prog)s 2.1')
 
     parser.add_argument('-j', '--jellyfish', dest='jellyfish', help='The path where Jellyfish software installed')
 
