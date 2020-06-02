@@ -14,7 +14,7 @@ def bamtobcf(bcfbin, reffile, bamfile, outbcf):
     outbcf = subprocesspath.subprocesspath(outbcf)
 
     bcfcmd = ' '.join(
-        ['bcftools mpileup -E -d 500 -L 500 -Ou -f', reffile, bamfile, '|  bcftools call -cv -Ob -o', outbcf])
+        [bcfbin,' mpileup -E -d 500 -L 500 -Ou -f', reffile, bamfile, '| ', bcfbin,' call -cv -Ob -o', outbcf])
 
     print(bcfcmd)
 
@@ -22,7 +22,7 @@ def bamtobcf(bcfbin, reffile, bamfile, outbcf):
 
     bcfrun.communicate()
 
-    bcfidxcmd = ' '.join(['bcftools index', bamfile])
+    bcfidxcmd = ' '.join([bcfbin, ' index', outbcf])
 
     print(bcfidxcmd)
 
