@@ -4,6 +4,18 @@ from Choruslib import revcom
 import re
 
 
+class BcfConsensusRuner():
+
+    def __init__(self, probestr, bcftoolspath, bcffile, sample):
+
+        self.probestr = probestr
+
+        self.bcftoolspath = bcftoolspath
+
+        self.bcffile = bcffile
+
+        self.sample = sample
+
 def bamtobcf(bcfbin, reffile, bamfile, outbcf):
     bcfbin = subprocesspath.subprocesspath(bcfbin)
 
@@ -32,8 +44,32 @@ def bamtobcf(bcfbin, reffile, bamfile, outbcf):
 
     return True
 
+def probestrtoconsensus(bcfconsensusruner):
 
-def getconsensus(bcftoolspath, bcffile, chrom, start, end, seq, strand='+'):
+    (chrom, start, end, seq, score, strand) = str(bcfconsensusruner.probestr).rstrip().split("\t")
+
+    if strand == '-':
+        seq = revcom.revcom(seq)
+
+        strand = '+'
+
+    consensusprobe = getconsensus(bcftoolspath=bcfconsensusruner.bcftoolspath,
+                                  bcffile=bcfconsensusruner.bcffile,
+                                  chrom=chrom,
+                                  start=start,
+                                  end=end,
+                                  seq=seq,
+                                  sample=bcfconsensusruner.sample
+                                  )
+    res = dict()
+
+    res['probestr'] = bcfconsensusruner.probestr
+
+    res['consensusprobe'] = consensusprobe
+
+    return res
+
+def getconsensus(bcftoolspath, bcffile, chrom, start, end, seq, sample, strand='+'):
     """
     get consensus by using bcftools 
     """
@@ -44,16 +80,20 @@ def getconsensus(bcftoolspath, bcffile, chrom, start, end, seq, strand='+'):
     if strand == '-':
         seq = revcom.revcom(seq)
     fastring = '\'>' + chrom + ':' + start + '-' + end + '\\n' + seq + '\''
-    bcfcon_command = ' '.join(['echo', fastring, '|' + bcftoolspath + ' consensus ', bcffile])
+    bcfcon_command = ' '.join(['echo', fastring, '|' + bcftoolspath + ' consensus -s', sample, bcffile])
 
-    p = Popen(bcfcon_command, shell=True, stdin=PIPE, stdout=PIPE)
+    consensus = 'N'*len(seq)
 
-    consensus = ''
-    for i in p.stdout:
-        i = i.decode('utf-8').rstrip('\n')
-        #         print(i)
-        if re.search(pat, i):
-            consensus = i
+    try:
+        p = Popen(bcfcon_command, shell=True, stdin=PIPE, stdout=PIPE)
+
+        for i in p.stdout:
+            i = i.decode('utf-8').rstrip('\n')
+            #         print(i)
+            if re.search(pat, i):
+                consensus = i
+    except:
+        print("warnning: ", bcfcon_command, " ##")
     #             print('c:',consensus)
     return str(consensus)
 

@@ -3,6 +3,8 @@ import argparse
 from Choruslib import bwa, bcftools, probecompare, bamdepth, jellyfish, subprocesspath, revcom
 import os
 from pybedtools import BedTool
+from multiprocessing import Pool
+import pandas as pd
 
 def main():
 
@@ -17,6 +19,9 @@ def main():
     bwatestindex = os.path.join(args.saved, bwaindexfile+'.sa')
 
     bwaindex = os.path.join(args.saved, bwaindexfile)
+
+
+
 
     bwabuild = True
 
@@ -35,6 +40,7 @@ def main():
 
         print("Use", bwatestindex)
 
+
     sampleinfor = dict()
 
     names = args.names.split(',')
@@ -42,6 +48,12 @@ def main():
     reads1 = args.reads1.split(',')
 
     reads2 = args.reads2.split(',')
+
+    cnsfile = os.path.join(args.saved,'_'.join(names)+'_cns_probe.csv')
+
+    print(cnsfile)
+
+    cnsio = open(cnsfile, 'w')
 
     for i in range(len(names)):
 
@@ -57,9 +69,9 @@ def main():
 
         jffile = os.path.join(args.saved,name+'.jf')
 
-        kmerscore = os.path.join(args.saved,name+'_kmerscore.txt')
+        # kmerscore = os.path.join(args.saved,name+'_kmerscore.txt')
 
-        cnsprobe = os.path.join(args.saved, name + '_cnsprobe.txt')
+        cnsprobe = os.path.join(args.saved, name + '_probe.txt')
 
         mindepth = os.path.join(args.saved, name + '_mindepth.bed')
 
@@ -81,7 +93,9 @@ def main():
 
             sampleinfor[name]['jffile'] = jffile
 
-            sampleinfor[name]['kmerscore'] = kmerscore
+            # sampleinfor[name]['kmerscore'] = kmerscore
+            #
+            # sampleinfor[name]['kmerscoreio'] = open(kmerscore, 'w')
 
             sampleinfor[name]['cnsprobe'] = cnsprobe
 
@@ -125,41 +139,183 @@ def main():
 
             print(jffile, "done")
 
+
     probe = BedTool(args.probe).sort()
 
     for name in sampleinfor:
 
         nowprobe = BedTool(sampleinfor[name]['mindepth']).sort()
 
-        probe = probe.intersect(nowprobe, wa=True)
+        probe = probe.intersect(nowprobe, wa=True, u=True)
 
     # cnsprobe
-    for i in probe:
 
-        (chrom, start, end, seq, score, strand) = str(i).rstrip().split("\t")
 
-        if strand == '-':
 
-            seq = revcom.revcom(seq)
+    for name in sampleinfor:
 
-        for name in sampleinfor:
+        bcfpool = Pool(args.threads)
 
-            consensusprobe = bcftools.getconsensus(bcftoolspath=args.bcftools,
-                                                   bcffile=sampleinfor[name]['bcffile'],
-                                                   chrom=chrom,
-                                                   start=start,
-                                                   end=end,
-                                                   seq=seq
-                                                   )
+        bcfrunerlist = list()
 
-            print(chrom, start, end, consensusprobe, score, strand, sep='\t', file=sampleinfor[name]['cnsprobeio'])
+        consensusprobelist = list()
+
+        for i in probe:
+
+            # (chrom, start, end, seq, score, strand) = str(i).rstrip().split("\t")
+            #
+            # if strand == '-':
+            #
+            #     seq = revcom.revcom(seq)
+            #
+            #     strand = '+'
+            #
+            # for name in sampleinfor:
+            #
+            #     consensusprobe = bcftools.getconsensus(bcftoolspath=args.bcftools,
+            #                                            bcffile=sampleinfor[name]['bcffile'],
+            #                                            chrom=chrom,
+            #                                            start=start,
+            #                                            end=end,
+            #                                            seq=seq,
+            #                                            sample=name
+            #                                            )
+            #
+            #     print(chrom, start, end, seq, consensusprobe, score, strand, sep='\t', file=sampleinfor[name]['cnsprobeio'])
+
+            probestr = str(i).rstrip()
+
+            bcfconsensusruner = bcftools.BcfConsensusRuner(probestr=probestr, bcftoolspath=args.bcftools,
+                                                           bcffile=sampleinfor[name]['bcffile'],
+                                                           sample=name
+                                                           )
+
+            bcfrunerlist.append(bcfconsensusruner)
+            # consensusprobe = bcftools.probestrtoconsensus(bcfconsensusruner)
+            #
+            # print(probestr, consensusprobe, sep='\t')
+
+        reslist = list()
+
+        for res in bcfpool.imap_unordered(bcftools.probestrtoconsensus, bcfrunerlist):
+
+            # print(res['probestr'], name, res['consensusprobe'], sep='\t', file=sampleinfor[name]['cnsprobeio'])
+            consensusprobelist.append(res['consensusprobe'])
+            # consensusprobelist.append(res)
+            reslist.append(res)
+
+        bcfpool.close()
+
+        consensusprobekmerscore = jellyfish.jfquerylist(jfkmerfile=sampleinfor[name]['jffile'],
+                                                        jfpath=args.jellyfish,
+                                                        seqlist=consensusprobelist)
+
+        kmerscoredict = dict()
+
+        kmerscorelist = list()
+
+        for score in consensusprobekmerscore:
+
+            # print(score, file=sampleinfor[name]['kmerscoreio'])
+            (subseq, kmerscore) = score.split(',')
+
+            if 'N' not in subseq:
+
+                kmerscoredict[subseq] = int(kmerscore)
+
+                kmerscorelist.append(int(kmerscore))
+
+        maxkmer = pd.Series(kmerscorelist).quantile(0.9)
+
+        minkmer = 3
+
+        for consensusprobe in reslist:
+
+            probestr = consensusprobe['probestr']
+
+            consensusprobeseq = consensusprobe['consensusprobe']
+
+            if consensusprobeseq in kmerscoredict:
+
+                if kmerscoredict[consensusprobeseq] <= maxkmer:
+
+                    if kmerscoredict[consensusprobeseq] >= minkmer:
+
+                        print(probestr, consensusprobeseq, kmerscoredict[consensusprobeseq], sep='\t',
+                              file=sampleinfor[name]['cnsprobeio'])
 
     for name in sampleinfor:
 
         sampleinfor[name]['cnsprobeio'].close()
-
+        # sampleinfor[name]['kmerscoreio'].close()
     # print(sampleinfor)
 
+    probdict = dict()
+
+    for name in sampleinfor:
+
+        with open(sampleinfor[name]['cnsprobe']) as inio:
+
+            for infor in inio:
+
+                infor = infor.rstrip()
+
+                inforlist = infor.split('\t')
+
+                orgprb = inforlist[3]
+
+                if orgprb in probdict:
+
+                    probdict[orgprb][name] = infor
+
+                else:
+
+                    probdict[orgprb] = dict()
+
+                    probdict[orgprb][name] = infor
+
+    print('chrom', 'start', 'end', 'refseq', ','.join(sampleinfor), 'consensusprobe', 'consensusscore', 'consensussite',
+          'consensusdiff', sep=',', file=cnsio)
+
+    for orgprb in probdict:
+
+        sharecount = len(probdict[orgprb])
+
+        values_view = probdict[orgprb].values()
+        value_iterator = iter(values_view)
+        first_value = next(value_iterator).split('\t')
+
+        outinfo = first_value[0:3]
+
+        if len(sampleinfor) == sharecount:
+            #         print(sampleinfor, sharecount)
+            # print(orgprb, len(probdict[orgprb]))
+            probelist = list()
+            namelist = list()
+            namelist.append('refseq')
+            probelist.append(orgprb)
+
+            for name in sampleinfor:
+
+                infor = probdict[orgprb][name].split('\t')
+
+                speciesprobe = infor[-2]
+
+                namelist.append(name)
+                if len(speciesprobe) == len(orgprb):
+                    probelist.append(speciesprobe)
+
+            if len(namelist) == len(probelist):
+                #             print(namelist, probelist)
+
+                res = probecompare.getconsensusprobe(probelist)
+                outinfo.extend(probelist)
+                print(','.join(outinfo), res['consensusprobe'], res['consensusscore'], res['consensussite'],
+                      res['consensusdiff'], sep=',', file=cnsio)
+
+    cnsio.close()
+
+    print("finished")
 
 def check_options(parser):
 

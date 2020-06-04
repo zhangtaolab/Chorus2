@@ -742,7 +742,9 @@ def jfquerylist(jfpath, jfkmerfile, seqlist, bfcount=False):
 
         number = int(lin)
 
-        jfkmercount.append(number)
+        resstr = subseq.rstrip() + ',' + str(number)
+
+        jfkmercount.append(resstr)
 
 
     kmerct.stdin.close()

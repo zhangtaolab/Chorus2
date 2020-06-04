@@ -1,3 +1,5 @@
+import operator
+
 def compareseq(seq1, seq2):
     len1 = len(seq1)
     len2 = len(seq2)
@@ -19,7 +21,6 @@ def compareseq(seq1, seq2):
 
 
 def getconsensusprobe(probelist):
-
     probelen0 = len(probelist[0])
 
     consensusprobe = ''
@@ -51,11 +52,24 @@ def getconsensusprobe(probelist):
 
             consensuslist.append(max(nowdict.items(), key=operator.itemgetter(1))[0])
 
-            consensuscount.append(str(max(nowdict.items(), key=operator.itemgetter(1))[1]))
+            consensuscount.append((max(nowdict.items(), key=operator.itemgetter(1))[1]))
 
-        consensusprobe = ''.join(consensuslist)
-        consensusscore = ''.join(consensuscount)
+        # consensusprobe = ''.join(consensuslist)
+        # consensusscore = ''.join(consensuscount)
+        res = dict()
 
-    #     print("indef", consensusprobe)
+        res['consensusprobe'] = ''.join(consensuslist)
 
-    return (consensusprobe, consensusscore)
+        res['consensusscore'] = sum(consensuscount) / (probelen0 * len(probelist))
+        #     print("indef", consensusprobe)
+
+        res['consensussite'] = 0
+
+        res['consensusdiff'] = (probelen0 * len(probelist)) - sum(consensuscount)
+
+        for nowbp in consensuscount:
+
+            if nowbp == len(probelist):
+                res['consensussite'] += 1
+
+    return res
