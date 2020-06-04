@@ -16,9 +16,42 @@ def main():
     # ?build bwa index
     bwaindexfile = os.path.basename(args.genome)
 
-    bwatestindex = os.path.join(args.saved, bwaindexfile+'.sa')
+    tmpfolder = os.path.abspath(os.path.join('./tmp',args.saved))
 
-    bwaindex = os.path.join(args.saved, bwaindexfile)
+    if os.path.exists(tmpfolder):
+            tmpfolder = os.path.realpath(tmpfolder)
+
+            print("The output folder ",tmpfolder, " already exists.")
+            print('''
+                Press Y to use it for output files. Everything in this folder will be removed.
+                Press N and set -s/--saved to a different folder:
+                ''')
+
+            while True:
+
+                char = getch()
+
+                if char.lower() in ("y", "n"):
+
+                    print(char)
+
+                    if char.lower() == 'n':
+
+                        sys.exit(1)
+
+                    break
+
+    else:
+
+        tmpfolder = os.path.realpath(tmpfolder)
+
+        os.mkdir(tmpfolder)
+
+
+
+    bwatestindex = os.path.join(tmpfolder, bwaindexfile+'.sa')
+
+    bwaindex = os.path.join(tmpfolder, bwaindexfile)
 
 
 
@@ -32,7 +65,7 @@ def main():
     if bwabuild:
 
         # build bwa index
-        bwa.bwaindex(args.bwa, args.genome, args.saved)
+        bwa.bwaindex(args.bwa, args.genome, tmpfolder)
 
         print("bwa index build finished ...")
 
@@ -63,17 +96,15 @@ def main():
 
         read2 = reads2[i]
 
-        bamfile = os.path.join(args.saved,name+'.bam')
+        bamfile = os.path.join(tmpfolder,name+'.bam')
 
-        bcffile = os.path.join(args.saved,name+'.bcf')
+        bcffile = os.path.join(tmpfolder,name+'.bcf')
 
-        jffile = os.path.join(args.saved,name+'.jf')
-
-        # kmerscore = os.path.join(args.saved,name+'_kmerscore.txt')
+        jffile = os.path.join(tmpfolder,name+'.jf')
 
         cnsprobe = os.path.join(args.saved, name + '_probe.txt')
 
-        mindepth = os.path.join(args.saved, name + '_mindepth.bed')
+        mindepth = os.path.join(tmpfolder, name + '_mindepth.bed')
 
         if name in sampleinfor:
 
