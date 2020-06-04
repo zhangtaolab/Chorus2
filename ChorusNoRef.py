@@ -18,34 +18,34 @@ def main():
 
     tmpfolder = os.path.abspath(os.path.join('./tmp',args.saved))
 
-    if os.path.exists(tmpfolder):
-            tmpfolder = os.path.realpath(tmpfolder)
-
-            print("The output folder ",tmpfolder, " already exists.")
-            print('''
-                Press Y to use it for output files. Everything in this folder will be removed.
-                Press N and set -s/--saved to a different folder:
-                ''')
-
-            while True:
-
-                char = getch()
-
-                if char.lower() in ("y", "n"):
-
-                    print(char)
-
-                    if char.lower() == 'n':
-
-                        sys.exit(1)
-
-                    break
-
-    else:
-
-        tmpfolder = os.path.realpath(tmpfolder)
-
-        os.mkdir(tmpfolder)
+    # if os.path.exists(tmpfolder):
+    #         tmpfolder = os.path.realpath(tmpfolder)
+    #
+    #         print("The output folder ",tmpfolder, " already exists.")
+    #         print('''
+    #             Press Y to use it for output files. Everything in this folder will be removed.
+    #             Press N and set -s/--saved to a different folder:
+    #             ''')
+    #
+    #         while True:
+    #
+    #             char = getch()
+    #
+    #             if char.lower() in ("y", "n"):
+    #
+    #                 print(char)
+    #
+    #                 if char.lower() == 'n':
+    #
+    #                     sys.exit(1)
+    #
+    #                 break
+    #
+    # else:
+    #
+    #     tmpfolder = os.path.realpath(tmpfolder)
+    #
+    #     os.mkdir(tmpfolder)
 
 
 
