@@ -16,37 +16,6 @@ def main():
     # ?build bwa index
     bwaindexfile = os.path.basename(args.genome)
 
-    tmpfolder = os.path.abspath(os.path.join('./tmp',args.saved))
-
-    # if os.path.exists(tmpfolder):
-    #         tmpfolder = os.path.realpath(tmpfolder)
-    #
-    #         print("The output folder ",tmpfolder, " already exists.")
-    #         print('''
-    #             Press Y to use it for output files. Everything in this folder will be removed.
-    #             Press N and set -s/--saved to a different folder:
-    #             ''')
-    #
-    #         while True:
-    #
-    #             char = getch()
-    #
-    #             if char.lower() in ("y", "n"):
-    #
-    #                 print(char)
-    #
-    #                 if char.lower() == 'n':
-    #
-    #                     sys.exit(1)
-    #
-    #                 break
-    #
-    # else:
-    #
-    #     tmpfolder = os.path.realpath(tmpfolder)
-    #
-    #     os.mkdir(tmpfolder)
-
 
 
     bwatestindex = os.path.join(tmpfolder, bwaindexfile+'.sa')
@@ -627,6 +596,38 @@ def check_options(parser):
         os.mkdir(args.saved)
 
 
+    tmpfolder = os.path.abspath(os.path.join(args.tmp, args.saved))
+
+    if os.path.exists(tmpfolder):
+            tmpfolder = os.path.realpath(tmpfolder)
+
+            print("The output folder ",tmpfolder, " already exists.")
+            print('''
+                Press Y to use it for output files. Everything in this folder will be removed.
+                Press N and set --tmp to a different folder:
+                ''')
+
+            while True:
+
+                char = getch()
+
+                if char.lower() in ("y", "n"):
+
+                    print(char)
+
+                    if char.lower() == 'n':
+
+                        sys.exit(1)
+
+                    break
+
+    else:
+
+        tmpfolder = os.path.realpath(tmpfolder)
+
+        os.mkdir(tmpfolder)
+
+
     print("#"*40)
 
     print("bwa version:", args.bwa, bwaversion)
@@ -687,6 +688,9 @@ def get_options():
                         help='Fasta format genome file, should include all sequences from genome', required=True)
 
     parser.add_argument('-s', '--save', dest='saved', help='The output folder for saving results', default='noRefprobes')
+
+    parser.add_argument('--tmp', dest='tmp', help='The temporary fold for processing',
+                        default='tmp')
 
     parser.add_argument('-p', '--probe', dest='probe',
                         help='Original probe design by Chorus2',
