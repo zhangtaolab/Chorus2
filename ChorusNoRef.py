@@ -16,7 +16,7 @@ def main():
     # ?build bwa index
     bwaindexfile = os.path.basename(args.genome)
 
-
+    tmpfolder = args.tmp
 
     bwatestindex = os.path.join(tmpfolder, bwaindexfile+'.sa')
 
@@ -596,9 +596,12 @@ def check_options(parser):
         os.mkdir(args.saved)
 
 
-    tmpfolder = os.path.abspath(os.path.join(args.tmp, args.saved))
+    tmpfolder = os.path.abspath(os.path.join(args.saved, args.tmp))
+
+    print("tmp",args.tmp, tmpfolder)
 
     if os.path.exists(tmpfolder):
+
             tmpfolder = os.path.realpath(tmpfolder)
 
             print("The output folder ",tmpfolder, " already exists.")
@@ -624,6 +627,8 @@ def check_options(parser):
     else:
 
         tmpfolder = os.path.realpath(tmpfolder)
+
+        args.tmp = tmpfolder
 
         os.mkdir(tmpfolder)
 
@@ -690,7 +695,7 @@ def get_options():
     parser.add_argument('-s', '--save', dest='saved', help='The output folder for saving results', default='noRefprobes')
 
     parser.add_argument('--tmp', dest='tmp', help='The temporary fold for processing',
-                        default='tmp')
+                        default='./tmp')
 
     parser.add_argument('-p', '--probe', dest='probe',
                         help='Original probe design by Chorus2',
