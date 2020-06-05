@@ -595,10 +595,17 @@ def check_options(parser):
 
         os.mkdir(args.saved)
 
+    if args.tmp:
 
-    tmpfolder = os.path.abspath(os.path.join(args.saved, args.tmp))
+        tmpfolder = os.path.abspath(args.tmp)
+
+    else:
+
+        tmpfolder = os.path.abspath(os.path.join(args.saved, './tmp'))
 
     print("tmp",args.tmp, tmpfolder)
+
+    args.tmp = tmpfolder
 
     if os.path.exists(tmpfolder):
 
@@ -625,8 +632,6 @@ def check_options(parser):
                     break
 
     else:
-
-        tmpfolder = os.path.realpath(tmpfolder)
 
         args.tmp = tmpfolder
 
@@ -694,8 +699,7 @@ def get_options():
 
     parser.add_argument('-s', '--save', dest='saved', help='The output folder for saving results', default='noRefprobes')
 
-    parser.add_argument('--tmp', dest='tmp', help='The temporary fold for processing',
-                        default='./tmp')
+    parser.add_argument('--tmp', dest='tmp', help='The temporary fold for processing')
 
     parser.add_argument('-p', '--probe', dest='probe',
                         help='Original probe design by Chorus2',
