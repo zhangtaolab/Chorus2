@@ -76,7 +76,7 @@ def getconsensus(bcftoolspath, bcffile, chrom, start, end, seq, sample, strand='
     bcftoolspath = subprocesspath.subprocesspath(bcftoolspath)
     bcffile = subprocesspath.subprocesspath(bcffile)
     seqlen = str(len(seq))
-    pat = re.compile('[ATCG]{' + seqlen + '}')
+    pat = re.compile('[ATCG]{' + seqlen + ',}')
     if strand == '-':
         seq = revcom.revcom(seq)
     fastring = '\'>' + chrom + ':' + start + '-' + end + '\\n' + seq + '\''
