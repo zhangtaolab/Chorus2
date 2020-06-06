@@ -90,8 +90,8 @@ def getconsensus(bcftoolspath, bcffile, chrom, start, end, seq, sample, strand='
         for i in p.stdout:
             i = i.decode('utf-8').rstrip('\n')
             #         print(i)
-            if re.search(pat, i):
-                consensus = i
+            if pat.search(i):
+                consensus = pat.search(i)[0]
     except:
         print("warnning: ", bcfcon_command, " ##")
     #             print('c:',consensus)
