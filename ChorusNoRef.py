@@ -678,13 +678,14 @@ def getch():
 
 
 def get_options():
-    parser = argparse.ArgumentParser(description="Oligo FISH probe design for no reference genome.", prog='ChorusNoRef',
+    parser = argparse.ArgumentParser(description="Oligo FISH probe design for no reference genome. Please use Ubuntu.",
+                                     prog='ChorusNoRef',
                                      formatter_class=argparse.RawDescriptionHelpFormatter,
                                      epilog="Example:\n"
 
                                      )
 
-    parser.add_argument("--version", action='version', version='%(prog)s 2.1' )
+    parser.add_argument("--version", action='version', version='%(prog)s 2.1(beta)' )
 
     parser.add_argument('-j', '--jellyfish', dest='jellyfish', help='The path where Jellyfish software installed')
 
@@ -702,7 +703,7 @@ def get_options():
     parser.add_argument('--tmp', dest='tmp', help='The temporary fold for processing')
 
     parser.add_argument('-p', '--probe', dest='probe',
-                        help='Original probe design by Chorus2',
+                        help='Original probe design by ChorusNGSfilter',
                         required=True)
 
     parser.add_argument('-r1','--reads1',dest='reads1', required=True,
