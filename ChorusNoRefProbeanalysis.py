@@ -73,6 +73,9 @@ def main():
 
         cnsprobe = os.path.join(args.saved, name + '_probe.txt')
 
+        # new add indel
+        indelNprobe = os.path.join(args.saved, name + '_indel_probe.txt')
+
         mindepth = os.path.join(tmpfolder, name + '_mindepth.bed')
 
         if name in sampleinfor:
@@ -100,6 +103,10 @@ def main():
             sampleinfor[name]['cnsprobe'] = cnsprobe
 
             sampleinfor[name]['cnsprobeio'] = open(cnsprobe, 'w')
+
+            # new add indel
+            sampleinfor[name]['indelNprobelist'] = list()
+            sampleinfor[name]['indelNprobeio'] = open(indelNprobe, 'w')
 
             sampleinfor[name]['mindepth'] = mindepth
             """
@@ -180,9 +187,21 @@ def main():
         for res in bcfpool.imap_unordered(bcftools.probestrtoconsensus, bcfrunerlist):
 
             # print(res['probestr'], name, res['consensusprobe'], sep='\t', file=sampleinfor[name]['cnsprobeio'])
-            consensusprobelist.append(res['consensusprobe'])
-            # consensusprobelist.append(res)
-            reslist.append(res)
+
+            if len(res['consensusprobe']) != args.length:
+
+                sampleinfor[name]['indelNprobelist'].append(res)
+
+            elif 'N' in res['consensusprobe']:
+
+                continue
+
+            else:
+
+                consensusprobelist.append(res['consensusprobe'])
+                # consensusprobelist.append(res)
+                reslist.append(res)
+
 
         bcfpool.close()
 
@@ -207,7 +226,7 @@ def main():
 
         maxkmer = pd.Series(kmerscorelist).quantile(0.9)
 
-        minkmer = 3
+        minkmer = args.minkmer
 
         for consensusprobe in reslist:
 
@@ -229,6 +248,12 @@ def main():
         sampleinfor[name]['cnsprobeio'].close()
         # sampleinfor[name]['kmerscoreio'].close()
     # print(sampleinfor)
+
+        for res in sampleinfor[name]['indelNprobelist']:
+
+            print(res['probestr'], name, res['consensusprobe'], sep='\t', file=sampleinfor[name]['indelNprobeio'])
+
+        sampleinfor[name]['indelNprobeio'].close()
 
     probdict = dict()
 
@@ -696,6 +721,8 @@ def get_options():
 
     parser.add_argument('-t', '--threads', dest='threads', help='Number of threads or CPUs to use. (Default: 1)',
                         default=1, type=int)
+
+    parser.add_argument('--minkmer', default=3, type=int, dest='minkmer', help="probe min count for illumina reads")
 
     parser.add_argument('-l', '--length', dest='length', help='The probe length. (Default: 45)', default=45, type=int)
 

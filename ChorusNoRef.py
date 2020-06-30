@@ -26,21 +26,21 @@ def main():
 
 
     bwabuild = True
-
+    
     if os.path.isfile(bwatestindex):
-
-        bwabuild = False
-
+    
+            bwabuild = False
+    
     if bwabuild:
-
-        # build bwa index
-        bwa.bwaindex(args.bwa, args.genome, tmpfolder)
-
-        print("bwa index build finished ...")
-
+    
+            # build bwa index
+            bwa.bwaindex(args.bwa, args.genome, tmpfolder)
+    
+            print("bwa index build finished ...")
+    
     else:
-
-        print("Use", bwatestindex)
+    
+            print("Use", bwatestindex)
 
 
     sampleinfor = dict()
@@ -73,6 +73,9 @@ def main():
 
         cnsprobe = os.path.join(args.saved, name + '_probe.txt')
 
+        # new add indel
+        indelNprobe = os.path.join(args.saved, name + '_indel_probe.txt')
+
         mindepth = os.path.join(tmpfolder, name + '_mindepth.bed')
 
         if name in sampleinfor:
@@ -101,6 +104,10 @@ def main():
 
             sampleinfor[name]['cnsprobeio'] = open(cnsprobe, 'w')
 
+            # new add indel
+            sampleinfor[name]['indelNprobelist'] = list()
+            sampleinfor[name]['indelNprobeio'] = open(indelNprobe, 'w')
+
             sampleinfor[name]['mindepth'] = mindepth
 
             # run bwa mem
@@ -113,9 +120,10 @@ def main():
                           samplename=name,
                           threadnumber = args.threads
                          )
-
+            
             print("bwa mem", name, 'finished')
-
+            
+            
             # get min depth bed file
             bamdepth.bamdepthtobed(bamfile=bamfile, outbed=mindepth, mindepth=args.mindepth, minlength=200)
 
@@ -162,27 +170,6 @@ def main():
 
         for i in probe:
 
-            # (chrom, start, end, seq, score, strand) = str(i).rstrip().split("\t")
-            #
-            # if strand == '-':
-            #
-            #     seq = revcom.revcom(seq)
-            #
-            #     strand = '+'
-            #
-            # for name in sampleinfor:
-            #
-            #     consensusprobe = bcftools.getconsensus(bcftoolspath=args.bcftools,
-            #                                            bcffile=sampleinfor[name]['bcffile'],
-            #                                            chrom=chrom,
-            #                                            start=start,
-            #                                            end=end,
-            #                                            seq=seq,
-            #                                            sample=name
-            #                                            )
-            #
-            #     print(chrom, start, end, seq, consensusprobe, score, strand, sep='\t', file=sampleinfor[name]['cnsprobeio'])
-
             probestr = str(i).rstrip()
 
             bcfconsensusruner = bcftools.BcfConsensusRuner(probestr=probestr, bcftoolspath=args.bcftools,
@@ -200,9 +187,21 @@ def main():
         for res in bcfpool.imap_unordered(bcftools.probestrtoconsensus, bcfrunerlist):
 
             # print(res['probestr'], name, res['consensusprobe'], sep='\t', file=sampleinfor[name]['cnsprobeio'])
-            consensusprobelist.append(res['consensusprobe'])
-            # consensusprobelist.append(res)
-            reslist.append(res)
+
+            if len(res['consensusprobe']) != args.length:
+
+                sampleinfor[name]['indelNprobelist'].append(res)
+
+            elif 'N' in res['consensusprobe']:
+
+                continue
+
+            else:
+
+                consensusprobelist.append(res['consensusprobe'])
+                # consensusprobelist.append(res)
+                reslist.append(res)
+
 
         bcfpool.close()
 
@@ -227,7 +226,7 @@ def main():
 
         maxkmer = pd.Series(kmerscorelist).quantile(0.9)
 
-        minkmer = 3
+        minkmer = args.minkmer
 
         for consensusprobe in reslist:
 
@@ -249,6 +248,12 @@ def main():
         sampleinfor[name]['cnsprobeio'].close()
         # sampleinfor[name]['kmerscoreio'].close()
     # print(sampleinfor)
+
+        for res in sampleinfor[name]['indelNprobelist']:
+
+            print(res['probestr'], name, res['consensusprobe'], sep='\t', file=sampleinfor[name]['indelNprobeio'])
+
+        sampleinfor[name]['indelNprobeio'].close()
 
     probdict = dict()
 
@@ -678,14 +683,13 @@ def getch():
 
 
 def get_options():
-    parser = argparse.ArgumentParser(description="Oligo FISH probe design for no reference genome. Please use Ubuntu.",
-                                     prog='ChorusNoRef',
+    parser = argparse.ArgumentParser(description="Oligo FISH probe design for no reference genome.", prog='ChorusNoRef',
                                      formatter_class=argparse.RawDescriptionHelpFormatter,
                                      epilog="Example:\n"
 
                                      )
 
-    parser.add_argument("--version", action='version', version='%(prog)s 2.1(beta)' )
+    parser.add_argument("--version", action='version', version='%(prog)s 2.1' )
 
     parser.add_argument('-j', '--jellyfish', dest='jellyfish', help='The path where Jellyfish software installed')
 
@@ -703,7 +707,7 @@ def get_options():
     parser.add_argument('--tmp', dest='tmp', help='The temporary fold for processing')
 
     parser.add_argument('-p', '--probe', dest='probe',
-                        help='Original probe design by ChorusNGSfilter',
+                        help='Original probe design by Chorus2',
                         required=True)
 
     parser.add_argument('-r1','--reads1',dest='reads1', required=True,
@@ -717,6 +721,8 @@ def get_options():
 
     parser.add_argument('-t', '--threads', dest='threads', help='Number of threads or CPUs to use. (Default: 1)',
                         default=1, type=int)
+
+    parser.add_argument('--minkmer', default=3, type=int, dest='minkmer', help="probe min count for illumina reads")
 
     parser.add_argument('-l', '--length', dest='length', help='The probe length. (Default: 45)', default=45, type=int)
 

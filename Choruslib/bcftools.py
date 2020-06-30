@@ -75,7 +75,10 @@ def getconsensus(bcftoolspath, bcffile, chrom, start, end, seq, sample, strand='
     """
     bcftoolspath = subprocesspath.subprocesspath(bcftoolspath)
     bcffile = subprocesspath.subprocesspath(bcffile)
-    seqlen = str(len(seq))
+    mathlen = len(seq)-10
+    if mathlen < 10:
+        mathlen = len(seq)
+    seqlen = str(mathlen)
     pat = re.compile('[ATCG]{' + seqlen + ',}')
     if strand == '-':
         seq = revcom.revcom(seq)
