@@ -8,6 +8,41 @@ import time
 import signal
 
 
+def bwamem_paired(bwabin, samtoolsbin, reffile, outfile, inputfile1, inputfile2, samplename, threadnumber=1):
+    bwabin = subprocesspath.subprocesspath(bwabin)
+
+    samtoolsbin = subprocesspath.subprocesspath(samtoolsbin)
+
+    reffile = subprocesspath.subprocesspath(reffile)
+
+    inputfile = subprocesspath.subprocesspath(inputfile1)
+
+    inputfile = subprocesspath.subprocesspath(inputfile2)
+
+    outfile = subprocesspath.subprocesspath(outfile)
+
+    samplestr = '\'@RG\\tID:' + samplename + '\\tSM:' + samplename + '\\tLB:WGS\\tPL:Illumina\''
+
+    bwacmd = ' '.join(
+        [bwabin, 'mem', '-M', '-R', samplestr, '-t', str(threadnumber), reffile, inputfile1, inputfile2, '| ',
+         samtoolsbin, 'sort -@', str(threadnumber), '-o', outfile])
+
+    print(bwacmd)
+
+    runbwaalign = Popen(bwacmd, shell=True)
+
+    runbwaalign.communicate()
+
+    samidxcmd = ' '.join([samtoolsbin, 'index', outfile])
+
+    print(samidxcmd)
+
+    samidx = Popen(samidxcmd, shell=True)
+
+    samidx.communicate()
+
+    return True
+
 def testbwa(bwabin):
     """
 
@@ -37,6 +72,32 @@ def testbwa(bwabin):
 
     return testres
 
+def samtoolsversion(samtoolsbin):
+    """
+
+    :param samtoolsbin: bwa bin path
+    :return: string, version of samtools
+    """
+
+    samtoolscmd = [samtoolsbin]
+
+    samtoolsrun = Popen(samtoolscmd, stdout=PIPE, stderr=PIPE)
+
+    pat = re.compile('Version')
+
+    version = 'None'
+
+    for i in samtoolsrun.stderr.readlines():
+
+        i = i.decode('utf-8').rstrip('\n')
+
+        if re.search(pat, i):
+
+            version = i
+
+    samtoolsrun.communicate()
+
+    return version
 
 def bwaversion(bwabin):
     """
@@ -73,7 +134,7 @@ def bwaindex(bwabin, reffile, samplefolder):
     :param samplefolder: sample dir
     :return: no retrun
     """
-
+    print(bwabin, reffile, samplefolder)
     refbasename = os.path.basename(os.path.abspath(reffile))
 
     dscopy = os.path.join(samplefolder, refbasename)
@@ -84,7 +145,7 @@ def bwaindex(bwabin, reffile, samplefolder):
     bwabin = os.path.abspath(bwabin)
 
     bwacmd = [bwabin, 'index', refbasename]
-    # print(bwacmd)
+    print(bwacmd)
     runbwaindex = Popen(bwacmd, cwd=samplefolder)
 
     runbwaindex.communicate()
@@ -135,9 +196,9 @@ def samfilter(samfile, minas, maxxs):
 
     inio = open(samfile,'r')
 
-    aspat = re.compile('AS:i:(\d.)')
+    aspat = re.compile('AS:i:(\d*)')
 
-    xspat = re.compile('XS:i:(\d.)')
+    xspat = re.compile('XS:i:(\d*)')
 
     for i in inio.readlines():
 
@@ -258,9 +319,9 @@ def bwafilter(bwabin, reffile, inputfile, minas, maxxs ,threadnumber=1 ):
 
     print(bwacmd)
 
-    aspat = re.compile('AS:i:(\d.)')
+    aspat = re.compile('AS:i:(\d*)')
 
-    xspat = re.compile('XS:i:(\d.)')
+    xspat = re.compile('XS:i:(\d*)')
 
     runbwaalign = Popen(bwacmd, shell=True, stdout=PIPE)
 

@@ -294,10 +294,15 @@ def main():
 
     del jffilteredprobe
 
+    print("run bwafilter")
+    print("maxxs:", int(args.length*args.homology/100))
+
     bwafiltedpb = bwa.bwafilter(bwabin=args.bwa, reffile=bwaindex, inputfile=tmppbfa, minas=args.length,
                                 maxxs=int(args.length*args.homology/100), threadnumber=args.threads)
 
-    # print(bwafiltedpb)
+    print("bwafiltedpb len",len(bwafiltedpb))
+
+    print(bwafiltedpb[0:10])
 
     tmpbwaftlist = os.path.join(args.saved, os.path.basename(args.input)+'.bed')
 
@@ -422,6 +427,10 @@ def probefilter(nowpbcounter):
 
         # print(self.sequence, " not pass atcg")
         pass
+
+    elif dTm == -1:
+
+        keep = True
 
     else:
         if rPrimer:
@@ -574,13 +583,25 @@ def check_options(parser):
 
         sys.exit(1)
 
-    if args.dtm > 37 or args.dtm < 0:
-
+    if args.dtm > 37 or args.dtm < -1:
+    # dtm = -1 skip calculate dtm
         print("Please set dtm between 0 and 37.\n")
 
         parser.print_help()
 
         sys.exit(1)
+
+    if args.skipdtm == True:
+
+        args.dtm = -1
+
+        print("skip calculate dtm")
+
+    if args.length > 50:
+
+        args.dtm = -1
+
+        print("oligo length longer than 50nt, skip calculate dtm")
 
     if args.step < 1:
 
@@ -594,8 +615,11 @@ def check_options(parser):
     if os.path.exists(args.saved):
 
         if not args.docker:
-
-            print(args.saved, "exists. Everything in this folder will be remove. Press Y or N to continue: ")
+            print("The output folder ",args.saved, " already exists.")
+            print('''
+                Press Y to use it for output files. Everything in this folder will be removed.
+                Press N and set -s/--saved to a different folder:
+                ''')
 
             while True:
 
@@ -605,7 +629,7 @@ def check_options(parser):
 
                     print(char)
 
-                    if char == 'n':
+                    if char.lower() == 'n':
 
                         sys.exit(1)
 
@@ -636,6 +660,10 @@ def check_options(parser):
     print("homology:", args.homology)
 
     print("dtm:", args.dtm)
+
+    if args.dtm == -1:
+
+        print("Warning: skip calculate dtm.")
 
     print("#"*40)
 
@@ -677,7 +705,7 @@ def get_options():
                                             "          -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample"
                                      )
 
-    parser.add_argument('--version', action='version', version='%(prog)s 2.0')
+    parser.add_argument('--version', action='version', version='%(prog)s 2.1')
 
     parser.add_argument('-j', '--jellyfish', dest='jellyfish', help='The path where Jellyfish software installed')
 
@@ -699,6 +727,8 @@ def get_options():
     parser.add_argument('--homology', dest='homology', help='The maximum homology(%%) between target sequence and probe, range from 50 to 100. (Default: 75)', default=75, type=float)
 
     parser.add_argument('-d', '--dtm', dest='dtm', help='The minimum value of dTm (hybrid Tm - hairpin Tm), range from 0 to 37. (Default: 10)', default=10, type=float)
+
+    parser.add_argument('--skipdtm', dest='skipdtm', help='skip calculate dtm, for oligo longer than 50.', default=False, type=bool)
 
     parser.add_argument('--step', dest='step', help='The step length for k-mer searching in a sliding window, step length>=1. (Default: 5)', default=5, type=int)
 
