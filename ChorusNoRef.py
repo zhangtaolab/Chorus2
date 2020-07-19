@@ -707,14 +707,14 @@ def get_options():
     parser.add_argument('--tmp', dest='tmp', help='The temporary fold for processing')
 
     parser.add_argument('-p', '--probe', dest='probe',
-                        help='Original probe design by Chorus2',
+                        help='Original probe design by Chorus2 and filtered by ChorusNGSfilter',
                         required=True)
 
     parser.add_argument('-r1','--reads1',dest='reads1', required=True,
-                        help='read1 of species, example: For one Species only: species_R1.fq; for more than one species: sepecies1_R1.fq,sepecies2_R1.fq ')
+                        help='read1 of species, example: For one Species only: species_R1.fq; for more than one species: species1_R1.fq,species2_R1.fq ')
 
     parser.add_argument('-r2', '--reads2', dest='reads2', required=True,
-                        help='read1 of species, example: For one Species only: species_R2.fq; for more than one species: sepecies1_R2.fq,sepecies2_R2.fq ')
+                        help='read1 of species, example: For one Species only: species_R2.fq; for more than one species: species1_R2.fq,species2_R2.fq ')
 
     parser.add_argument('-n', '--names', dest='names', required=True,
                         help='species name(s), the order must same as r1, r2 ')
@@ -722,11 +722,11 @@ def get_options():
     parser.add_argument('-t', '--threads', dest='threads', help='Number of threads or CPUs to use. (Default: 1)',
                         default=1, type=int)
 
-    parser.add_argument('--minkmer', default=3, type=int, dest='minkmer', help="probe min count for illumina reads")
+    parser.add_argument('--minkmer', default=3, type=int, dest='minkmer', help="Probe min count for illumina reads")
 
     parser.add_argument('-l', '--length', dest='length', help='The probe length. (Default: 45)', default=45, type=int)
 
-    parser.add_argument('-d', '--mindepth', dest='mindepth', help='Mini depth covered by illumina sequence. (Default: 3)', default=3, type=int)
+    parser.add_argument('-d', '--mindepth', dest='mindepth', help='Minimum depth covered by illumina sequences. (Default: 3)', default=3, type=int)
 
     return parser
 

@@ -4,3 +4,4 @@ pyfasta
 primer3-py
 pandas
 pyBigWig
+pybedtools

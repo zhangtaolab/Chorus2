@@ -1,8 +1,8 @@
 Install
-=======
+========
 
-Docker
-------
+Docker (For Unix & Windows)
+----------------------------
 
 Install Docker_
 
@@ -29,26 +29,27 @@ Download Chorus2:
     -h, --help            show this help message and exit
     --version             show program's version number and exit
     -j JELLYFISH, --jellyfish JELLYFISH
-                            jellyfish path
+                          jellyfish path
     -b BWA, --bwa BWA     bwa path
     -g GENOME, --genome GENOME
-                            fasta format genome file
+                          fasta format genome file
     -i INPUT, --input INPUT
-                            fasta format input file
+                          fasta format input file
     -s SAVED, --save SAVED
-                            result saved folder
+                          result saved folder
     -p PRIMER, --primer PRIMER
-                            5' labeled R primer
+                          5' labeled R primer
     -t THREADS, --threads THREADS
-                            threads number or how may cpu you wanna use
+                          threads number or how may cpu you wanna use
     -l LENGTH, --length LENGTH
-                            probe length
+                          probe length
     --homology HOMOLOGY   homology, from 50 to 100
     -d DTM, --dtm DTM     dTm, from 0 to 37
     --docker DOCKER
 
-GUI (Test Version)
-*******************
+
+GUI version
+************
 
 Download Chorus2:
 
@@ -68,11 +69,15 @@ In your web browse, open a LXTerminal
 
 .. image:: _static/docker_GUI.jpg
 
-Manually Install
-----------------
 
-Ubuntu 14.04 (terminal)
-***********************
+Manually Install
+-----------------
+
+Linux (Ubuntu 18.04)
+*********************
+
+Manually install all packages
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Install dependent package
 
@@ -92,6 +97,7 @@ Install dependent package
         libboost-thread-dev \
         python3-pip \
         samtools \
+        bcftools \
         unzip \
         python \
         curl \
@@ -106,11 +112,11 @@ Install jellyfish
 
     $ cd /opt/software
 
-    $ wget https://github.com/gmarcais/Jellyfish/releases/download/v2.2.3/jellyfish-2.2.3.tar.gz
+    $ wget https://github.com/gmarcais/Jellyfish/releases/download/v2.3.0/jellyfish-2.3.0.tar.gz
 
-    $ tar zxvf jellyfish-2.2.3.tar.gz
+    $ tar zxvf jellyfish-2.3.0.tar.gz
 
-    $ mv jellyfish-2.2.3  jellyfish
+    $ mv jellyfish-2.3.0  jellyfish
 
     $ cd jellyfish
 
@@ -144,7 +150,8 @@ Install primer3-py
 
     $ python3 setup.py install
 
-Download Chorus2
+
+Download Chorus2 and test the terminal version
 
 .. code-block:: bash
 
@@ -152,172 +159,342 @@ Download Chorus2
 
     $ git clone https://github.com/zhangtaolab/Chorus2.git
 
-    $ python3 /opt/software/Chorus2/Chorus.py -h
+    $ pip install -r /opt/software/Chorus2/requirements.txt
 
-    usage: Chorus [-h] [--version] [-j JELLYFISH] [-b BWA] -g GENOME -i INPUT
-                  [-s SAVED] [-p PRIMER] [-t THREADS] [-l LENGTH]
-                  [--homology HOMOLOGY] [-d DTM] [--step STEP] [--docker DOCKER]
-                  [--ploidy PLOIDY]
+    $ python3 /opt/software/Chorus2/Chorus2.py -h
+    usage: Chorus2 [-h] [--version] [-j JELLYFISH] [-b BWA] -g GENOME -i INPUT
+                [-s SAVED] [-p PRIMER] [-t THREADS] [-l LENGTH]
+                [--homology HOMOLOGY] [-d DTM] [--skipdtm SKIPDTM]
+                [--step STEP] [--docker DOCKER] [--ploidy PLOIDY]
 
-    Chorus Software for Oligo FISH probe design
+    Chorus2 Software for Oligo FISH probe design
 
     optional arguments:
-      -h, --help            show this help message and exit
-      --version             show program's version number and exit
-      -j JELLYFISH, --jellyfish JELLYFISH
-                            The path where Jellyfish software installed
-      -b BWA, --bwa BWA     The path where BWA software installed
-      -g GENOME, --genome GENOME
-                            Fasta format genome file, should include all sequences
-                            from genome
-      -i INPUT, --input INPUT
-                            Fasta format input file, can be whole genome, a
-                            chromosome or one region from genome
-      -s SAVED, --save SAVED
-                            The output folder for saving results
-      -p PRIMER, --primer PRIMER
-                            A specific 5' labeled R primer for PCR reaction. For
-                            example: CGTGGTCGCGTCTCA. (Default is none)
-      -t THREADS, --threads THREADS
-                            Number of threads or CPUs to use. (Default: 1)
-      -l LENGTH, --length LENGTH
-                            The probe length. (Default: 45)
-      --homology HOMOLOGY   The maximum homology(%) between target sequence and
-                            probe, range from 50 to 100. (Default: 75)
-      -d DTM, --dtm DTM     The minimum value of dTm (hybrid Tm - hairpin Tm),
-                            range from 0 to 37. (Default: 10)
-      --step STEP           The step length for k-mer searching in a sliding
-                            window, step length>=1. (Default: 5)
-      --docker DOCKER       Only used in Docker version of Chorus
-      --ploidy PLOIDY       The ploidy of the given genome (test version).
-                            (Default: 2)
+    -h, --help            show this help message and exit
+    --version             show program's version number and exit
+    -j JELLYFISH, --jellyfish JELLYFISH
+                          The path where Jellyfish software installed
+    -b BWA, --bwa BWA     The path where BWA software installed
+    -g GENOME, --genome GENOME
+                          Fasta format genome file, should include all sequences
+                          from genome
+    -i INPUT, --input INPUT
+                          Fasta format input file, can be whole genome, a
+                          chromosome or one region from genome
+    -s SAVED, --save SAVED
+                          The output folder for saving results
+    -p PRIMER, --primer PRIMER
+                          A specific 5' labeled R primer for PCR reaction. For
+                          example: CGTGGTCGCGTCTCA. (Default is none)
+    -t THREADS, --threads THREADS
+                          Number of threads or CPUs to use. (Default: 1)
+    -l LENGTH, --length LENGTH
+                          The probe length. (Default: 45)
+    --homology HOMOLOGY   The maximum homology(%) between target sequence and
+                          probe, range from 50 to 100. (Default: 75)
+    -d DTM, --dtm DTM     The minimum value of dTm (hybrid Tm - hairpin Tm),
+                          range from 0 to 37. (Default: 10)
+    --skipdtm SKIPDTM     skip calculate dtm, for oligo longer than 50.
+    --step STEP           The step length for k-mer searching in a sliding
+                          window, step length>=1. (Default: 5)
+    --docker DOCKER       Only used in Docker version of Chorus
+    --ploidy PLOIDY       The ploidy of the given genome (test version).
+                          (Default: 2)
 
     Example:
-      python3 Chorus.py -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t 4 \
-                        -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample
-
-Anaconda (Terminal)
-********************************
-
-Download and Install Anaconda_ (python 3.x verison)
-
-.. _Anaconda: https://www.continuum.io/downloads
+    Chorus2 -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t 4 \
+            -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample
 
 
-Add bioconda
+Install GUI dependencies and test the GUI version
 
 .. code-block:: bash
 
-    conda config --add channels conda-forge
-    conda config --add channels defaults
-    conda config --add channels r
-    conda config --add channels bioconda
+    $ cd /opt/software/
+
+    $ pip install -r /opt/software/Chorus2/requirements_GUI.txt
+
+    $ python3 /opt/software/Chorus2/ChorusGUI.py
+
+.. image:: _static/ChorusGUI_ubuntu.png
 
 
-Install dependent package
+Install Chorus2 directly by Anaconda (**Recommended**)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: bash
+Download and Install Anaconda_ (python 3.x verison for linux)
 
-    conda install bwa
-    conda install jellyfish
-    pip install Cython 
-    pip install primer3-py
-    pip install pyfasta
-    pip install pyBigWig
-
-
-Ubuntu 14.04 (GUI) Test Version
-********************************
-
-Install dependent package
+.. _Anaconda: https://www.anaconda.com/products/individual
 
 .. code-block:: bash
 
-    $ apt-get update && apt-get install -y cython3  build-essential \
-        zlib1g-dev \
-        zlibc \
-        git \
-        libboost-dev \
-        autoconf \
-        libncursesw5-dev \
-        libncurses5 \
-        ncurses-dev \
-        libboost-thread-dev \
-        python3-pip \
-        samtools \
-        unzip \
-        python \
-        curl \
-        wget \
-        python3-pyqt5 \
-        libfreetype6-dev \
-        libxft-dev \
-        python3-matplotlib
+    $ cd ~
 
-    $ apt-get remove -y python3-matplotlib
+    $ wget https://repo.anaconda.com/archive/Anaconda3-xxxx-Linux-x86_64.sh
+
+    $ sh Anaconda3-xxxx-Linux-x86_64.sh
 
 
-Install jellyfish
+Add bioconda channel
 
 .. code-block:: bash
 
-    $ mkdir /opt/software
-
-    $ cd /opt/software
-
-    $ wget https://github.com/gmarcais/Jellyfish/releases/download/v2.2.3/jellyfish-2.2.3.tar.gz
-
-    $ tar zxvf jellyfish-2.2.3.tar.gz
-
-    $ mv jellyfish-2.2.3  jellyfish
-
-    $ cd jellyfish
-
-    $ ./configure && make && make install
+    $ conda config --add channels conda-forge
+    $ conda config --add channels defaults
+    $ conda config --add channels bioconda
 
 
-Install bwa
+Install Chorus2 by conda
 
 .. code-block:: bash
 
-    $ cd /opt/software
+    $ conda install chorus2
 
-    $ git clone https://github.com/lh3/bwa.git
+    $ Chorus2 -h
+    usage: Chorus2 [-h] [--version] [-j JELLYFISH] [-b BWA] -g GENOME -i INPUT
+                [-s SAVED] [-p PRIMER] [-t THREADS] [-l LENGTH]
+                [--homology HOMOLOGY] [-d DTM] [--skipdtm SKIPDTM]
+                [--step STEP] [--docker DOCKER] [--ploidy PLOIDY]
 
-    $ cd bwa
+    Chorus2 Software for Oligo FISH probe design
 
-    $ make
+    optional arguments:
+    -h, --help            show this help message and exit
+    --version             show program's version number and exit
+    -j JELLYFISH, --jellyfish JELLYFISH
+                          The path where Jellyfish software installed
+    -b BWA, --bwa BWA     The path where BWA software installed
+    -g GENOME, --genome GENOME
+                          Fasta format genome file, should include all sequences
+                          from genome
+    -i INPUT, --input INPUT
+                          Fasta format input file, can be whole genome, a
+                          chromosome or one region from genome
+    -s SAVED, --save SAVED
+                          The output folder for saving results
+    -p PRIMER, --primer PRIMER
+                          A specific 5' labeled R primer for PCR reaction. For
+                          example: CGTGGTCGCGTCTCA. (Default is none)
+    -t THREADS, --threads THREADS
+                          Number of threads or CPUs to use. (Default: 1)
+    -l LENGTH, --length LENGTH
+                          The probe length. (Default: 45)
+    --homology HOMOLOGY   The maximum homology(%) between target sequence and
+                          probe, range from 50 to 100. (Default: 75)
+    -d DTM, --dtm DTM     The minimum value of dTm (hybrid Tm - hairpin Tm),
+                          range from 0 to 37. (Default: 10)
+    --skipdtm SKIPDTM     skip calculate dtm, for oligo longer than 50.
+    --step STEP           The step length for k-mer searching in a sliding
+                          window, step length>=1. (Default: 5)
+    --docker DOCKER       Only used in Docker version of Chorus
+    --ploidy PLOIDY       The ploidy of the given genome (test version).
+                          (Default: 2)
+
+    Example:
+    Chorus2 -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t 4 \
+            -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample
 
 
-Install primer3-py
+Test the GUI version
+
+    $ ChorusGUI
+
+
+MacOS
+******
+
+Install Chorus2 directly by Anaconda (**Recommended**)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Download and Install Anaconda_ (python 3.x Command Line Installer for MacOS)
+
+.. _Anaconda: https://www.anaconda.com/products/individual
 
 .. code-block:: bash
 
-    $ cd /opt/software
+    $ cd ~
 
-    $ wget https://github.com/forrestzhang/primer3-py/archive/unicode.zip
+    $ wget https://repo.anaconda.com/archive/Anaconda3-xxxx-MacOSX-x86_64.sh
 
-    $ unzip unicode.zip
+    $ sh Anaconda3-xxxx-MacOSX-x86_64.sh
 
-    $ cd primer3-py-unicode
-
-    $ python3 setup.py install
-
-
-Install Python dependent package
+Add bioconda channel
 
 .. code-block:: bash
 
-    $ pip3 install numpy pyfasta matplotlib
+    $ conda config --add channels conda-forge
+    $ conda config --add channels defaults
+    $ conda config --add channels bioconda
 
-    $ pip3 install pandas
 
-Download and run ChorusGUI
+Install Chorus2 by conda
 
 .. code-block:: bash
 
-        $ cd /opt/software
+    $ conda install chorus2
 
-        $ git clone https://github.com/zhangtaolab/Chorus2.git
+    $ Chorus2 -h
+    usage: Chorus2 [-h] [--version] [-j JELLYFISH] [-b BWA] -g GENOME -i INPUT
+                [-s SAVED] [-p PRIMER] [-t THREADS] [-l LENGTH]
+                [--homology HOMOLOGY] [-d DTM] [--skipdtm SKIPDTM]
+                [--step STEP] [--docker DOCKER] [--ploidy PLOIDY]
 
-        $ python3 /opt/software/Chorus2/ChorusGUI.py
+    Chorus2 Software for Oligo FISH probe design
+
+    optional arguments:
+    -h, --help            show this help message and exit
+    --version             show program's version number and exit
+    -j JELLYFISH, --jellyfish JELLYFISH
+                          The path where Jellyfish software installed
+    -b BWA, --bwa BWA     The path where BWA software installed
+    -g GENOME, --genome GENOME
+                          Fasta format genome file, should include all sequences
+                          from genome
+    -i INPUT, --input INPUT
+                          Fasta format input file, can be whole genome, a
+                          chromosome or one region from genome
+    -s SAVED, --save SAVED
+                          The output folder for saving results
+    -p PRIMER, --primer PRIMER
+                          A specific 5' labeled R primer for PCR reaction. For
+                          example: CGTGGTCGCGTCTCA. (Default is none)
+    -t THREADS, --threads THREADS
+                          Number of threads or CPUs to use. (Default: 1)
+    -l LENGTH, --length LENGTH
+                          The probe length. (Default: 45)
+    --homology HOMOLOGY   The maximum homology(%) between target sequence and
+                          probe, range from 50 to 100. (Default: 75)
+    -d DTM, --dtm DTM     The minimum value of dTm (hybrid Tm - hairpin Tm),
+                          range from 0 to 37. (Default: 10)
+    --skipdtm SKIPDTM     skip calculate dtm, for oligo longer than 50.
+    --step STEP           The step length for k-mer searching in a sliding
+                          window, step length>=1. (Default: 5)
+    --docker DOCKER       Only used in Docker version of Chorus
+    --ploidy PLOIDY       The ploidy of the given genome (test version).
+                          (Default: 2)
+
+    Example:
+    Chorus2 -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t 4 \
+            -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample
+
+
+Test the GUI version
+
+    $ ChorusGUI
+
+
+Windows 10 (WSL)
+*****************
+
+Install WSL (Windows Subsystem for Linux)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Open *WSL* in **Control Panel - Programs and Features - Turn Windows features on or off**
+
+.. image:: _static/open_wsl.png
+
+
+After reboot computer, install *Ubuntu 18.04 LTS* in **Microsoft Store**
+
+.. image:: _static/install_ubuntu.png
+
+
+Launch **Ubuntu 18.04 LTS** App, Initiate the WSL (Ubuntu 18.04)
+
+.. code-block:: bash
+
+    $ sudo apt update
+
+    $ sudo apt upgrage
+
+    $ sudo apt install wget
+
+
+Install Chorus2 directly by Anaconda
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Download and Install Anaconda_ (python 3.x verison for linux)
+
+.. _Anaconda: https://www.anaconda.com/products/individual
+
+.. code-block:: bash
+
+    $ cd ~
+
+    $ wget https://repo.anaconda.com/archive/Anaconda3-xxxx-Linux-x86_64.sh
+
+    $ sh Anaconda3-xxxx-Linux-x86_64.sh
+
+Add bioconda channel
+
+.. code-block:: bash
+
+    $ conda config --add channels conda-forge
+    $ conda config --add channels defaults
+    $ conda config --add channels bioconda
+
+
+Install Chorus2 by conda
+
+.. code-block:: bash
+
+    $ conda install chorus2
+
+    $ Chorus2 -h
+    usage: Chorus2 [-h] [--version] [-j JELLYFISH] [-b BWA] -g GENOME -i INPUT
+                [-s SAVED] [-p PRIMER] [-t THREADS] [-l LENGTH]
+                [--homology HOMOLOGY] [-d DTM] [--skipdtm SKIPDTM]
+                [--step STEP] [--docker DOCKER] [--ploidy PLOIDY]
+
+    Chorus2 Software for Oligo FISH probe design
+
+    optional arguments:
+    -h, --help            show this help message and exit
+    --version             show program's version number and exit
+    -j JELLYFISH, --jellyfish JELLYFISH
+                          The path where Jellyfish software installed
+    -b BWA, --bwa BWA     The path where BWA software installed
+    -g GENOME, --genome GENOME
+                          Fasta format genome file, should include all sequences
+                          from genome
+    -i INPUT, --input INPUT
+                          Fasta format input file, can be whole genome, a
+                          chromosome or one region from genome
+    -s SAVED, --save SAVED
+                          The output folder for saving results
+    -p PRIMER, --primer PRIMER
+                          A specific 5' labeled R primer for PCR reaction. For
+                          example: CGTGGTCGCGTCTCA. (Default is none)
+    -t THREADS, --threads THREADS
+                          Number of threads or CPUs to use. (Default: 1)
+    -l LENGTH, --length LENGTH
+                          The probe length. (Default: 45)
+    --homology HOMOLOGY   The maximum homology(%) between target sequence and
+                          probe, range from 50 to 100. (Default: 75)
+    -d DTM, --dtm DTM     The minimum value of dTm (hybrid Tm - hairpin Tm),
+                          range from 0 to 37. (Default: 10)
+    --skipdtm SKIPDTM     skip calculate dtm, for oligo longer than 50.
+    --step STEP           The step length for k-mer searching in a sliding
+                          window, step length>=1. (Default: 5)
+    --docker DOCKER       Only used in Docker version of Chorus
+    --ploidy PLOIDY       The ploidy of the given genome (test version).
+                          (Default: 2)
+
+    Example:
+    Chorus2 -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t 4 \
+            -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample
+
+
+Install dependent software for GUI and test the GUI version
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Download and Install Xming_
+
+.. _Xming: https://sourceforge.net/projects/xming/
+
+Open **Xming** App and test the GUI version
+
+.. code-block:: bash
+
+    $ ChorusGUI
+
