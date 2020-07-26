@@ -1,6 +1,9 @@
 Description of functions in Chorus2
 ====================================
 
+Major functions
+################
+
 Chorus2
 --------
 
@@ -232,6 +235,9 @@ Usage
                   -r1 species1_R1.fq,species2_R1.fq -r2 species1_R2.fq,species2_R2.fq \
                   -n species1,species2 -t 4 --minkmer 0 -l 45 -d 3
 
+
+Miscellaneous functions
+########################
 
 ChorusDraftPrebuild
 --------------------

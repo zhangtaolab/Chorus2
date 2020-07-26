@@ -1,20 +1,21 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Tutorial &#8212; Chorus 1.0 documentation</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutorial &#8212; Chorus2 2.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Description of functions in Chorus2" href="functions.html" />
     <link rel="prev" title="Install" href="install.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -28,38 +29,24 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="tutorial">
 <h1>Tutorial<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
-<p>In this tutorial, we will build oligo porbe set for Arabidopsis genome.</p>
-<div class="section" id="using-docker-terminal-version">
-<h2>Using Docker Terminal Version<a class="headerlink" href="#using-docker-terminal-version" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="install">
-<h3>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h3>
-<p>Install <a class="reference external" href="https://docs.docker.com/engine/installation/">Docker</a></p>
-<p>Download Chorus:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ docker pull forrestzhang/docker-chorus
-</pre></div>
+<div class="section" id="use-chorus2-to-design-oligo-probes-for-plant-genome">
+<h2>Use Chorus2 to design oligo probes for plant genome<a class="headerlink" href="#use-chorus2-to-design-oligo-probes-for-plant-genome" title="Permalink to this headline">¶</a></h2>
+<p>In this tutorial, we will build oligo probe set for Arabidopsis genome.</p>
+<div class="section" id="install-chorus2">
+<h3>Install Chorus2<a class="headerlink" href="#install-chorus2" title="Permalink to this headline">¶</a></h3>
+<p>See install tutorial <a class="reference external" href="install.html">here</a></p>
 </div>
-<p>Parameter of Chorus:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>-g GENOME, --genome GENOME
-                        fasta format genome file
--i INPUT, --input INPUT
-                        fasta format input file
--s SAVED, --save SAVED
-                        result saved folder
--p PRIMER, --primer PRIMER
-                        5&#39; labeled R primer
--t THREADS, --threads THREADS
-                        threads number or how may cpu you wanna use
--l LENGTH, --length LENGTH
-                        probe length
---homology HOMOLOGY   homology, from 50 to 100
--d DTM, --dtm DTM     dTm, from 0 to 37
-</pre></div>
-</div>
-<p>Download Reference Genome file:</p>
+<div class="section" id="run-chorus2">
+<h3>Run Chorus2<a class="headerlink" href="#run-chorus2" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="run-chorus2-with-docker">
+<h4>Run Chorus2 with Docker<a class="headerlink" href="#run-chorus2-with-docker" title="Permalink to this headline">¶</a></h4>
+<p><strong>Download Reference Genome file</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wget https://www.arabidopsis.org/download_files/Genes/TAIR10_genome_release/TAIR10_chromosome_files/TAIR10_chr_all.fas
 
 $ docker run -v <span class="nv">$PWD</span>:/home/chorus -e <span class="nv">CHORUS_USER</span><span class="o">=</span><span class="nv">$USER</span> -e <span class="nv">CHORUS_UID</span><span class="o">=</span><span class="nv">$UID</span> <span class="se">\</span>
@@ -112,7 +99,12 @@ total <span class="m">1741428</span>
 -rw-r--r-- <span class="m">1</span> root root   <span class="m">78102510</span> Aug <span class="m">24</span> <span class="m">17</span>:17 TAIR10_chr_all.fas_17mer.jf
 </pre></div>
 </div>
-<p><em>TAIR10_chr_all.fas.bed</em> is the probe file.</p>
+<p><em>TAIR10_chr_all.fas.bed</em> is the probe file contained non-overlapped probes.</p>
+<p><em>TAIR10_chr_all.fas_all.bed</em> is the probe file contained all probes. This file can be used for ChorusNGSfilter.</p>
+<p><em>TAIR10_chr_all.fas.len</em> is the length info of the given genome chromosomes. This file can be imported into ChorusPBGUI for probe selection.</p>
+<p><em>TAIR10_chr_all.fas_17mer.jf</em> is the binary file created by jellyfish count using 17-mer.</p>
+<p><em>TAIR10_chr_all.fas_tmp_probe.fa</em> contains all candidate probe sequences filtered by jellyfish.</p>
+<p><em>.bwt, .pac, .ann, .amb, .sa</em> files are bwa index files.</p>
 <div class="highlight-log notranslate"><div class="highlight"><pre><span></span>$ more probes/TAIR10_chr_all.fas.bed
 1           52      96      TCCCTAAATCTTTAAATCCTACATCCATGAATCCCTAAATACCTA
 1           211     255     TTTGAGGTCAATACAAATCCTATTTCTTGTGGTTTTCTTTCCTTC
@@ -122,68 +114,71 @@ total <span class="m">1741428</span>
 1           551     595     TAGCATTTATTCTGAAGTTCTTCTGCTTGATGATTTTATCCTTAG
 </pre></div>
 </div>
-<p>There are four columns in a row, first column is chromosome name, second is oligo start site, third is oligo end site, last one is oligo probe sequence. You can use excel or text editor to open this file.</p>
+<p>There are four columns in each row, first column is chromosome name, second is oligo start site, third is oligo end site, the last one is oligo probe sequence. You can use excel or text editor to open this file.</p>
 </div>
-</div>
-<div class="section" id="using-manually-install-version">
-<h2>Using Manually Install Version<a class="headerlink" href="#using-manually-install-version" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="id1">
-<h3>Install<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><a class="reference external" href="install.html#ubuntu-14-04-terminal">Manually Install</a></li>
-</ul>
-</div>
-<div class="section" id="run-in-terminal">
-<h3>Run In Terminal<a class="headerlink" href="#run-in-terminal" title="Permalink to this headline">¶</a></h3>
-<p>Make a project folder</p>
+<div class="section" id="run-chorus2-in-terminal">
+<h4>Run Chorus2 in terminal<a class="headerlink" href="#run-chorus2-in-terminal" title="Permalink to this headline">¶</a></h4>
+<p><strong>Make a project folder</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> ~
 $ mkdir sampleproject
 $ <span class="nb">cd</span> sampleproject
 </pre></div>
 </div>
-<p>Download reference genome</p>
+<p><strong>Download reference genome</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wget https://www.arabidopsis.org/download_files/Genes/TAIR10_genome_release/TAIR10_chromosome_files/TAIR10_chr_all.fas
 </pre></div>
 </div>
-<p>Test chorus software</p>
-<div class="highlight-bassh notranslate"><div class="highlight"><pre><span></span>$ python3 /opt/software/Chorus/Chorus.py -h
+<p><strong>Test chorus2 software</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ Chorus2 -h
+usage: Chorus2 <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--version<span class="o">]</span> <span class="o">[</span>-j JELLYFISH<span class="o">]</span> <span class="o">[</span>-b BWA<span class="o">]</span> -g GENOME -i INPUT
+            <span class="o">[</span>-s SAVED<span class="o">]</span> <span class="o">[</span>-p PRIMER<span class="o">]</span> <span class="o">[</span>-t THREADS<span class="o">]</span> <span class="o">[</span>-l LENGTH<span class="o">]</span>
+            <span class="o">[</span>--homology HOMOLOGY<span class="o">]</span> <span class="o">[</span>-d DTM<span class="o">]</span> <span class="o">[</span>--skipdtm SKIPDTM<span class="o">]</span>
+            <span class="o">[</span>--step STEP<span class="o">]</span> <span class="o">[</span>--docker DOCKER<span class="o">]</span> <span class="o">[</span>--ploidy PLOIDY<span class="o">]</span>
 
-    usage: Chorus [-h] [--version] [-j JELLYFISH] [-b BWA] -g GENOME -i INPUT
-            [-s SAVED] [-p PRIMER] [-t THREADS] [-l LENGTH]
-            [--homology HOMOLOGY] [-d DTM] [--step STEP] [--docker DOCKER]
+Chorus2 Software <span class="k">for</span> Oligo FISH probe design
 
-    Chorus Software for Oligo FISH probe design
+optional arguments:
+-h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+--version             show program<span class="se">\&#39;</span>s version number and <span class="nb">exit</span>
+-j JELLYFISH, --jellyfish JELLYFISH
+                      The path where Jellyfish software installed
+-b BWA, --bwa BWA     The path where BWA software installed
+-g GENOME, --genome GENOME
+                      Fasta format genome file, should include all sequences
+                      from genome
+-i INPUT, --input INPUT
+                      Fasta format input file, can be whole genome, a
+                      chromosome or one region from genome
+-s SAVED, --save SAVED
+                      The output folder <span class="k">for</span> saving results
+-p PRIMER, --primer PRIMER
+                      A specific <span class="m">5</span><span class="se">\&#39;</span> labeled R primer <span class="k">for</span> PCR reaction. For
+                      example: CGTGGTCGCGTCTCA. <span class="o">(</span>Default is none<span class="o">)</span>
+-t THREADS, --threads THREADS
+                      Number of threads or CPUs to use. <span class="o">(</span>Default: <span class="m">1</span><span class="o">)</span>
+-l LENGTH, --length LENGTH
+                      The probe length. <span class="o">(</span>Default: <span class="m">45</span><span class="o">)</span>
+--homology HOMOLOGY   The maximum homology<span class="o">(</span>%<span class="o">)</span> between target sequence and
+                      probe, range from <span class="m">50</span> to <span class="m">100</span>. <span class="o">(</span>Default: <span class="m">75</span><span class="o">)</span>
+-d DTM, --dtm DTM     The minimum value of dTm <span class="o">(</span>hybrid Tm - hairpin Tm<span class="o">)</span>,
+                      range from <span class="m">0</span> to <span class="m">37</span>. <span class="o">(</span>Default: <span class="m">10</span><span class="o">)</span>
+--skipdtm SKIPDTM     skip calculate dtm, <span class="k">for</span> oligo longer than <span class="m">50</span>.
+--step STEP           The step length <span class="k">for</span> k-mer searching in a sliding
+                      window, step length&gt;<span class="o">=</span><span class="m">1</span>. <span class="o">(</span>Default: <span class="m">5</span><span class="o">)</span>
+--docker DOCKER       Only used in Docker version of Chorus
+--ploidy PLOIDY       The ploidy of the given genome <span class="o">(</span><span class="nb">test</span> version<span class="o">)</span>.
+                      <span class="o">(</span>Default: <span class="m">2</span><span class="o">)</span>
 
-    optional arguments:
-    -h, --help            show this help message and exit
-    --version             show program&#39;s version number and exit
-    -j JELLYFISH, --jellyfish JELLYFISH
-                            jellyfish path
-    -b BWA, --bwa BWA     bwa path
-    -g GENOME, --genome GENOME
-                            fasta format genome file
-    -i INPUT, --input INPUT
-                            fasta format input file
-    -s SAVED, --save SAVED
-                            result saved folder
-    -p PRIMER, --primer PRIMER
-                            5&#39; labeled R primer
-    -t THREADS, --threads THREADS
-                            threads number or how may cpu you wanna use
-    -l LENGTH, --length LENGTH
-                            probe length
-    --homology HOMOLOGY   homology, from 50 to 100
-    -d DTM, --dtm DTM     dTm, from 0 to 37
-    --step STEP           step length, min=1
-    --docker DOCKER
+Example:
+Chorus2 -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t <span class="m">4</span> <span class="se">\</span>
+        -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample
 </pre></div>
 </div>
-<p>Run chorus software</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ python3 /opt/software/Chorus/Chorus.py -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t <span class="m">12</span> <span class="se">\</span>
-  -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample
+<p><strong>Run chorus2 software</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ Chorus2 -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t <span class="m">12</span>
 </pre></div>
 </div>
-<p>When job finish, the oligo probes will output to ‘sample’ folder</p>
+<p>When job finish, the oligo probes will output to ‘probes’ folder (Default, can be changed using -s)</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> sample
 $ ls -lt *
 
@@ -201,7 +196,12 @@ $ ls -lt *
     -rw-r--r-- <span class="m">1</span> root root   <span class="m">78102510</span> Aug <span class="m">24</span> <span class="m">17</span>:17 TAIR10_chr_all.fas_17mer.jf
 </pre></div>
 </div>
-<p><em>TAIR10_chr_all.fas.bed</em> is the probe file.</p>
+<p><em>TAIR10_chr_all.fas.bed</em> is the probe file contained non-overlapped probes.</p>
+<p><em>TAIR10_chr_all.fas_all.bed</em> is the probe file contained all probes. This file can be used for ChorusNGSfilter.</p>
+<p><em>TAIR10_chr_all.fas.len</em> is the length info of the given genome chromosomes. This file can be imported into ChorusPBGUI for probe selection.</p>
+<p><em>TAIR10_chr_all.fas_17mer.jf</em> is the binary file created by jellyfish count using 17-mer.</p>
+<p><em>TAIR10_chr_all.fas_tmp_probe.fa</em> contains all candidate probe sequences filtered by jellyfish.</p>
+<p><em>.bwt, .pac, .ann, .amb, .sa</em> files are bwa index files.</p>
 <div class="highlight-log notranslate"><div class="highlight"><pre><span></span>$ more probes/TAIR10_chr_all.fas.bed
 1           52      96      TCCCTAAATCTTTAAATCCTACATCCATGAATCCCTAAATACCTA
 1           211     255     TTTGAGGTCAATACAAATCCTATTTCTTGTGGTTTTCTTTCCTTC
@@ -211,59 +211,317 @@ $ ls -lt *
 1           551     595     TAGCATTTATTCTGAAGTTCTTCTGCTTGATGATTTTATCCTTAG
 </pre></div>
 </div>
-<p>There are four columns in a row, first column is chromosome name, second is oligo start site, third is oligo end site, last one is oligo probe sequence. You can use excel or text editor to open this file.</p>
+<p>There are four columns in each row, first column is chromosome name, second is oligo start site, third is oligo end site, the last one is oligo probe sequence. You can use excel or text editor to open this file.</p>
+<p><strong>Further filter using ChorusNGSfilter</strong></p>
+<p>To further filter putative repetitive sequences, a kmer-based method can be performed to detect repeats by running ChorusNGSfilter.
+Before running ChorusNGSfilter, a set of whole-genome shotgun sequencing data is required. Here we download the shotgun reads of Arabidopsis with the accession number SRR5658649.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR565/009/SRR5658649/SRR5658649_1.fastq.gz
+$ wget -c ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR565/009/SRR5658649/SRR5658649_2.fastq.gz
+
+$ ChorusNGSfilter -i SRR5658649_1.fq.gz,SRR5658649_2.fq.gz -z gz <span class="se">\</span>
+                  -g TAIR10_chr_all.fas -t <span class="m">12</span> <span class="se">\</span>
+                  -p probes/TAIR10_chr_all.fas_all.bed -o probes/TAIR10_chr_all_SRR5658649.bed
+</pre></div>
+</div>
+<p>After running NGS filtering, three files (*.jf, *.bw, *.bed) will output to working directory.</p>
+<p><em>TAIR10_chr_all_SRR5658649.bed.jf</em> is the binary file created by jellyfish count using given k-mer (Default is 17).</p>
+<p><em>TAIR10_chr_all_SRR5658649.bed.bw</em> is a bigwig file contained all score infomation generated from NGS library.</p>
+<p><em>TAIR10_chr_all_SRR5658649.bed</em> is the the probe file contained all probes as well as k-mer score and strand. This file should be further selected by ChorusNGSselect.</p>
+<div class="highlight-log notranslate"><div class="highlight"><pre><span></span>$ more probes/TAIR10_chr_all_SRR5658649.bed
+1   12      56      AAACCCTAAACCCTAAACCTCTGAATCCTTAATCCCTAAATCCCT   455128  +
+1   18      62      TAAACCCTAAACCTCTGAATCCTTAATCCCTAAATCCCTAAATCT   346         +
+1   24      68      CTAAACCTCTGAATCCTTAATCCCTAAATCCCTAAATCTTTAAAT   343         +
+1   36      80      ATCCTTAATCCCTAAATCCCTAAATCTTTAAATCCTACATCCATG   319         +
+1   42      86      AATCCCTAAATCCCTAAATCTTTAAATCCTACATCCATGAATCCC   315         +
+1   48      92      TAAATCCCTAAATCTTTAAATCCTACATCCATGAATCCCTAAATA   294         +
+</pre></div>
+</div>
+<p>There are six columns in each row, first four columns are the same as TAIR10_chr_all.fas_all.bed. The fifth column is the k-mer score, last column is target strand of probes.</p>
+<p><strong>Automatic probe selection using ChorusNGSselect</strong></p>
+<p>Probes should be filtered by kmer score, the process can be done by ChorusNGSselect.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ChorusNGSselect -i probes/TAIR10_chr_all_SRR5658649.bed <span class="se">\</span>
+                  -o probes/TAIR10_chr_all_SRR5658649_filter.bed
+</pre></div>
+</div>
+<p>ChorusNGSselect will generate a final filtered probe file, it looks this:</p>
+<div class="highlight-log notranslate"><div class="highlight"><pre><span></span>$ more probes/TAIR10_chr_all_SRR5658649_filter.bed
+1    36      80      ATCCTTAATCCCTAAATCCCTAAATCTTTAAATCCTACATCCATG   319     +
+1    66      110     CGGGTTTAGGGAATTAGGTATTTAGGGATTCATGGATGTAGGATT   221     -
+1    215     259     AGGTCAATACAAATCCTATTTCTTGTGGTTTTCTTTCCTTCACTT   293     +
+1    245     289     ATAACAAATGAAGATAAACCATCCATAGCTAAGTGAAGGAAAGAA   291     -
+1    347     391     CTTAGGGTTGGTTTATCTCAAGAATCTTATTAATTGTTTGGACTG   237     +
+1    425     469     TTTTCCCACAAAAGATAAATTGATAGAACAAACATTTCCACAAAG   360     -
+</pre></div>
+</div>
+<p>The final probes can be synthesized directly for oligo-FISH or imported into ChorusPBGUI for further selection.</p>
+</div>
+<div class="section" id="run-chorus2-with-gui">
+<h4>Run Chorus2 with GUI<a class="headerlink" href="#run-chorus2-with-gui" title="Permalink to this headline">¶</a></h4>
+<p><strong>Make a project folder</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> ~
+$ mkdir sampleproject
+$ <span class="nb">cd</span> sampleproject
+</pre></div>
+</div>
+<p><strong>Download reference genome</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wget https://www.arabidopsis.org/download_files/Genes/TAIR10_genome_release/TAIR10_chromosome_files/TAIR10_chr_all.fas
+</pre></div>
+</div>
+<p><strong>Run ChorusGUI</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ChorusGUI
+</pre></div>
+</div>
+<p>Set your own parameters and click Run to start the design process.</p>
+<p>When job finish, the oligo probes will output to Sample Folder where you set.</p>
+<p><strong>Further filter using ChorusNGSfilter</strong></p>
+<p>The same process as “<strong>Run Chorus2 in terminal</strong>”</p>
+<p><strong>Automatic probe selection using ChorusNGSselect</strong></p>
+<p>The same process as “<strong>Run Chorus2 in terminal</strong>”</p>
+<p><strong>Run ChorusPBGUI</strong></p>
+<p>After filtering the probes, users can select suitable number of probes in specific regions
+for their FISH experiments using ChorusPBGUI easily.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ChorusPBGUI
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="use-chorushomo-to-design-oligo-probes-for-close-related-species">
+<h2>Use ChorusHomo to design oligo probes for close related species<a class="headerlink" href="#use-chorushomo-to-design-oligo-probes-for-close-related-species" title="Permalink to this headline">¶</a></h2>
+<p>In this tutorial, we will design oligo probes for potato genome and detect conserved oligos
+in its close related species, tomato.</p>
+<div class="section" id="run-chorushomo">
+<h3>Run ChorusHomo<a class="headerlink" href="#run-chorushomo" title="Permalink to this headline">¶</a></h3>
+<p><strong>Make a project folder</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> ~
+$ mkdir sampleproject
+$ <span class="nb">cd</span> sampleproject
+</pre></div>
+</div>
+<p><strong>Download Reference Genome file</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wget http://solanaceae.plantbiology.msu.edu/data/potato_dm_v404_all_pm_un.fasta.zip
+$ unzip potato_dm_v404_all_pm_un.fasta.zip
+$ wget ftp://ftp.solgenomics.net/tomato_genome/assembly/build_3.00/S_lycopersicum_chromosomes.3.00.fa
+</pre></div>
+</div>
+<p><strong>Run Chorus2 to design probes in source species</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ Chorus2 -i potato_dm_v404_all_pm_un.fasta -g potato_dm_v404_all_pm_un.fasta -t <span class="m">12</span> -s DM404
+</pre></div>
+</div>
+<p><strong>Run ChorusHomo to design probes for close related species</strong></p>
+<p>This step requires more memory than Chorus2, thus set the threads smaller will be safer.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ChorusHomo -ga potato_dm_v404_all_pm_un.fasta -gb S_lycopersicum_chromosomes.3.00.fa <span class="se">\</span>
+             -i DM404/potato_dm_v404_all_pm_un.fasta_all.bed -t <span class="m">8</span>
+</pre></div>
+</div>
+<p><strong>Check the designed probes</strong></p>
+<p>Output files will be saved to &quot;probes&quot; folder. The final file <em>potato_dm_v404_all_pm_un.fasta.homo.csv</em>
+contains the conserved probes between potato and tomato genome.</p>
+<p>The csv file contains 10 data per line:</p>
+<div class="highlight-log notranslate"><div class="highlight"><pre><span></span>$ head probes/potato_dm_v404_all_pm_un.fasta.homo.csv
+index,probe_seq,genomeA_chr,genomeA_start,genomeA_end,genomeA_identity,genomeB_chr,genomeB_start,genomeB_end,genomeB_identity
+1,ATTTTCCATGGACCTCATTAAGATTAGCTATTGAACCAGTTACCC,chr01,97858,97902,0.99,SL3.0ch07,2272165,2272211,0.70
+2,ACAGCCAAATCGTCCCATATTCAAGGATAAACGACCCACGAATCA,chr01,103008,103052,0.99,SL3.0ch07,59525112,59525156,0.80
+3,ATCTATATCTACTACACCAGAATATTCATACACAAATAAATTACT,chr01,127095,127139,0.99,SL3.0ch06,8431503,8431548,0.83
+4,ACTGGAAGTAATATTTTGTCACAGGAATAATTCGGTAAATCTGAG,chr01,127815,127859,0.99,SL3.0ch01,27866488,27866533,0.85
+5,AGGATGAAACCGTATTCCAACCTTGCTTTTCCTTTATTGATTAAT,chr01,133524,133568,0.99,SL3.0ch10,9302271,9302317,0.79
+6,AAGCAGATATATCGTTCATCATACTTTATTTACATGGGGAAACAA,chr01,133859,133903,0.99,SL3.0ch10,39942300,39942345,0.78
+7,TTTCTTGTGCATATTTCTAAATTGTACTGTGCAAAACTTTTCCCT,chr01,134020,134064,0.99,SL3.0ch00,85946,85991,0.83
+8,AAATGATTTGCTCTTGACTGTACGTATGCCTGCCGTCTTCGTTGA,chr01,134136,134180,0.99,SL3.0ch01,63698401,63698446,0.74
+9,CCTCAAGCTTACCTACAATTAGCATAGGCAGAGTTACAAGTGGAA,chr01,134190,134234,0.99,SL3.0ch01,27863901,27863944,0.91
+</pre></div>
+</div>
+<p>Column 1 is index, column 2 is probe sequence, column 3-5 are probe chromosome/start/end site in genomeA (source),
+column 6 is the identity of probe in genomeA, column 7-9 are probe chromosome/start/end site in genomeB (target),
+column 10 is the identity of probe in genomeB.</p>
+<p>Users can select high conserved probes (for example, genomeB_identity &gt;= 0.90) for FISH experiments in close related species.</p>
+</div>
+</div>
+<div class="section" id="use-chorusnoref-to-design-oligo-probes-without-a-reference-genome">
+<h2>Use ChorusNoRef to design oligo probes without a reference genome<a class="headerlink" href="#use-chorusnoref-to-design-oligo-probes-without-a-reference-genome" title="Permalink to this headline">¶</a></h2>
+<p>In this tutorial, we will design oligo probes for two wild potato species, <em>S. etuberosum</em> and <em>S. jamesii</em>,
+the two species do not have reference genomes.</p>
+<div class="section" id="run-chorusnoref">
+<h3>Run ChorusNoRef<a class="headerlink" href="#run-chorusnoref" title="Permalink to this headline">¶</a></h3>
+<p><strong>Make a project folder</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> ~
+$ mkdir sampleproject
+$ <span class="nb">cd</span> sampleproject
+</pre></div>
+</div>
+<p><strong>Download Genome file of close related species</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wget http://solanaceae.plantbiology.msu.edu/data/potato_dm_v404_all_pm_un.fasta.zip
+$ unzip potato_dm_v404_all_pm_un.fasta.zip
+</pre></div>
+</div>
+<p><strong>Download shotgun sequences of all species (at least 5x reads)</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR534/006/SRR5349606/SRR5349606_1.fastq.gz
+$ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR534/006/SRR5349606/SRR5349606_2.fastq.gz
+$ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR534/003/SRR5349573/SRR5349573_1.fastq.gz
+$ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR534/003/SRR5349573/SRR5349573_2.fastq.gz
+$ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR534/004/SRR5349574/SRR5349574_1.fastq.gz
+$ wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR534/004/SRR5349574/SRR5349574_2.fastq.gz
+</pre></div>
+</div>
+<p>SRR5349606 is from <em>S. tuberosum</em> (DM404), SRR5349573 is from <em>S. etuberosum</em>, SRR5349574 is from <em>S. jamesii</em>.</p>
+<p><strong>Run Chorus2, ChorusNGSfilter and ChorusNGSselect to design probes in related species</strong></p>
+<p>Run Chorus2</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ Chorus2 -i potato_dm_v404_all_pm_un.fasta -g potato_dm_v404_all_pm_un.fasta -t <span class="m">12</span>
+</pre></div>
+</div>
+<p>Run ChorusNGSfilter</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ChorusNGSfilter -g potato_dm_v404_all_pm_un.fasta -i SRR5349606_1.fastq.gz,SRR5349606_2.fastq.gz -t <span class="m">12</span> <span class="se">\</span>
+                  -p probes/potato_dm_v404_all_pm_un.fasta_all.bed -o potato_dm_v404_all_pm_un.fasta_kmer.bed
+</pre></div>
+</div>
+<p>Run ChorusNGSselect</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ChorusNGSselect -i potato_dm_v404_all_pm_un.fasta_kmer.bed -o potato_dm_v404_all_pm_un.fasta_kmerfiltered.bed
+</pre></div>
+</div>
+<p><strong>Run ChorusNoRef to design probes in target species</strong></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ChorusNoRef -g potato_dm_v404_all_pm_un.fasta -p potato_dm_v404_all_pm_un.fasta_kmerfiltered.bed <span class="se">\</span>
+              -r1 SRR5349573_1.fastq.gz,SRR5349574_1.fastq.gz -r2 SRR5349573_2.fastq.gz,SRR5349574_2.fastq.gz <span class="se">\</span>
+              -n etuberosum,jamesii -t <span class="m">12</span>
+</pre></div>
+</div>
+<p><strong>Check the designed probes</strong></p>
+<p>Output files will be saved to &quot;noRefprobes&quot; folder. 5 files generated.</p>
+<div class="highlight-log notranslate"><div class="highlight"><pre><span></span>$ ls -lh noRefprobes
+-rw-rw-r-- 1 liu liu 5.2M 6月  28 17:14 etuberosum_indel_probe.txt
+-rw-rw-r-- 1 liu liu 104M 6月  28 17:14 etuberosum_jamesii_cns_probe.csv
+-rw-rw-r-- 1 liu liu  62M 6月  28 17:14 etuberosum_probe.txt
+-rw-rw-r-- 1 liu liu 5.2M 6月  28 17:14 jamesii_indel_probe.txt
+-rw-rw-r-- 1 liu liu  62M 6月  28 17:14 jamesii_probe.txt
+drwxrwxr-x 2 liu liu 4.0K 6月  28 16:25 tmp
+</pre></div>
+</div>
+<p><em>etuberosum_probe.txt</em> and <em>jamesii_probe.txt</em> are probes with SNPs or identical compared to DM.
+<em>etuberosum_indel_probe.txt</em> and <em>jamesii_indel_probe.txt</em> are probes with indels compared to DM.
+<em>etuberosum_jamesii_cns_probe.csv</em> is consensus probes among three species after quality filter.</p>
+<p>For probes with SNPs:</p>
+<div class="highlight-log notranslate"><div class="highlight"><pre><span></span>$ head -n 3 etuberosum_probe.txt
+chr00   130544  130588  AGATTTTGCCCATTCTCATGACGCTTTTGTGATTTCAAAACTTTG   366     +       AGATTTAGCTCATTTTCATGGCGATTTTGTGATTTCAAGACTTTG   4
+chr00   129321  129365  AATACTATTAGATGATGACTAAGAGTAATGCTAGTGTATATAAAT   262     -       CTTTATATACACTAGCATTACTCTTAGTCATCATCTAATATTATT   3
+chr00   174138  174182  TTATAGTTGTCTAGGATGGAAGGGTTCTTGATTCACTGGTGTTGA   341     -       TCAACACTAGCGAATCAAGAACCCTTCCATCCTAGACAACTATAA   2
+</pre></div>
+</div>
+<p>column 1-3 is location of this probe base on reference genome, column 4 is probe from reference genome, column 5 is kmer score,
+column 6 is strand, column 7 is probe for <em>S. etuberosum</em>, column 8 is how many copy can be found in etuberosum illumina reads.</p>
+<p>For probes with indels:</p>
+<div class="highlight-log notranslate"><div class="highlight"><pre><span></span>$ head -n 3 etuberosum_probe.txt
+chr00   298161  298205  TGATGAAGGTGAAAGTAGCATAGATCATGGGGAGTTGTTTGGATT   456     +       etuberosum      TGATGAAGGTGAAAGTAGCATAGTGCATAGATCATGGGGAGTTGTTTGGATT
+chr00   298247  298291  GAATGATGAGTCAATCTGATAATTCATAGAATCAAATTTGTATGA   281     +       etuberosum      GAGTGATGAGTCAATCCATAAAGGCACCTGATAATTCATAGAATCAAATTTGTATTA
+chr00   298193  298237  TCTTTAATTTACACCATAAAGTTTACTCACAAAATCCAAACAACT   495     -       etuberosum      AGTTGTTTGGATTTTGTGAAGAGAGCAGTAAACTTTATGGTGTAAATAAAAGA
+</pre></div>
+</div>
+<p>column 1-3 is location of this probe based on reference genome, column 4 is probe from reference genome, column 5 is kmer score,
+column 6 is strand, column 7 is sample name, column 8 is probe for <em>S. etuberosum</em>.</p>
+<p>For consensus probes:</p>
+<div class="highlight-log notranslate"><div class="highlight"><pre><span></span>$ head -n 3 etuberosum_jamesii_cns_probe.csv
+chrom,start,end,refseq,etuberosum,jamesii,consensusprobe,consensusscore,consensussite,consensusdiff
+chr00,130544,130588,AGATTTTGCCCATTCTCATGACGCTTTTGTGATTTCAAAACTTTG,AGATTTAGCTCATTTTCATGGCGATTTTGTGATTTCAAGACTTTG,AGATTTAACCCATTTTCATGGCGCTTTTGTAATTTCAAGACTTTG,
+AGATTTAGCCCATTTTCATGGCGCTTTTGTGATTTCAAGACTTTG,0.9407407407407408,37,8
+chr00,129321,129365,AATACTATTAGATGATGACTAAGAGTAATGCTAGTGTATATAAAT,CTTTATATACACTAGCATTACTCTTAGTCATCATCTAATATTATT,CTTTATATACACTAGCATTACTCTTAGTCATCATCTAATATTGCT,
+CTTTATATACACTAGCATTACTCTTAGTCATCATCTAATATTAAT,0.7407407407407407,11,35
+</pre></div>
+</div>
+<p>column 1-3 is location of probe based on reference genome, column 4-6 are probes in DM, etuberosum and jamesii, respectively.
+consensusprobe means the consensus probe among three species.
+consensusscore is calculated with fomula:</p>
+<blockquote>
+<div><p>(probe length * number of species - number of difference) / (probe length * number of species)</p>
+</div></blockquote>
+<p>Consensussite means all identical nt in cns probe.
+consensusdiff means how many nt different compare with cns probe.</p>
+</div>
+</div>
+<div class="section" id="video-tutorials">
+<h2>Video Tutorials<a class="headerlink" href="#video-tutorials" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="youtube-playlist">
+<h3>Youtube Playlist<a class="headerlink" href="#youtube-playlist" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Playlist: <a class="reference external" href="https://www.youtube.com/playlist?list=PLo8q8tqFX5J27OsuKYFpd-gOtl8Qgf70X">https://www.youtube.com/playlist?list=PLo8q8tqFX5J27OsuKYFpd-gOtl8Qgf70X</a></p>
+</div></blockquote>
+</div>
+<div class="section" id="bilibili-playlist">
+<h3>Bilibili Playlist<a class="headerlink" href="#bilibili-playlist" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><p>Playlist: <a class="reference external" href="https://www.bilibili.com/video/BV1W54y1S7qS/">https://www.bilibili.com/video/BV1W54y1S7qS/</a></p>
+</div></blockquote>
 </div>
 </div>
 </div>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Tutorial</a><ul>
-<li><a class="reference internal" href="#using-docker-terminal-version">Using Docker Terminal Version</a><ul>
-<li><a class="reference internal" href="#install">Install</a></li>
+<h1 class="logo"><a href="index.html">Chorus2</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Install</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#use-chorus2-to-design-oligo-probes-for-plant-genome">Use Chorus2 to design oligo probes for plant genome</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#install-chorus2">Install Chorus2</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#run-chorus2">Run Chorus2</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#using-manually-install-version">Using Manually Install Version</a><ul>
-<li><a class="reference internal" href="#id1">Install</a></li>
-<li><a class="reference internal" href="#run-in-terminal">Run In Terminal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-chorushomo-to-design-oligo-probes-for-close-related-species">Use ChorusHomo to design oligo probes for close related species</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#run-chorushomo">Run ChorusHomo</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#use-chorusnoref-to-design-oligo-probes-without-a-reference-genome">Use ChorusNoRef to design oligo probes without a reference genome</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#run-chorusnoref">Run ChorusNoRef</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#video-tutorials">Video Tutorials</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#youtube-playlist">Youtube Playlist</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bilibili-playlist">Bilibili Playlist</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html">Description of functions in Chorus2</a></li>
 </ul>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="install.html" title="previous chapter">Install</a></li>
+      <li>Next: <a href="functions.html" title="next chapter">Description of functions in Chorus2</a></li>
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/tutorial.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -272,8 +530,8 @@ $ ls -lt *
       &copy;2018, Tao Zhang.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/tutorial.rst.txt"
