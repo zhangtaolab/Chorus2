@@ -13,6 +13,7 @@ Contents:
 
    install
    tutorial
+   functions
 
 Indices and tables
 ==================
@@ -21,8 +22,10 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 * `Jiming Jiang's Lab`_
+* `ZhangTaoLab`_
 * taozhang.org_
 
 .. _taozhang.org: http://taozhang.org
+.. _ZhangTaoLab: http://zhangtaolab.org/
 .. _`Jiming Jiang's Lab`: http://jianglab.horticulture.wisc.edu/
 

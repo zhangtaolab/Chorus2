@@ -248,7 +248,9 @@ Install Chorus2 by conda
 
 .. code-block:: bash
 
-    $ conda install chorus2
+    $ conda create -n chorus chorus2
+
+    $ conda activate chorus
 
     $ Chorus2 -h
     usage: Chorus2 [-h] [--version] [-j JELLYFISH] [-b BWA] -g GENOME -i INPUT
@@ -331,7 +333,9 @@ Install Chorus2 by conda
 
 .. code-block:: bash
 
-    $ conda install chorus2
+    $ conda create -n chorus chorus2
+
+    $ conda activate chorus
 
     $ Chorus2 -h
     usage: Chorus2 [-h] [--version] [-j JELLYFISH] [-b BWA] -g GENOME -i INPUT
@@ -396,7 +400,7 @@ Open *WSL* in **Control Panel - Programs and Features - Turn Windows features on
 
 After reboot computer, install *Ubuntu 18.04 LTS* in **Microsoft Store**
 
-.. image:: _static/install_ubuntu.png
+.. image:: _static/install_ubuntu.jpg
 
 
 Launch **Ubuntu 18.04 LTS** App, Initiate the WSL (Ubuntu 18.04)
@@ -438,7 +442,9 @@ Install Chorus2 by conda
 
 .. code-block:: bash
 
-    $ conda install chorus2
+    $ conda create -n chorus chorus2
+
+    $ conda activate chorus
 
     $ Chorus2 -h
     usage: Chorus2 [-h] [--version] [-j JELLYFISH] [-b BWA] -g GENOME -i INPUT

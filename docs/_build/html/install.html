@@ -1,18 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Install &#8212; Chorus 1.0 documentation</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install &#8212; Chorus2 2.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Tutorial" href="tutorial.html" />
@@ -29,16 +29,18 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="install">
 <h1>Install<a class="headerlink" href="#install" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="docker">
-<h2>Docker<a class="headerlink" href="#docker" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="docker-for-unix-windows">
+<h2>Docker (For Unix &amp; Windows)<a class="headerlink" href="#docker-for-unix-windows" title="Permalink to this headline">¶</a></h2>
 <p>Install <a class="reference external" href="https://docs.docker.com/engine/installation/">Docker</a></p>
 <div class="section" id="terminal-version">
 <h3>Terminal version<a class="headerlink" href="#terminal-version" title="Permalink to this headline">¶</a></h3>
-<p>Download Chorus:</p>
+<p>Download Chorus2:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ docker pull forrestzhang/docker-chorus
 
 $ docker run -v <span class="nv">$PWD</span>:/home/chorus -e <span class="nv">CHORUS_USER</span><span class="o">=</span><span class="nv">$USER</span> -e <span class="nv">CHORUS_UID</span><span class="o">=</span><span class="nv">$UID</span> forrestzhang/docker-chorus -h
@@ -53,32 +55,32 @@ optional arguments:
 -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
 --version             show program<span class="s1">&#39;s version number and exit</span>
 <span class="s1">-j JELLYFISH, --jellyfish JELLYFISH</span>
-<span class="s1">                        jellyfish path</span>
+<span class="s1">                      jellyfish path</span>
 <span class="s1">-b BWA, --bwa BWA     bwa path</span>
 <span class="s1">-g GENOME, --genome GENOME</span>
-<span class="s1">                        fasta format genome file</span>
+<span class="s1">                      fasta format genome file</span>
 <span class="s1">-i INPUT, --input INPUT</span>
-<span class="s1">                        fasta format input file</span>
+<span class="s1">                      fasta format input file</span>
 <span class="s1">-s SAVED, --save SAVED</span>
-<span class="s1">                        result saved folder</span>
+<span class="s1">                      result saved folder</span>
 <span class="s1">-p PRIMER, --primer PRIMER</span>
-<span class="s1">                        5&#39;</span> labeled R primer
+<span class="s1">                      5&#39;</span> labeled R primer
 -t THREADS, --threads THREADS
-                        threads number or how may cpu you wanna use
+                      threads number or how may cpu you wanna use
 -l LENGTH, --length LENGTH
-                        probe length
+                      probe length
 --homology HOMOLOGY   homology, from <span class="m">50</span> to <span class="m">100</span>
 -d DTM, --dtm DTM     dTm, from <span class="m">0</span> to <span class="m">37</span>
 --docker DOCKER
 </pre></div>
 </div>
 </div>
-<div class="section" id="gui-test-version">
-<h3>GUI (Test Version)<a class="headerlink" href="#gui-test-version" title="Permalink to this headline">¶</a></h3>
-<p>Download Chorus:</p>
+<div class="section" id="gui-version">
+<h3>GUI version<a class="headerlink" href="#gui-version" title="Permalink to this headline">¶</a></h3>
+<p>Download Chorus2:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ docker pull forrestzhang/chorus-gui
 
-$ docker run -i -t -p <span class="m">6080</span>:6080 -v <span class="nv">$PWD</span>:/home/ubuntu/Data forrestzhang/chorus-gui
+$ docker run -i -t -p <span class="m">6080</span>:80 -v <span class="nv">$PWD</span>:/root/Desktop/Data forrestzhang/chorus-gui
 </pre></div>
 </div>
 <p>Open your web browse, enter <a class="reference external" href="http://localhost:6080">http://localhost:6080</a></p>
@@ -91,8 +93,10 @@ $ docker run -i -t -p <span class="m">6080</span>:6080 -v <span class="nv">$PWD<
 </div>
 <div class="section" id="manually-install">
 <h2>Manually Install<a class="headerlink" href="#manually-install" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="ubuntu-14-04-terminal">
-<h3>Ubuntu 14.04 (terminal)<a class="headerlink" href="#ubuntu-14-04-terminal" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="linux-ubuntu-18-04">
+<h3>Linux (Ubuntu 18.04)<a class="headerlink" href="#linux-ubuntu-18-04" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="manually-install-all-packages">
+<h4>Manually install all packages<a class="headerlink" href="#manually-install-all-packages" title="Permalink to this headline">¶</a></h4>
 <p>Install dependent package</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ apt-get update <span class="o">&amp;&amp;</span> apt-get install  -y build-essential <span class="se">\</span>
     cython3 <span class="se">\</span>
@@ -108,6 +112,7 @@ $ docker run -i -t -p <span class="m">6080</span>:6080 -v <span class="nv">$PWD<
     libboost-thread-dev <span class="se">\</span>
     python3-pip <span class="se">\</span>
     samtools <span class="se">\</span>
+    bcftools <span class="se">\</span>
     unzip <span class="se">\</span>
     python <span class="se">\</span>
     curl <span class="se">\</span>
@@ -119,11 +124,11 @@ $ docker run -i -t -p <span class="m">6080</span>:6080 -v <span class="nv">$PWD<
 
 $ <span class="nb">cd</span> /opt/software
 
-$ wget https://github.com/gmarcais/Jellyfish/releases/download/v2.2.3/jellyfish-2.2.3.tar.gz
+$ wget https://github.com/gmarcais/Jellyfish/releases/download/v2.3.0/jellyfish-2.3.0.tar.gz
 
-$ tar zxvf jellyfish-2.2.3.tar.gz
+$ tar zxvf jellyfish-2.3.0.tar.gz
 
-$ mv jellyfish-2.2.3  jellyfish
+$ mv jellyfish-2.3.0  jellyfish
 
 $ <span class="nb">cd</span> jellyfish
 
@@ -152,143 +157,305 @@ $ <span class="nb">cd</span> primer3-py-unicode
 $ python3 setup.py install
 </pre></div>
 </div>
-<p>Download Chorus</p>
+<p>Download Chorus2 and test the terminal version</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /opt/software
 
-$ git clone https://github.com/forrestzhang/Chorus.git
+$ git clone https://github.com/zhangtaolab/Chorus2.git
 
-$ python3 python3 /opt/software/Chorus/Chorus.py -h
+$ pip install -r /opt/software/Chorus2/requirements.txt
 
+$ python3 /opt/software/Chorus2/Chorus2.py -h
+usage: Chorus2 <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--version<span class="o">]</span> <span class="o">[</span>-j JELLYFISH<span class="o">]</span> <span class="o">[</span>-b BWA<span class="o">]</span> -g GENOME -i INPUT
+            <span class="o">[</span>-s SAVED<span class="o">]</span> <span class="o">[</span>-p PRIMER<span class="o">]</span> <span class="o">[</span>-t THREADS<span class="o">]</span> <span class="o">[</span>-l LENGTH<span class="o">]</span>
+            <span class="o">[</span>--homology HOMOLOGY<span class="o">]</span> <span class="o">[</span>-d DTM<span class="o">]</span> <span class="o">[</span>--skipdtm SKIPDTM<span class="o">]</span>
+            <span class="o">[</span>--step STEP<span class="o">]</span> <span class="o">[</span>--docker DOCKER<span class="o">]</span> <span class="o">[</span>--ploidy PLOIDY<span class="o">]</span>
 
-
-usage: Chorus <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--version<span class="o">]</span> <span class="o">[</span>-j JELLYFISH<span class="o">]</span> <span class="o">[</span>-b BWA<span class="o">]</span> -g GENOME -i INPUT
-          <span class="o">[</span>-s SAVED<span class="o">]</span> <span class="o">[</span>-p PRIMER<span class="o">]</span> <span class="o">[</span>-t THREADS<span class="o">]</span> <span class="o">[</span>-l LENGTH<span class="o">]</span>
-          <span class="o">[</span>--homology HOMOLOGY<span class="o">]</span> <span class="o">[</span>-d DTM<span class="o">]</span> <span class="o">[</span>--step STEP<span class="o">]</span> <span class="o">[</span>--docker DOCKER<span class="o">]</span>
-
-Chorus Software <span class="k">for</span> Oligo FISH probe design
+Chorus2 Software <span class="k">for</span> Oligo FISH probe design
 
 optional arguments:
 -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
 --version             show program<span class="s1">&#39;s version number and exit</span>
 <span class="s1">-j JELLYFISH, --jellyfish JELLYFISH</span>
-<span class="s1">                        jellyfish path</span>
-<span class="s1">-b BWA, --bwa BWA     bwa path</span>
+<span class="s1">                      The path where Jellyfish software installed</span>
+<span class="s1">-b BWA, --bwa BWA     The path where BWA software installed</span>
 <span class="s1">-g GENOME, --genome GENOME</span>
-<span class="s1">                        fasta format genome file</span>
+<span class="s1">                      Fasta format genome file, should include all sequences</span>
+<span class="s1">                      from genome</span>
 <span class="s1">-i INPUT, --input INPUT</span>
-<span class="s1">                        fasta format input file</span>
+<span class="s1">                      Fasta format input file, can be whole genome, a</span>
+<span class="s1">                      chromosome or one region from genome</span>
 <span class="s1">-s SAVED, --save SAVED</span>
-<span class="s1">                        result saved folder</span>
+<span class="s1">                      The output folder for saving results</span>
 <span class="s1">-p PRIMER, --primer PRIMER</span>
-<span class="s1">                        5&#39;</span> labeled R primer
+<span class="s1">                      A specific 5&#39;</span> labeled R primer <span class="k">for</span> PCR reaction. For
+                      example: CGTGGTCGCGTCTCA. <span class="o">(</span>Default is none<span class="o">)</span>
 -t THREADS, --threads THREADS
-                        threads number or how may cpu you wanna use
+                      Number of threads or CPUs to use. <span class="o">(</span>Default: <span class="m">1</span><span class="o">)</span>
 -l LENGTH, --length LENGTH
-                        probe length
---homology HOMOLOGY   homology, from <span class="m">50</span> to <span class="m">100</span>
--d DTM, --dtm DTM     dTm, from <span class="m">0</span> to <span class="m">37</span>
---step STEP           step length, <span class="nv">min</span><span class="o">=</span><span class="m">1</span>
---docker DOCKER
+                      The probe length. <span class="o">(</span>Default: <span class="m">45</span><span class="o">)</span>
+--homology HOMOLOGY   The maximum homology<span class="o">(</span>%<span class="o">)</span> between target sequence and
+                      probe, range from <span class="m">50</span> to <span class="m">100</span>. <span class="o">(</span>Default: <span class="m">75</span><span class="o">)</span>
+-d DTM, --dtm DTM     The minimum value of dTm <span class="o">(</span>hybrid Tm - hairpin Tm<span class="o">)</span>,
+                      range from <span class="m">0</span> to <span class="m">37</span>. <span class="o">(</span>Default: <span class="m">10</span><span class="o">)</span>
+--skipdtm SKIPDTM     skip calculate dtm, <span class="k">for</span> oligo longer than <span class="m">50</span>.
+--step STEP           The step length <span class="k">for</span> k-mer searching in a sliding
+                      window, step length&gt;<span class="o">=</span><span class="m">1</span>. <span class="o">(</span>Default: <span class="m">5</span><span class="o">)</span>
+--docker DOCKER       Only used in Docker version of Chorus
+--ploidy PLOIDY       The ploidy of the given genome <span class="o">(</span><span class="nb">test</span> version<span class="o">)</span>.
+                      <span class="o">(</span>Default: <span class="m">2</span><span class="o">)</span>
+
+Example:
+Chorus2 -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t <span class="m">4</span> <span class="se">\</span>
+        -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample
+</pre></div>
+</div>
+<p>Install GUI dependencies and test the GUI version</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /opt/software/
+
+$ pip install -r /opt/software/Chorus2/requirements_GUI.txt
+
+$ python3 /opt/software/Chorus2/ChorusGUI.py
+</pre></div>
+</div>
+<img alt="_images/ChorusGUI_ubuntu.png" src="_images/ChorusGUI_ubuntu.png" />
+</div>
+<div class="section" id="install-chorus2-directly-by-anaconda-recommended">
+<h4>Install Chorus2 directly by Anaconda (<strong>Recommended</strong>)<a class="headerlink" href="#install-chorus2-directly-by-anaconda-recommended" title="Permalink to this headline">¶</a></h4>
+<p>Download and Install <a class="reference external" href="https://www.anaconda.com/products/individual">Anaconda</a> (python 3.x verison for linux)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> ~
+
+$ wget https://repo.anaconda.com/archive/Anaconda3-xxxx-Linux-x86_64.sh
+
+$ sh Anaconda3-xxxx-Linux-x86_64.sh
+</pre></div>
+</div>
+<p>Add bioconda channel</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ conda config --add channels conda-forge
+$ conda config --add channels defaults
+$ conda config --add channels bioconda
+</pre></div>
+</div>
+<p>Install Chorus2 by conda</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ conda create -n chorus chorus2
+
+$ conda activate chorus
+
+$ Chorus2 -h
+usage: Chorus2 <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--version<span class="o">]</span> <span class="o">[</span>-j JELLYFISH<span class="o">]</span> <span class="o">[</span>-b BWA<span class="o">]</span> -g GENOME -i INPUT
+            <span class="o">[</span>-s SAVED<span class="o">]</span> <span class="o">[</span>-p PRIMER<span class="o">]</span> <span class="o">[</span>-t THREADS<span class="o">]</span> <span class="o">[</span>-l LENGTH<span class="o">]</span>
+            <span class="o">[</span>--homology HOMOLOGY<span class="o">]</span> <span class="o">[</span>-d DTM<span class="o">]</span> <span class="o">[</span>--skipdtm SKIPDTM<span class="o">]</span>
+            <span class="o">[</span>--step STEP<span class="o">]</span> <span class="o">[</span>--docker DOCKER<span class="o">]</span> <span class="o">[</span>--ploidy PLOIDY<span class="o">]</span>
+
+Chorus2 Software <span class="k">for</span> Oligo FISH probe design
+
+optional arguments:
+-h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+--version             show program<span class="s1">&#39;s version number and exit</span>
+<span class="s1">-j JELLYFISH, --jellyfish JELLYFISH</span>
+<span class="s1">                      The path where Jellyfish software installed</span>
+<span class="s1">-b BWA, --bwa BWA     The path where BWA software installed</span>
+<span class="s1">-g GENOME, --genome GENOME</span>
+<span class="s1">                      Fasta format genome file, should include all sequences</span>
+<span class="s1">                      from genome</span>
+<span class="s1">-i INPUT, --input INPUT</span>
+<span class="s1">                      Fasta format input file, can be whole genome, a</span>
+<span class="s1">                      chromosome or one region from genome</span>
+<span class="s1">-s SAVED, --save SAVED</span>
+<span class="s1">                      The output folder for saving results</span>
+<span class="s1">-p PRIMER, --primer PRIMER</span>
+<span class="s1">                      A specific 5&#39;</span> labeled R primer <span class="k">for</span> PCR reaction. For
+                      example: CGTGGTCGCGTCTCA. <span class="o">(</span>Default is none<span class="o">)</span>
+-t THREADS, --threads THREADS
+                      Number of threads or CPUs to use. <span class="o">(</span>Default: <span class="m">1</span><span class="o">)</span>
+-l LENGTH, --length LENGTH
+                      The probe length. <span class="o">(</span>Default: <span class="m">45</span><span class="o">)</span>
+--homology HOMOLOGY   The maximum homology<span class="o">(</span>%<span class="o">)</span> between target sequence and
+                      probe, range from <span class="m">50</span> to <span class="m">100</span>. <span class="o">(</span>Default: <span class="m">75</span><span class="o">)</span>
+-d DTM, --dtm DTM     The minimum value of dTm <span class="o">(</span>hybrid Tm - hairpin Tm<span class="o">)</span>,
+                      range from <span class="m">0</span> to <span class="m">37</span>. <span class="o">(</span>Default: <span class="m">10</span><span class="o">)</span>
+--skipdtm SKIPDTM     skip calculate dtm, <span class="k">for</span> oligo longer than <span class="m">50</span>.
+--step STEP           The step length <span class="k">for</span> k-mer searching in a sliding
+                      window, step length&gt;<span class="o">=</span><span class="m">1</span>. <span class="o">(</span>Default: <span class="m">5</span><span class="o">)</span>
+--docker DOCKER       Only used in Docker version of Chorus
+--ploidy PLOIDY       The ploidy of the given genome <span class="o">(</span><span class="nb">test</span> version<span class="o">)</span>.
+                      <span class="o">(</span>Default: <span class="m">2</span><span class="o">)</span>
+
+Example:
+Chorus2 -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t <span class="m">4</span> <span class="se">\</span>
+        -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample
+</pre></div>
+</div>
+<p>Test the GUI version</p>
+<blockquote>
+<div><p>$ ChorusGUI</p>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="macos">
+<h3>MacOS<a class="headerlink" href="#macos" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id1">
+<h4>Install Chorus2 directly by Anaconda (<strong>Recommended</strong>)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<p>Download and Install <a class="reference external" href="https://www.anaconda.com/products/individual">Anaconda</a> (python 3.x Command Line Installer for MacOS)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> ~
+
+$ wget https://repo.anaconda.com/archive/Anaconda3-xxxx-MacOSX-x86_64.sh
+
+$ sh Anaconda3-xxxx-MacOSX-x86_64.sh
+</pre></div>
+</div>
+<p>Add bioconda channel</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ conda config --add channels conda-forge
+$ conda config --add channels defaults
+$ conda config --add channels bioconda
+</pre></div>
+</div>
+<p>Install Chorus2 by conda</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ conda create -n chorus chorus2
+
+$ conda activate chorus
+
+$ Chorus2 -h
+usage: Chorus2 <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--version<span class="o">]</span> <span class="o">[</span>-j JELLYFISH<span class="o">]</span> <span class="o">[</span>-b BWA<span class="o">]</span> -g GENOME -i INPUT
+            <span class="o">[</span>-s SAVED<span class="o">]</span> <span class="o">[</span>-p PRIMER<span class="o">]</span> <span class="o">[</span>-t THREADS<span class="o">]</span> <span class="o">[</span>-l LENGTH<span class="o">]</span>
+            <span class="o">[</span>--homology HOMOLOGY<span class="o">]</span> <span class="o">[</span>-d DTM<span class="o">]</span> <span class="o">[</span>--skipdtm SKIPDTM<span class="o">]</span>
+            <span class="o">[</span>--step STEP<span class="o">]</span> <span class="o">[</span>--docker DOCKER<span class="o">]</span> <span class="o">[</span>--ploidy PLOIDY<span class="o">]</span>
+
+Chorus2 Software <span class="k">for</span> Oligo FISH probe design
+
+optional arguments:
+-h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+--version             show program<span class="s1">&#39;s version number and exit</span>
+<span class="s1">-j JELLYFISH, --jellyfish JELLYFISH</span>
+<span class="s1">                      The path where Jellyfish software installed</span>
+<span class="s1">-b BWA, --bwa BWA     The path where BWA software installed</span>
+<span class="s1">-g GENOME, --genome GENOME</span>
+<span class="s1">                      Fasta format genome file, should include all sequences</span>
+<span class="s1">                      from genome</span>
+<span class="s1">-i INPUT, --input INPUT</span>
+<span class="s1">                      Fasta format input file, can be whole genome, a</span>
+<span class="s1">                      chromosome or one region from genome</span>
+<span class="s1">-s SAVED, --save SAVED</span>
+<span class="s1">                      The output folder for saving results</span>
+<span class="s1">-p PRIMER, --primer PRIMER</span>
+<span class="s1">                      A specific 5&#39;</span> labeled R primer <span class="k">for</span> PCR reaction. For
+                      example: CGTGGTCGCGTCTCA. <span class="o">(</span>Default is none<span class="o">)</span>
+-t THREADS, --threads THREADS
+                      Number of threads or CPUs to use. <span class="o">(</span>Default: <span class="m">1</span><span class="o">)</span>
+-l LENGTH, --length LENGTH
+                      The probe length. <span class="o">(</span>Default: <span class="m">45</span><span class="o">)</span>
+--homology HOMOLOGY   The maximum homology<span class="o">(</span>%<span class="o">)</span> between target sequence and
+                      probe, range from <span class="m">50</span> to <span class="m">100</span>. <span class="o">(</span>Default: <span class="m">75</span><span class="o">)</span>
+-d DTM, --dtm DTM     The minimum value of dTm <span class="o">(</span>hybrid Tm - hairpin Tm<span class="o">)</span>,
+                      range from <span class="m">0</span> to <span class="m">37</span>. <span class="o">(</span>Default: <span class="m">10</span><span class="o">)</span>
+--skipdtm SKIPDTM     skip calculate dtm, <span class="k">for</span> oligo longer than <span class="m">50</span>.
+--step STEP           The step length <span class="k">for</span> k-mer searching in a sliding
+                      window, step length&gt;<span class="o">=</span><span class="m">1</span>. <span class="o">(</span>Default: <span class="m">5</span><span class="o">)</span>
+--docker DOCKER       Only used in Docker version of Chorus
+--ploidy PLOIDY       The ploidy of the given genome <span class="o">(</span><span class="nb">test</span> version<span class="o">)</span>.
+                      <span class="o">(</span>Default: <span class="m">2</span><span class="o">)</span>
+
+Example:
+Chorus2 -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t <span class="m">4</span> <span class="se">\</span>
+        -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample
+</pre></div>
+</div>
+<p>Test the GUI version</p>
+<blockquote>
+<div><p>$ ChorusGUI</p>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="windows-10-wsl">
+<h3>Windows 10 (WSL)<a class="headerlink" href="#windows-10-wsl" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="install-wsl-windows-subsystem-for-linux">
+<h4>Install WSL (Windows Subsystem for Linux)<a class="headerlink" href="#install-wsl-windows-subsystem-for-linux" title="Permalink to this headline">¶</a></h4>
+<p>Open <em>WSL</em> in <strong>Control Panel - Programs and Features - Turn Windows features on or off</strong></p>
+<img alt="_images/open_wsl.png" src="_images/open_wsl.png" />
+<p>After reboot computer, install <em>Ubuntu 18.04 LTS</em> in <strong>Microsoft Store</strong></p>
+<img alt="_static/install_ubuntu.jpg" src="_static/install_ubuntu.jpg" />
+<p>Launch <strong>Ubuntu 18.04 LTS</strong> App, Initiate the WSL (Ubuntu 18.04)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ sudo apt update
+
+$ sudo apt upgrage
+
+$ sudo apt install wget
 </pre></div>
 </div>
 </div>
-<div class="section" id="anaconda-terminal">
-<h3>Anaconda (Terminal)<a class="headerlink" href="#anaconda-terminal" title="Permalink to this headline">¶</a></h3>
-<p>Download and Install <a class="reference external" href="https://www.continuum.io/downloads">Anaconda</a> (python 3.x verison)</p>
-<p>Add bioconda</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda config --add channels conda-forge
-conda config --add channels defaults
-conda config --add channels r
-conda config --add channels bioconda
+<div class="section" id="install-chorus2-directly-by-anaconda">
+<h4>Install Chorus2 directly by Anaconda<a class="headerlink" href="#install-chorus2-directly-by-anaconda" title="Permalink to this headline">¶</a></h4>
+<p>Download and Install <a class="reference external" href="https://www.anaconda.com/products/individual">Anaconda</a> (python 3.x verison for linux)</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> ~
+
+$ wget https://repo.anaconda.com/archive/Anaconda3-xxxx-Linux-x86_64.sh
+
+$ sh Anaconda3-xxxx-Linux-x86_64.sh
 </pre></div>
 </div>
-<p>Install dependent package</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install bwa
-conda install jellyfish
-pip install Cython
-pip install primer3-py
-pip install pyfasta
+<p>Add bioconda channel</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ conda config --add channels conda-forge
+$ conda config --add channels defaults
+$ conda config --add channels bioconda
+</pre></div>
+</div>
+<p>Install Chorus2 by conda</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ conda create -n chorus chorus2
+
+$ conda activate chorus
+
+$ Chorus2 -h
+usage: Chorus2 <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--version<span class="o">]</span> <span class="o">[</span>-j JELLYFISH<span class="o">]</span> <span class="o">[</span>-b BWA<span class="o">]</span> -g GENOME -i INPUT
+            <span class="o">[</span>-s SAVED<span class="o">]</span> <span class="o">[</span>-p PRIMER<span class="o">]</span> <span class="o">[</span>-t THREADS<span class="o">]</span> <span class="o">[</span>-l LENGTH<span class="o">]</span>
+            <span class="o">[</span>--homology HOMOLOGY<span class="o">]</span> <span class="o">[</span>-d DTM<span class="o">]</span> <span class="o">[</span>--skipdtm SKIPDTM<span class="o">]</span>
+            <span class="o">[</span>--step STEP<span class="o">]</span> <span class="o">[</span>--docker DOCKER<span class="o">]</span> <span class="o">[</span>--ploidy PLOIDY<span class="o">]</span>
+
+Chorus2 Software <span class="k">for</span> Oligo FISH probe design
+
+optional arguments:
+-h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+--version             show program<span class="s1">&#39;s version number and exit</span>
+<span class="s1">-j JELLYFISH, --jellyfish JELLYFISH</span>
+<span class="s1">                      The path where Jellyfish software installed</span>
+<span class="s1">-b BWA, --bwa BWA     The path where BWA software installed</span>
+<span class="s1">-g GENOME, --genome GENOME</span>
+<span class="s1">                      Fasta format genome file, should include all sequences</span>
+<span class="s1">                      from genome</span>
+<span class="s1">-i INPUT, --input INPUT</span>
+<span class="s1">                      Fasta format input file, can be whole genome, a</span>
+<span class="s1">                      chromosome or one region from genome</span>
+<span class="s1">-s SAVED, --save SAVED</span>
+<span class="s1">                      The output folder for saving results</span>
+<span class="s1">-p PRIMER, --primer PRIMER</span>
+<span class="s1">                      A specific 5&#39;</span> labeled R primer <span class="k">for</span> PCR reaction. For
+                      example: CGTGGTCGCGTCTCA. <span class="o">(</span>Default is none<span class="o">)</span>
+-t THREADS, --threads THREADS
+                      Number of threads or CPUs to use. <span class="o">(</span>Default: <span class="m">1</span><span class="o">)</span>
+-l LENGTH, --length LENGTH
+                      The probe length. <span class="o">(</span>Default: <span class="m">45</span><span class="o">)</span>
+--homology HOMOLOGY   The maximum homology<span class="o">(</span>%<span class="o">)</span> between target sequence and
+                      probe, range from <span class="m">50</span> to <span class="m">100</span>. <span class="o">(</span>Default: <span class="m">75</span><span class="o">)</span>
+-d DTM, --dtm DTM     The minimum value of dTm <span class="o">(</span>hybrid Tm - hairpin Tm<span class="o">)</span>,
+                      range from <span class="m">0</span> to <span class="m">37</span>. <span class="o">(</span>Default: <span class="m">10</span><span class="o">)</span>
+--skipdtm SKIPDTM     skip calculate dtm, <span class="k">for</span> oligo longer than <span class="m">50</span>.
+--step STEP           The step length <span class="k">for</span> k-mer searching in a sliding
+                      window, step length&gt;<span class="o">=</span><span class="m">1</span>. <span class="o">(</span>Default: <span class="m">5</span><span class="o">)</span>
+--docker DOCKER       Only used in Docker version of Chorus
+--ploidy PLOIDY       The ploidy of the given genome <span class="o">(</span><span class="nb">test</span> version<span class="o">)</span>.
+                      <span class="o">(</span>Default: <span class="m">2</span><span class="o">)</span>
+
+Example:
+Chorus2 -i TAIR10_chr_all.fas -g TAIR10_chr_all.fas -t <span class="m">4</span> <span class="se">\</span>
+        -j /opt/software/jellyfish/bin/jellyfish -b /opt/software/bwa/bwa -s sample
 </pre></div>
 </div>
 </div>
-<div class="section" id="ubuntu-14-04-gui-test-version">
-<h3>Ubuntu 14.04 (GUI) Test Version<a class="headerlink" href="#ubuntu-14-04-gui-test-version" title="Permalink to this headline">¶</a></h3>
-<p>Install dependent package</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ apt-get update <span class="o">&amp;&amp;</span> apt-get install -y cython3  build-essential <span class="se">\</span>
-    zlib1g-dev <span class="se">\</span>
-    zlibc <span class="se">\</span>
-    git <span class="se">\</span>
-    libboost-dev <span class="se">\</span>
-    autoconf <span class="se">\</span>
-    libncursesw5-dev <span class="se">\</span>
-    libncurses5 <span class="se">\</span>
-    ncurses-dev <span class="se">\</span>
-    libboost-thread-dev <span class="se">\</span>
-    python3-pip <span class="se">\</span>
-    samtools <span class="se">\</span>
-    unzip <span class="se">\</span>
-    python <span class="se">\</span>
-    curl <span class="se">\</span>
-    wget <span class="se">\</span>
-    python3-pyqt5 <span class="se">\</span>
-    libfreetype6-dev <span class="se">\</span>
-    libxft-dev <span class="se">\</span>
-    python3-matplotlib
-
-$ apt-get remove -y python3-matplotlib
+<div class="section" id="install-dependent-software-for-gui-and-test-the-gui-version">
+<h4>Install dependent software for GUI and test the GUI version<a class="headerlink" href="#install-dependent-software-for-gui-and-test-the-gui-version" title="Permalink to this headline">¶</a></h4>
+<p>Download and Install <a class="reference external" href="https://sourceforge.net/projects/xming/">Xming</a></p>
+<p>Open <strong>Xming</strong> App and test the GUI version</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ ChorusGUI
 </pre></div>
 </div>
-<p>Install jellyfish</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ mkdir /opt/software
-
-$ <span class="nb">cd</span> /opt/software
-
-$ wget https://github.com/gmarcais/Jellyfish/releases/download/v2.2.3/jellyfish-2.2.3.tar.gz
-
-$ tar zxvf jellyfish-2.2.3.tar.gz
-
-$ mv jellyfish-2.2.3  jellyfish
-
-$ <span class="nb">cd</span> jellyfish
-
-$ ./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> make install
-</pre></div>
-</div>
-<p>Install bwa</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /opt/software
-
-$ git clone https://github.com/lh3/bwa.git
-
-$ <span class="nb">cd</span> bwa
-
-$ make
-</pre></div>
-</div>
-<p>Install primer3-py</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /opt/software
-
-$ wget https://github.com/forrestzhang/primer3-py/archive/unicode.zip
-
-$ unzip unicode.zip
-
-$ <span class="nb">cd</span> primer3-py-unicode
-
-$ python3 setup.py install
-</pre></div>
-</div>
-<p>Install Python dependent package</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ pip3 install numpy pyfasta matplotlib
-
-$ pip3 install pandas
-</pre></div>
-</div>
-<p>Download and run Chorus</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$ <span class="nb">cd</span> /opt/software
-
-$ git clone https://github.com/forrestzhang/Chorus.git
-
-$ python3 /opt/software/Chorus/ChorusGUI.py
-</pre></div>
 </div>
 </div>
 </div>
@@ -296,27 +463,40 @@ $ python3 /opt/software/Chorus/ChorusGUI.py
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Install</a><ul>
-<li><a class="reference internal" href="#docker">Docker</a><ul>
-<li><a class="reference internal" href="#terminal-version">Terminal version</a></li>
-<li><a class="reference internal" href="#gui-test-version">GUI (Test Version)</a></li>
+<h1 class="logo"><a href="index.html">Chorus2</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Install</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#docker-for-unix-windows">Docker (For Unix &amp; Windows)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#terminal-version">Terminal version</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gui-version">GUI version</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#manually-install">Manually Install</a><ul>
-<li><a class="reference internal" href="#ubuntu-14-04-terminal">Ubuntu 14.04 (terminal)</a></li>
-<li><a class="reference internal" href="#anaconda-terminal">Anaconda (Terminal)</a></li>
-<li><a class="reference internal" href="#ubuntu-14-04-gui-test-version">Ubuntu 14.04 (GUI) Test Version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manually-install">Manually Install</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#linux-ubuntu-18-04">Linux (Ubuntu 18.04)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#macos">MacOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#windows-10-wsl">Windows 10 (WSL)</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html">Description of functions in Chorus2</a></li>
 </ul>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
@@ -326,25 +506,24 @@ $ python3 /opt/software/Chorus/ChorusGUI.py
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/install.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -353,8 +532,8 @@ $ python3 /opt/software/Chorus/ChorusGUI.py
       &copy;2018, Tao Zhang.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/install.rst.txt"
