@@ -6,12 +6,11 @@ Design of genome-scale oligonucleotide-based probes for fluorescence in situ hyb
 [![Documentation Status](https://readthedocs.org/projects/chorus2/badge/?version=latest)](http://chorus2.readthedocs.io/en/latest/?badge=latest)
 
 
-
 **Video tutorials**
 
-[Youtube (EN)](https://www.youtube.com/playlist?list=PLo8q8tqFX5J27OsuKYFpd-gOtl8Qgf70X)
+[YouTube (EN)](https://www.youtube.com/playlist?list=PLo8q8tqFX5J27OsuKYFpd-gOtl8Qgf70X)
 
-[BiliBili (中文)](https://www.bilibili.com/video/BV1W54y1S7qS/)
+[bilibili (中文)](https://www.bilibili.com/video/BV1W54y1S7qS/)
 
 
 **Oligo design with Chorus/Chorus2**
