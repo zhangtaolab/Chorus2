@@ -13,6 +13,7 @@ Contents:
 
    install
    tutorial
+   videos
    functions
 
 Indices and tables
