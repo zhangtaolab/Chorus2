@@ -123,11 +123,11 @@ Here our analysis results are stored in potato directory. File descriptions are 
 
     $ cd /home/zhangtaolab/data/chorus2_project/analysis/potato
     $ head -5 potato_dm_v404_all_pm_un.fasta_all.bed
-        chr01   97858   97902      ATTTTCCATGGACCTCATTAAGATTAGCTATTGAACCAGTTACCC
-        chr01   103008  103052  ACAGCCAAATCGTCCCATATTCAAGGATAAACGACCCACGAATCA
-        chr01   127095  127139  ATCTATATCTACTACACCAGAATATTCATACACAAATAAATTACT
-        chr01   127101  127145  ATCTACTACACCAGAATATTCATACACAAATAAATTACTACTATT
-        chr01   127815  127859  CTCAGATTTACCGAATTATTCCTGTGACAAAATATTACTTCCAGT
+      chr01   97858   97902   ATTTTCCATGGACCTCATTAAGATTAGCTATTGAACCAGTTACCC
+      chr01   103008  103052  ACAGCCAAATCGTCCCATATTCAAGGATAAACGACCCACGAATCA
+      chr01   127095  127139  ATCTATATCTACTACACCAGAATATTCATACACAAATAAATTACT
+      chr01   127101  127145  ATCTACTACACCAGAATATTCATACACAAATAAATTACTACTATT
+      chr01   127815  127859  CTCAGATTTACCGAATTATTCCTGTGACAAAATATTACTTCCAGT
 
 There are four columns in each row, first column is chromosome name, second is oligo start site, third is oligo end site, the last one is oligo probe sequence. Users can use excel or text editor to open this file.
 
@@ -154,13 +154,13 @@ After running NGS filtering, three files (*\*.jf, \*.bw, \*.bed*) will output to
 .. code-block:: bash
 
     $ head -5 potato_dm_v404_all_pm_un.fasta_kmer.bed
-        chr01   97858   97902   ATTTTCCATGGACCTCATTAAGATTAGCTATTGAACCAGTTACCC   324     +
-        chr01   103008  103052  ACAGCCAAATCGTCCCATATTCAAGGATAAACGACCCACGAATCA   146     +
-        chr01   127095  127139  ATCTATATCTACTACACCAGAATATTCATACACAAATAAATTACT   318     +
-        chr01   127101  127145  ATCTACTACACCAGAATATTCATACACAAATAAATTACTACTATT   373     +
-        chr01   127815  127859  CTCAGATTTACCGAATTATTCCTGTGACAAAATATTACTTCCAGT   281     +
+      chr01   97858   97902   ATTTTCCATGGACCTCATTAAGATTAGCTATTGAACCAGTTACCC   324     +
+      chr01   103008  103052  ACAGCCAAATCGTCCCATATTCAAGGATAAACGACCCACGAATCA   146     +
+      chr01   127095  127139  ATCTATATCTACTACACCAGAATATTCATACACAAATAAATTACT   318     +
+      chr01   127101  127145  ATCTACTACACCAGAATATTCATACACAAATAAATTACTACTATT   373     +
+      chr01   127815  127859  CTCAGATTTACCGAATTATTCCTGTGACAAAATATTACTTCCAGT   281     +
 
-There are six columns in each row, first four columns are the same as *Tpotato_dm_v404_all_pm_un.fasta_all.bed*. 
+There are six columns in each row, first four columns are the same as *potato_dm_v404_all_pm_un.fasta_all.bed*. 
 The fifth column is the k-mer score, last column is target strand of probes.
 
 
@@ -172,11 +172,11 @@ Confident probes need to be further selected based on the k-mer of each oligo. C
 
     $ ChorusNGSselect -i potato_DM_v404_filtered.bed -o potato_DM_v404_selected.bed
     $ head -5 potato_DM_v404_selected.bed
-        chr01   97858   97902   ATTTTCCATGGACCTCATTAAGATTAGCTATTGAACCAGTTACCC   324     +
-        chr01   103008  103052  TGATTCGTGGGTCGTTTATCCTTGAATATGGGACGATTTGGCTGT   146     -
-        chr01   127095  127139  ATCTATATCTACTACACCAGAATATTCATACACAAATAAATTACT   318     +
-        chr01   127815  127859  ACTGGAAGTAATATTTTGTCACAGGAATAATTCGGTAAATCTGAG   281     -
-        chr01   133524  133568  ATTAATCAATAAAGGAAAAGCAAGGTTGGAATACGGTTTCATCCT   389     +
+      chr01   97858   97902   ATTTTCCATGGACCTCATTAAGATTAGCTATTGAACCAGTTACCC   324     +
+      chr01   103008  103052  TGATTCGTGGGTCGTTTATCCTTGAATATGGGACGATTTGGCTGT   146     -
+      chr01   127095  127139  ATCTATATCTACTACACCAGAATATTCATACACAAATAAATTACT   318     +
+      chr01   127815  127859  ACTGGAAGTAATATTTTGTCACAGGAATAATTCGGTAAATCTGAG   281     -
+      chr01   133524  133568  ATTAATCAATAAAGGAAAAGCAAGGTTGGAATACGGTTTCATCCT   389     +
 
 There are six columns in each row, which are the same as ChorusNGSfilter output. 
 The final probes can be synthesized directly for oligo-FISH or imported into ChorusPBGUI for further selection.
