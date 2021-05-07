@@ -5,6 +5,9 @@ Design of genome-scale oligonucleotide-based probes for fluorescence in situ hyb
 
 [![Documentation Status](https://readthedocs.org/projects/chorus2/badge/?version=latest)](http://chorus2.readthedocs.io/en/latest/?badge=latest)
 
+**Citation**
+
+Zhang T†,\*, Liu GQ†, Zhao HN, Braz G.T, Jiang JM\*. Chorus2: design of genome-scale oligonucleotide-based probes for fluorescence *in situ* hybridization. ***Plant Biotechnology Journal*** (2021) DOI: 10.1111/pbi.13610 (Accepted)
 
 **Video tutorials**
 
