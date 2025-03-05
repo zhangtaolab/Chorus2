@@ -1,5 +1,5 @@
 # Chorus2
-Design of genome-scale oligonucleotide-based probes for fluorescence in situ hybridization (FISH)
+Design of genome-scale oligonucleotide-based probes for fluorescence _in situ_ hybridization (FISH)
 
 [Documentation](https://chorus2.readthedocs.io/en/latest/)
 
