@@ -73,7 +73,7 @@ In your web browse, open a LXTerminal
 Manually Install
 -----------------
 
-Linux (Ubuntu 18.04)
+Linux (Ubuntu)
 *********************
 
 Manually install all packages

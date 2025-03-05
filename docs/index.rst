@@ -13,6 +13,8 @@ Contents:
 
    install
    tutorial
+   best practices
+   videos
    functions
 
 Indices and tables
@@ -27,5 +29,5 @@ Indices and tables
 
 .. _taozhang.org: http://taozhang.org
 .. _ZhangTaoLab: http://zhangtaolab.org/
-.. _`Jiming Jiang's Lab`: http://jianglab.horticulture.wisc.edu/
+.. _`Jiming Jiang's Lab`: http://jianglab.plantbiology.msu.edu/
 

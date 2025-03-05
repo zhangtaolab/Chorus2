@@ -2,7 +2,7 @@ Cython
 numpy
 pyfasta
 primer3-py
-pandas
+pandas<2
 pyBigWig
 matplotlib
 PyQt5<5.11

@@ -47,8 +47,8 @@ def main():
     #
     hom_probe_dict = dict()
     for op in bwafiltedpb:
-        idx, probeseq, query_chr, query_st, query_ed, fake_num,  seqname, start, end, identity = op.strip().split(',')
-        head = query_chr + query_st
+        idx, probeseq, query_chr, query_st, query_ed, fake_num, seqname, start, end, identity = op.strip().split(',')
+        head = query_chr + '_' +  query_st
         hom_probe_dict[head] = op
 
 # add homology information after each oligos
@@ -59,7 +59,7 @@ def main():
         with open(probe_file, "r") as i:
             for line in i:
                 arr = line.strip().split()
-                hh = arr[0] + arr[1]
+                hh = arr[0] + '_' + arr[1]
                 if hh in hom_probe_dict:
                     save_probe([hom_probe_dict[hh]], o)
         i.close()
