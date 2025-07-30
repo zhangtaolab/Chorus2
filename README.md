@@ -19,6 +19,7 @@ Zhang T†*, Liu GQ†, Zhao HN, Braz G.T, Jiang JM\*. [Chorus2: design of genom
 **Oligo design with Chorus/Chorus2**
 - **Wheat**:
     - Li GR†, Zhang T†, Yu ZH, Wang HJ, Yang EN, Yang ZJ\*. [An efficient Oligo‐FISH painting system for revealing chromosome rearrangements and polyploidization in Triticeae.](https://onlinelibrary.wiley.com/doi/10.1111/tpj.15081) _**The Plant Journal**_ 2021, 105(4):978-993
+    - Shi PY, Sun HJ, Liu GQ, Zhang X, Zhou JW, Song RR, Xiao J, Yuan CX, Sun L, Wang ZK, Lou QF, Jiang JM, Wang XE*, Wang HY*. [Chromosome painting reveals inter-chromosomal rearrangements and evolution of subgenome D of wheat].(https://onlinelibrary.wiley.com/doi/10.1111/tpj.15926?msockid=0c907a945e1f642f12266c8f5f796508)  _**The Plant Journal**_ 2022, 112(1):55-67
 - **Rice**:
     - Liu XY†, Sun S†, Wu Y, Zhou Y, Gu S.W, Yu H.X, Yi CD, Gu MH, Jiang JM, Liu B, Zhang T\*, Gong ZY\*. [Dual‐color oligo‐FISH can reveal chromosomal variations and evolution in Oryza species.](https://onlinelibrary.wiley.com/doi/abs/10.1111/tpj.14522) _**The Plant Journal**_ 2020, 101:112-121
     - Xue C†, Liu GQ†, Sun S, Liu XY, Guo R, Cheng ZK, Yu HX, Gu MH, Liu K, Zhou Y*, Zhang T*, Gong ZY*. [De Novo Centromere Formation in Pericentromeric Region of Rice Chromosome 8.](https://onlinelibrary.wiley.com/doi/epdf/10.1111/tpj.15862) _**The Plant Journal**_ 2022, 111(3):859-871
