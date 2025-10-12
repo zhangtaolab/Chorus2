@@ -44,8 +44,7 @@ Zhang T†*, Liu GQ†, Zhao HN, Braz G.T, Jiang JM\*. [Chorus2: design of genom
     - Zhao QZ, Bai YL, Cheng CY, Yu XQ, Lou QF* and Chen JF*. [Chromosome-specific oligo-painting provides insights into the cytogenetic basis of karyotypic stasis in paleo-allotetraploid _Cucurbita_](https://academic.oup.com/hr/advance-article/doi/10.1093/hr/uhaf179/8193405). _**Horticulture Research**_ 2025. https://doi.org/10.1093/hr/uhaf179
 - **Chicken**:
     - Huang Z†, Xu ZX†, Bai H†, Huang YJ, Kang N, Ding XT, Liu J, Luo HR, Yang CT, Chen WJ, Guo QX, XUE LZ, ZhangXP, Xu L, Chen ML, Fu HG, Chen YL, Yue ZC, Fukagawa T, Liu SL, Chang GB\*, Xu LH\*. [Evolutionary analysis of a complete chicken genome](https://www.pnas.org/doi/10.1073/pnas.2216641120) _**Proceedings of the National Academy of Sciences of the United States of America**_ 2023, 120(8)e2216641120
-- **Eugongylinae**:
-    - Saunders, P.A*,  Sassi F, Cioffi M, Simakov O, Burridge C, Ezaz T & Wapstra E, [Chromosome-level genome assembly and Oligo-FISH confirmation of chromosome models for the Tasmanian snow skink _Carinascincus ocellatus_ (Scincidae, Eugongylinae)](https://bmcbiol.biomedcentral.com/articles/10.1186/s12915-025-02402-9). _**BMC Biology**_ 2025, 23:300
+
 - Switchgrass, Banana and etc ...
 
 [https://github.com/zhangtaolab/Chorus2](https://github.com/zhangtaolab/Chorus2)
