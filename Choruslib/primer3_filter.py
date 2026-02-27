@@ -34,9 +34,9 @@ def primer3_filter(sequence, mintm=37, maxhtm=35, dtm=10):
 
     primer3ft = False
 
-    tm = primer3.calcTm(sequence)
+    tm = primer3.calc_tm(sequence)
 
-    htm = primer3.calcHairpinTm(sequence)
+    htm = primer3.calc_hairpin_tm(sequence)
 
     if tm < mintm:
 
@@ -59,15 +59,15 @@ def primer3_filter_withRprimer(sequence, rprimer, mintm=37, maxhtm=35, dtm=10):
 
     primer3ft = False
 
-    tm = primer3.calcTm(sequence)
+    tm = primer3.calc_tm(sequence)
 
     fseq = rprimer + sequence
 
-    htmF = primer3.calcHairpinTm(fseq)
+    htmF = primer3.calc_hairpin_tm(fseq)
 
     rseq = rprimer + revcom(sequence)
 
-    htmR = primer3.calcHairpinTm(rseq)
+    htmR = primer3.calc_hairpin_tm(rseq)
 
     if tm < mintm:
 
@@ -97,9 +97,9 @@ def primer3_cal(sequence, mintm=37, maxhtm=37, dtm=10):
 
     primer3ft = True
 
-    tm = primer3.calcTm(sequence)
+    tm = primer3.calc_tm(sequence)
 
-    htm = primer3.calcHairpinTm(sequence)
+    htm = primer3.calc_hairpin_tm(sequence)
 
     if tm < mintm:
 
