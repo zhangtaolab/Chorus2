@@ -548,13 +548,13 @@ def kmerfilterprobe(jffpbruner):
 
         kmerscore = sum(jfkmercount[st:(sp - 1)])
 
-        # st += 1
-
         if kmerscore < jffpbruner.maxkmerscore:
 
             probelist.append(nowpb)
 
             st += jffpbruner.step
+        else:
+            st += 1
 
     print(jffpbruner.seqname+":"+str(jffpbruner.start)+':'+str(jffpbruner.end), "finished!")
 
@@ -867,15 +867,25 @@ class JFNGSScoer():
 if __name__ == '__main__':
     import loadfa
 #
-    jfpath = '/Users/Forrest/Box Sync/Project/Chorus/bin/jellyfish/x86_64-Darwin/bin/jellyfish'
+    jfpath = '/Users/forrest/miniconda3/envs/chorus/bin/jellyfish'
 
     print(jfversion(jfpath))
 
-    jffile = '/Users/Forrest/Box Sync/Project/Chorus/Test/Testsampe/DM_404.fa_17mer.jf'
+    jffile = '../data/tair10.fa_17mer.jf'
 
-    sequence = loadfa.loadfa('/Users/Forrest/Box Sync/Project/Chorus/Test/DM_test.fa')
+    sequence = loadfa.loadfa('../data/sample.fa')
 
-    jffbpruner = JFfpbruner(jfpath=jfpath, jfkmerfile=jffile, mer=17, sequence=sequence, pblength=45, maxkmerscore=33)
+    # Create a simple dict-like wrapper to mimic pyfasta behavior for testing
+    class SimpleFasta:
+        def __init__(self, seq_dict):
+            self._seqs = seq_dict
+        def __getitem__(self, key):
+            return self._seqs[key]
+
+    pyfasta = SimpleFasta({'Chr1': sequence})
+
+    jffbpruner = JFfpbruner(jfpath=jfpath, jfkmerfile=jffile, mer=17, pyfasta=pyfasta,
+                            seqname='Chr1', start=0, end=len(sequence), pblength=45, maxkmerscore=33)
 
     pblist = kmerfilterprobe(jffbpruner)
 
