@@ -26,12 +26,14 @@ Zhang T†*, Liu GQ†, Zhao HN, Braz G.T, Jiang JM\*. [Chorus2: design of genom
     - You HL, Tang D, Liu HX, Zhou Y, Li YF, Shen Y, Gong ZY, Yu HX, Gu MH, Jinag JM, Zhang T*, Cheng ZK*. [Chromosome ends initiate homologous chromosome pairing during rice meiosis.](https://academic.oup.com/plphys/article-abstract/195/4/2617/7628145) _**Plant Physiology**_ 2024, 195(4):2617–2634
 - **Maize**:
     - Albert P.S†, Zhang T†, Semrau K, Rouillard JM, Kao YH, Wang CJ, Danilova T.V, Jiang JM, and Birchler J\*. [Whole-chromosome paints in maize reveal rearrangements, nuclear domains, and chromosomal relationships](https://www.pnas.org/content/116/5/1679) _**Proceedings of the National Academy of Sciences of the United States of America**_ 2019, 16(5):1679-1685
+    - Martins LV†, Yu F†, Zhao HN†, Dennison T, Lauter N, Wang HY, Deng ZH, Thompson A, Semrau K, Rouilard JM, Bichler J, Jiang JM\*. [Meiotic crossovers characterized by haplotype-specific chromosome painting in maize.](https://www.nature.com/articles/s41467-019-12646-z) _**Nature Communications**_ 2019, 10:4604
 - **Populus**:
     - Xin HY†, Zhang T†, Wu YF, Zhang WL, Zhang PD, Xi ML\*, Jiang JM. [An extraordinarily stable karyotype of the woody Populus species revealed by chromosome painting.](https://onlinelibrary.wiley.com/doi/epdf/10.1111/tpj.14536) _**The Plant Journal**_ 2020, 101:253-264
     - Wang ZY, Lei YJ, Liu GQ, Ning Y, Ning YR, Zhang T*, Xi M*. [Male-Specific Sequence in Populus simonii Provides Insights into Gender Determination of Poplar.](https://doi.org/10.3390/f14122385) _**Forests**_ 2023, 14:2385  
     - Xin H†, Zhang T†, Han Y, Wu YF, Shi JS, Xi ML\*, and Jiang JM. [Chromosome painting and comparative physical mapping of the sex chromosomes in Populus tomentosa and Populus deltoides.](https://link.springer.com/article/10.1007/s00412-018-0664-y) _**Chromosoma**_ 2018, 127(3):313-321
 - **Cotton**:
-    - Yan H,  Han JL,  Jin SK, Han ZG, Si ZF, Yan SY, Xuan LS, Yu GR, Guan XY, Fang L*, Wang K*,  Zhang TZ.* [Post-polyploidization centromere evolution in cotton.](https://doi.org/10.1038/s41588-025-02115-3) _**Nature Genetics**_ 2025,  DOI:https://doi.org/10.1038/s41588-025-02115-3
+    - Yang ZE\*, Yang ZR, Gao CX, Zhang MJ, Hu GJ, Yang L, Zhang YH, Ma M, Liu RJ, Wang Z, Gao BB, Zhang ZB, Zhao H, Liu X, Ma XF\*, Wendel J\*, Ge XY\*, Li FG\*. [Graph pan-genome illuminates evolutionary trajectories and agronomic trait architecture in allotetraploid cotton](https://www.nature.com/articles/s41588-025-02462-1) _**Nature Genetics**_ 2026, 58:218–229
+    - Yan H,  Han JL,  Jin SK, Han ZG, Si ZF, Yan SY, Xuan LS, Yu GR, Guan XY, Fang L\*, Wang K\*,  Zhang TZ\*. [Post-polyploidization centromere evolution in cotton.](https://doi.org/10.1038/s41588-025-02115-3) _**Nature Genetics**_ 2025, 57:1021–1030
     - Liu YL, Wang XY, Wei YY, Liu Z, Lu QW, Liu F, Zhang T\*, Peng RH\*. [Chromosome Painting Based on Bulked Oligonucleotides in Cotton](https://www.frontiersin.org/articles/10.3389/fpls.2020.00802/full) _**Frontier in Plant Science**_ 2020, 11:802
 - **Sugarcane**:
     - Zhang Q†, Qi YY†, Pan HR†, Tang HB, Wang G, Hua XT, Wang YJ, Lin LY, Li Z, Li YH, Yu F, Yu ZH, Huang YJ, Wang TY, Ma PP, Dou MJ, Sun ZY, Wang YB, Wang HB, Zhang XT, Yao W, Wang YT, Liu XL, Wang MJ, Wang JP, Deng ZH, Xu JS, Yang QH, Liu ZJ, Chen BS, Zhang MQ, Ming R, Zhang JS\*. [Genomic insights into the recent chromosome reduction of autopolyploid sugarcane  Saccharum spontaneum](https://www.nature.com/articles/s41588-022-01084-1) _**Nature Genetics**_ 2022, 54:885-896
@@ -43,6 +45,7 @@ Zhang T†*, Liu GQ†, Zhao HN, Braz G.T, Jiang JM\*. [Chorus2: design of genom
     - Zhao QZ, Bai YL, Cheng CY, Yu XQ, Lou QF* and Chen JF*. [Chromosome-specific oligo-painting provides insights into the cytogenetic basis of karyotypic stasis in paleo-allotetraploid _Cucurbita_](https://academic.oup.com/hr/advance-article/doi/10.1093/hr/uhaf179/8193405). _**Horticulture Research**_ 2025. https://doi.org/10.1093/hr/uhaf179
 - **Chicken**:
     - Huang Z†, Xu ZX†, Bai H†, Huang YJ, Kang N, Ding XT, Liu J, Luo HR, Yang CT, Chen WJ, Guo QX, XUE LZ, ZhangXP, Xu L, Chen ML, Fu HG, Chen YL, Yue ZC, Fukagawa T, Liu SL, Chang GB\*, Xu LH\*. [Evolutionary analysis of a complete chicken genome](https://www.pnas.org/doi/10.1073/pnas.2216641120) _**Proceedings of the National Academy of Sciences of the United States of America**_ 2023, 120(8)e2216641120
+
 - Switchgrass, Banana and etc ...
 
 [https://github.com/zhangtaolab/Chorus2](https://github.com/zhangtaolab/Chorus2)

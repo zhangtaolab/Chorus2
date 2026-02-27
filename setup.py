@@ -8,7 +8,7 @@ def readme(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(name='Chorus2',
-      version='2.0',
+      version='2.1',
       packages=find_packages(),
       author='Tao Zhang',
       author_email='zhangtao@yzu.edu.cn',

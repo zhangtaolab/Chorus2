@@ -548,7 +548,7 @@ def kmerfilterprobe(jffpbruner):
 
         kmerscore = sum(jfkmercount[st:(sp - 1)])
 
-        st += 1
+        # st += 1
 
         if kmerscore < jffpbruner.maxkmerscore:
 
