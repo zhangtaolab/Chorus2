@@ -431,6 +431,6 @@ if __name__ == '__main__':
     tb.show()
 
     span = SpanSelector(tb.widget.canvas.ax1, tb.oneselect, 'horizontal', useblit=True,
-                                 rectprops=dict(alpha=0.3, facecolor='grey'))
+                        props=dict(alpha=0.3, facecolor='grey'))
 
     sys.exit(app.exec_())

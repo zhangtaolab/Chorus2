@@ -1,9 +1,9 @@
 Cython
 numpy
 pyfasta
-primer3-py
+primer3-py>=1.0.0
 pandas<2
 pyBigWig
-matplotlib
+matplotlib>=3.5.0
 PyQt5<5.11
 SIP>=4
