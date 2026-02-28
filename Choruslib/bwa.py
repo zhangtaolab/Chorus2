@@ -172,7 +172,7 @@ def bwaalign(bwabin, reffile, inputfile, outfile, threadnumber=1):
     inputfile = subprocesspath.subprocesspath(inputfile)
     outfile = subprocesspath.subprocesspath(outfile)
 
-    bwacmd = ' '.join([bwabin, 'mem', '-O',' 0',' -B',' 0',' -E',' 0',' -k',' 5', '-t',str(threadnumber), reffile, inputfile, '>', outfile])
+    bwacmd = ' '.join([bwabin, 'mem', '-O',' 0',' -B',' 0',' -k',' 5', '-t',str(threadnumber), reffile, inputfile, '>', outfile])
 
     print(bwacmd)
 
@@ -278,7 +278,7 @@ def bwaloci(bwabin, reffile, inputfile, threadnumber=1):
     inputfile = subprocesspath.subprocesspath(inputfile)
 
 
-    bwacmd = ' '.join([bwabin, 'mem', '-O',' 0',' -B',' 0',' -E',' 0',' -k',' 5', '-t',str(threadnumber), reffile, inputfile])
+    bwacmd = ' '.join([bwabin, 'mem', '-O',' 0',' -B',' 0',' -k',' 5', '-t',str(threadnumber), reffile, inputfile])
 
     print(bwacmd)
 
@@ -315,7 +315,7 @@ def bwafilter(bwabin, reffile, inputfile, minas, maxxs ,threadnumber=1 ):
 
     inputfile = subprocesspath.subprocesspath(inputfile)
 
-    bwacmd = ' '.join([bwabin, 'mem', '-O',' 0',' -B',' 0',' -E',' 0',' -k',' 5', '-t',str(threadnumber), reffile, inputfile])
+    bwacmd = ' '.join([bwabin, 'mem', '-O',' 0',' -B',' 0',' -k',' 5', '-t',str(threadnumber), reffile, inputfile])
 
     print(bwacmd)
 
