@@ -45,7 +45,11 @@ Zhang T†*, Liu GQ†, Zhao HN, Braz G.T, Jiang JM\*. [Chorus2: design of genom
     - Zhao QZ, Bai YL, Cheng CY, Yu XQ, Lou QF* and Chen JF*. [Chromosome-specific oligo-painting provides insights into the cytogenetic basis of karyotypic stasis in paleo-allotetraploid _Cucurbita_](https://academic.oup.com/hr/advance-article/doi/10.1093/hr/uhaf179/8193405). _**Horticulture Research**_ 2025. https://doi.org/10.1093/hr/uhaf179
 - **Chicken**:
     - Huang Z†, Xu ZX†, Bai H†, Huang YJ, Kang N, Ding XT, Liu J, Luo HR, Yang CT, Chen WJ, Guo QX, XUE LZ, ZhangXP, Xu L, Chen ML, Fu HG, Chen YL, Yue ZC, Fukagawa T, Liu SL, Chang GB\*, Xu LH\*. [Evolutionary analysis of a complete chicken genome](https://www.pnas.org/doi/10.1073/pnas.2216641120) _**Proceedings of the National Academy of Sciences of the United States of America**_ 2023, 120(8)e2216641120
-
+- **Snow carps**:
+    - Xie CS, Ma ZT, Zhou CW, Ma KX ... Meyer\*, Liu HP\*, Xu LH\*,. [Chromosomal fusions trigger rediploidization of autopolyploid genomes](https://www.nature.com/articles/s41586-026-10439-1) _**Nature**_ 2026, 645:706-713
+- **Brassica species**:
+    - Baez M\*, Mann L, Quezada-Martinez D, Ramtekey V,  Heitkam T, S. Mason A\*. [Specific whole-chromosome identification of the A01/C1 homoeologs through oligonucleotide-based chromosome painting in _Brassica_ species](https://onlinelibrary.wiley.com/doi/10.1111/tpj.71078) _**The Plant Journal**_ 2026, https://doi.org/10.1111/tpj.71078
+      
 - Switchgrass, Banana and etc ...
 
 [https://github.com/zhangtaolab/Chorus2](https://github.com/zhangtaolab/Chorus2)
