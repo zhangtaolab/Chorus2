@@ -50,7 +50,9 @@ Zhang T†*, Liu GQ†, Zhao HN, Braz G.T, Jiang JM\*. [Chorus2: design of genom
     - Xie CS, Ma ZT, Zhou CW, Ma KX ... Meyer\*, Liu HP\*, Xu LH\*,. [Chromosomal fusions trigger rediploidization of autopolyploid genomes](https://www.nature.com/articles/s41586-026-10439-1) _**Nature**_ 2026, 645:706-713
 - **Brassica species**:
     - Baez M\*, Mann L, Quezada-Martinez D, Ramtekey V,  Heitkam T, S. Mason A\*. [Specific whole-chromosome identification of the A01/C1 homoeologs through oligonucleotide-based chromosome painting in _Brassica_ species](https://onlinelibrary.wiley.com/doi/10.1111/tpj.71078) _**The Plant Journal**_ 2026, https://doi.org/10.1111/tpj.71078
-      
+- **Papaya**:
+    - Yue JJ†, Liu J†, Zeng QX, Wai CM, Deng B, Tong YH, Zuo LP, Xiang T, Xie WY, Zhao XB, Lai J, Liao JJ, Lai QQ, Xu LW, Zhu YT, He J, Zhang MJ, Nie SY, Lin Z, Liang YQ, Jiang SL, Chen X, Wang BW, Huang YJ, Xu Y, Nguyen-Edquilang J, Ma YY, Fumia N, Jones T, Quesada-Rojas P, Mora-Newcomer E, Zhang JS, Yu QY, Wang ML, Ming R*. [Recreating viable YYh genotype uncovers the role of CpYYL underlying YY lethality in papaya.](https://www.nature.com/articles/s41467-026-68627-6) _**Nature Communications**_ 2026, 17:1999 
+
 - Switchgrass, Banana and etc ...
 
 [https://github.com/zhangtaolab/Chorus2](https://github.com/zhangtaolab/Chorus2)
