@@ -36,6 +36,7 @@ Zhang T†*, Liu GQ†, Zhao HN, Braz G.T, Jiang JM\*. [Chorus2: design of genom
     - Yan H,  Han JL,  Jin SK, Han ZG, Si ZF, Yan SY, Xuan LS, Yu GR, Guan XY, Fang L\*, Wang K\*,  Zhang TZ\*. [Post-polyploidization centromere evolution in cotton.](https://doi.org/10.1038/s41588-025-02115-3) _**Nature Genetics**_ 2025, 57:1021–1030
     - Liu YL, Wang XY, Wei YY, Liu Z, Lu QW, Liu F, Zhang T\*, Peng RH\*. [Chromosome Painting Based on Bulked Oligonucleotides in Cotton](https://www.frontiersin.org/articles/10.3389/fpls.2020.00802/full) _**Frontier in Plant Science**_ 2020, 11:802
 - **Sugarcane**:
+    - Wang JG†, Li XF†, Wang YB†, Lin JS†, Chen S†, Liu HB†, Chen X†, Chai K, Dong AQ, Zhao TT, Feng CL, Wu RJ, Zhao P, Zheng YD, Xia ZQ, Zhang SC, Liu Y, Qu SY, Ye ZQ, Song YH, Deng QY, Zeng XF, Yu GR, Kong R, Zhang BQ, Zhang W, Zhao PF, Mao J, Lu X, Jia HF, Zhao XT, Zhang QQ, Zhang SZ, Cai WW, Huo DA, Li L, Gong YQ, Huang SQ, Huang YJ, Yu ZH, Deng ZH, Chen BS, Zhang YB, Zhang MQ*, Ming R*, Zhang XT*. [Genetic architecture of sugarcane traits in a polyploid genomics framework.](https://www.nature.com/articles/s41586-026-10576-7) _**Nature**_ 2026, 654:994-1003 
     - Zhang Q†, Qi YY†, Pan HR†, Tang HB, Wang G, Hua XT, Wang YJ, Lin LY, Li Z, Li YH, Yu F, Yu ZH, Huang YJ, Wang TY, Ma PP, Dou MJ, Sun ZY, Wang YB, Wang HB, Zhang XT, Yao W, Wang YT, Liu XL, Wang MJ, Wang JP, Deng ZH, Xu JS, Yang QH, Liu ZJ, Chen BS, Zhang MQ, Ming R, Zhang JS\*. [Genomic insights into the recent chromosome reduction of autopolyploid sugarcane  Saccharum spontaneum](https://www.nature.com/articles/s41588-022-01084-1) _**Nature Genetics**_ 2022, 54:885-896
     - Yu ZH, Huang YJ, Yu XK, Deng ZH, Chai J, Liu JR, Gong ZY, Yao W, Zhang JS, Zhang MQ, Yu F* and Jiang JM. (Formation and centromere inactivation of fusion chromosomes in two allotetraploid species from the _Saccharum_ complex)[https://nph.onlinelibrary.wiley.com/doi/10.1111/nph.70369]. _**New Phytologist**_ 2025. https://doi.org/10.1111/nph.70369
 - **Potato**, **Tomato**, **Eggplant**, **Tzimbalo** and **Pepper**:
@@ -49,7 +50,9 @@ Zhang T†*, Liu GQ†, Zhao HN, Braz G.T, Jiang JM\*. [Chorus2: design of genom
     - Xie CS, Ma ZT, Zhou CW, Ma KX ... Meyer\*, Liu HP\*, Xu LH\*,. [Chromosomal fusions trigger rediploidization of autopolyploid genomes](https://www.nature.com/articles/s41586-026-10439-1) _**Nature**_ 2026, 645:706-713
 - **Brassica species**:
     - Baez M\*, Mann L, Quezada-Martinez D, Ramtekey V,  Heitkam T, S. Mason A\*. [Specific whole-chromosome identification of the A01/C1 homoeologs through oligonucleotide-based chromosome painting in _Brassica_ species](https://onlinelibrary.wiley.com/doi/10.1111/tpj.71078) _**The Plant Journal**_ 2026, https://doi.org/10.1111/tpj.71078
-      
+- **Papaya**:
+    - Yue JJ†, Liu J†, Zeng QX, Wai CM, Deng B, Tong YH, Zuo LP, Xiang T, Xie WY, Zhao XB, Lai J, Liao JJ, Lai QQ, Xu LW, Zhu YT, He J, Zhang MJ, Nie SY, Lin Z, Liang YQ, Jiang SL, Chen X, Wang BW, Huang YJ, Xu Y, Nguyen-Edquilang J, Ma YY, Fumia N, Jones T, Quesada-Rojas P, Mora-Newcomer E, Zhang JS, Yu QY, Wang ML, Ming R*. [Recreating viable YYh genotype uncovers the role of CpYYL underlying YY lethality in papaya.](https://www.nature.com/articles/s41467-026-68627-6) _**Nature Communications**_ 2026, 17:1999 
+
 - Switchgrass, Banana and etc ...
 
 [https://github.com/zhangtaolab/Chorus2](https://github.com/zhangtaolab/Chorus2)
