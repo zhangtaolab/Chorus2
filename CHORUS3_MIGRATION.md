@@ -1,6 +1,7 @@
 # Chorus3 迁移方案（Python → Rust）
 
 > 状态：规划文档，未开始开发。
+> 最近更新（2026-10-21）：RustAlign v2.0 本机复验完成，发现其 seed/评分架构无法复刻 Chorus2 的 homology 语义（§2.4）；对齐内核已定 v1.0-final（§2.2/§9.5）。
 > 范围约定（2026-10-17）：**首版不含 primer3 / 寡核苷酸热动力计算**（Tm、hairpin、dTm 过滤整体移除，等价于现有 `--skipdtm` 行为）；第一步目标是实现**基本的探针设计功能**（对应 Chorus2.py + ChorusGUI.py 主流程）。
 > 目标平台：Windows、macOS、Linux 三平台原生运行。
 
@@ -80,16 +81,27 @@
   - k > 64 不支持（Chorus2 的 k 由基因组大小推出，水稻 ~17、玉米 ~19、小麦 ~23，远小于 64，够用）。
 - **结论**：P1 直接 `path` 依赖接入；大基因组内存问题列为风险 R-1（§8），备选方案是在 rustkmer 前加 Bloom Filter 或分染色体计数后 merge（其 streaming_merge 已具备）。
 
-### 2.2 RustAlign（MIT）—— bwa 的替代
+### 2.2 RustAlign（MIT）—— bwa 的替代（2026-10-21 重新评估）
 
-- **v1.0-final tag（`d147799`）是功能完整的 BWA-MEM 移植**：`index` + `mem`（SE/PE）、SAM 输出、641+ 测试通过、小基因组上索引与 C BWA 字节一致。
-- 当前 HEAD（v2.0 分支）是重构骨架，`index/mem` 是 stub，但 `ksw_oracle`（Smith-Waterman 三件套）、mapq、SAM/coords 模块是真实可用代码。
-- **迁移策略：从 `v1.0-final` tag 用 `git show v1.0-final:<path>` 提取代码**，按 RustAlign 仓库自己的 donors 规则（只搬代码、不做链接），清理其中的裸指针。
-- Chorus2 只用了 bwa 的一个极小子集：`bwa index`、`bwa mem -O 0 -B 0 -k 5`（零错配/零 gap 罚分 → AS≈比对上的碱基数）、解析 AS/XS、`@SQ` 取染色体长度。RustAlign v1.0 全覆盖，且 SAM 解析可以直接用 noodles 或直接消费其内部 Alignment 结构（跳过 SAM 文本序列化，更快）。
-- **注意**：v2 的 ksw 是标量实现（SIMD 排期在 Phase 22），探针级短序列（45 bp）比对量小，性能不是瓶颈。
+- **v1.0-final tag（`d147799`）是功能完整的 BWA-MEM 移植**：FM-index + SMEM seeding，`index` + `mem`（SE/PE）、SAM 输出、641+ 测试通过、小基因组上索引与 C BWA 字节一致；`-k/-b/-o` 可配置。该分支已冻结。
+- **v2.0 里程碑已于 2026-10-21 完成**（分支 `gsd/v2.0-milestone`，版本 0.2.0）：架构重写为 **minimizer 索引 k=19/w=10**、单文件 `<ref>.rli` 索引、needletail 输入（FASTA/FASTQ/gz 通吃）、SIMD 内核；本机实测可正常构建与比对，不再是骨架。
+- **但 v2.0 不能复刻 Chorus2 的比对语义**（本机 macOS 实测，详见 §2.4）：
+  - `K=19` / `W=10` 是编译期常量（`src/sketch/mod.rs:21-24`），`-k/-w` 只是“接受后丢弃”；C bwa 的 `-k 5` 无法设置。
+  - `-O/-B/-A/-E` 同样是 pinned no-op：带与不带这些参数输出完全一致。库层 `AlignmentStageConfig` 可设 `match_score/mismatch/o_del/o_ins/e_del/e_ins`，但**不能设 seed 长度**。
+  - 后果：Chorus2 的 XS/homology 过滤依赖短种子发现近缘位点；v2 对间距小于 seed 长度（19 bp，部分场景需约 28 bp 窗口）的突变会直接“看不见”该位点。TAIR10 的 2000 条真实 45 bp 探针上，过滤决策与 C bwa 的差异为 **8.85%（默认评分）/ 5.15%（库层设 mismatch=0、gap-open=0）**；v1.0-final 为 **0.65%**，且 81.4% 的 XS 完全相同。
+- **结论（2026-10-21 已定）**：采用 **v1.0-final 作为对齐内核**。v2.0 的 minimizer 索引没有可用的 seed 参数，不能作为 Chorus2 的等价替代；继续等待/推动 v2 上游改造不阻塞 P1。
+  - CLI 映射：C bwa `mem -O 0 -B 0 -k 5` → RustAlign v1 `mem -o 0 -b 0 -k 5`（注意 v1 用小写 `-b/-o`，大小写含义不同）。
+  - 输入：v1 CLI 只接受 FASTQ；Chorus2 的探针 FASTA 需先转 FASTQ（库层可直接构造 reads，无此限制）。
+  - 索引：v1 `index ref.fa` 生成的是去掉扩展名的前缀（`ref.bwt/.sa/...`），`mem` 用该前缀；与 C bwa 的 `ref.fa.bwt` 命名不同。
+  - 语义差距：TAIR10 2000 条探针上过滤决策差异 0.65%（13 条，均为 XS 阈值附近）；golden test 需按 R-3 解释这些边缘差异。
+- 备选（暂不采用）：推动 v2 上游增加“敏感模式/短种子索引”（改动涉及索引格式与 occurrence 规模）；Chorus3 自研 homology 过滤器；继续外挂 C bwa 兜底。
+  **已提上游 issue**：[RustAlign#5](https://github.com/zhangtaolab/RustAlign/issues/5)（v2 参数被静默忽略；请求短种子/敏感模式，或至少对 pinned 参数报错/告警）。上游已响应（`b3cc05d`）：divergent 参数现在逐条输出 `[W::main_mem]` stderr 告警、pin-equal 保持静默，并刷新了 help 文本；但 **K/W 可配置与短种子模式仍明确不在范围内，比对输出与修复前逐字节相同**。issue 已按 completed 关闭。
+- Chorus2 只用了 bwa 的一个极小子集：`bwa index`、`bwa mem -O 0 -B 0 -k 5`、解析 AS/XS、`@SQ` 取染色体长度。注意 `AS >= probe_length` 在 `-O0 -B0` 下等价于“要求 45M 全长精确匹配”，真正依赖比对灵敏度的是 **XS 端（近缘位点检测）**。
 - BLAT/exonerate 路线（`pbsearch.py`）在现有 GUI 中已删除，不迁移；如未来需要，可用 FM-index + ksw 组出 seed-extend 扫描器。
 
 ### 2.3 Windows 实测验证（2026-10-17，本机 Rust 1.92 / MSVC）
+
+> 注：本节结论基于当时的 v1.0-final 与 rustkmer 实测。RustAlign 已于 2026-10-21 完成 v2.0 重写（minimizer 索引），其与 Chorus2 的语义差异见 §2.4。
 
 对两个项目做了真实构建 + 测试 + 功能验证，结论：**均可用，但有明确的适配清单**。
 
@@ -104,6 +116,7 @@
   - CI 无 Windows 矩阵。
 - 接入要求：只走 count/query 路径；merge 相关 Windows 修复（约 4 处）在 Chorus3 内自修或提上游；把 Windows 加入 CI。
   **已提上游 issue**：[rustkmer#13](https://github.com/zhangtaolab/rustkmer/issues/13)（symlink 编译失败）、[#14](https://github.com/zhangtaolab/rustkmer/issues/14)（3 个 merge 测试 Windows 失败）、[#15](https://github.com/zhangtaolab/rustkmer/issues/15)（CI 加 Windows 矩阵）。
+  **状态（2026-10-21）**：#13/#14/#15 均已关闭，Windows 矩阵已加入 CI；但最新 Windows run（2026-10-20）仍有 1 个 root 测试（`io::fastq::tests::test_count_sequences_truncated_record_is_err`）和 2 个 pyo3 merge 测试失败。均不在 Chorus3 使用的 count/query 核心路径上，但 Windows 全绿尚未达成。
 
 **RustAlign v1.0-final：端到端可用 ✓（3 个适配点）**
 
@@ -120,6 +133,40 @@
 - Linux 侧证据：仓库自带与 C BWA 的索引字节级一致性和 SAM parity 对比测试（CI 曾通过）。
 - 接入要求：从 `v1.0-final` 提取后①修 FASTA 输入；②统一前缀规则；③给裸指针热点（rope/FM-index 遍历）加边界校验；④Windows 加入 CI。
   **已提上游 issue**：[RustAlign#1](https://github.com/zhangtaolab/RustAlign/issues/1)（mem 拒绝 FASTA 输入）、[#2](https://github.com/zhangtaolab/RustAlign/issues/2)（索引前缀剥扩展名）、[#3](https://github.com/zhangtaolab/RustAlign/issues/3)（约 20 个测试硬编码 /tmp）、[#4](https://github.com/zhangtaolab/RustAlign/issues/4)（伪造索引数据触发 UB 段错误）。
+  **状态（2026-10-21）**：#1/#2 在 v2.0 已由架构修复（needletail / `.rli`），但 **v1.0-final 仍存在**，选 v1 路线时必须在提取层适配；#3 在 v2 测试代码中已无硬编码 `/tmp`，但 CI 仍只有 ubuntu/arm，issue 仍 open；#4 的 FM-index/rope 路径在 v2 重写中消失（对 v2 不再是问题），**v1.0-final 仍带该风险**，提取时需加输入校验。
+
+### 2.4 macOS 实测验证（2026-10-21，RustAlign v2.0 / rustc 1.101 nightly）
+
+**环境**：macOS（Darwin 25.6.0），`gsd/v2.0-milestone`（提交 `4831c18`，v0.2.0），`cargo build --release` 通过；C bwa 0.7.19 作为对照。
+
+**基础能力 ✓**
+
+- FASTA/FASTQ 输入均可用（needletail 自动嗅探）；索引为单文件 `<ref>.rli`（字符串直接追加，如 `ref.fa` → `ref.fa.rli`）。
+- 精确 45 bp 探针：`AS:i:45`、`45M`、MAPQ 60，与 C bwa 逐字段一致。
+- 双拷贝探针：`AS:i:45` + `XS:i:45` + `XA:Z:...`，与 C bwa 一致；homology 过滤依赖的 XS 语义在“有种子”的前提下正常。
+- 不存在探针：FLAG 4 未比对，与 C bwa 一致。
+
+**关键否定结果 ✗**
+
+- `-O 0 -B 0 -k 5` 被 CLI **接受但仍被忽略**（修复 `b3cc05d` 后会输出 stderr 告警，不再静默）：带与不带这些参数，stdout 逐字节相同；`k=19/w=10` 是编译期常量，`-O/-B/-A/-E/-k` 等均为 pinned no-op。
+  - 这意味着把 Chorus2 的 `bwa mem -O 0 -B 0 -k 5 ...` 直接换成 v2 不会报错，但会悄悄换掉全部评分与播种语义。
+- 库层 `AlignmentStageConfig` 的 `mismatch/o_del/o_ins` 等字段是 `pub`，可复刻 `-O0 -B0` 的评分；但 **seed 长度仍是 19**，无法复刻 C bwa 的 `-k 5`。
+
+**真实数据对照（TAIR10，2000 条随机 45 bp chr1 探针，Chorus2 过滤条件 `AS>=45 && XS<33`）**
+
+| 对齐器 | 与 C bwa 的过滤决策差异（75% homology） | 备注 |
+|---|---|---|
+| RustAlign v2.0 默认 | **177 / 2000（8.85%）**，全部为 C 拒绝、v2 保留 | 评分固定为 C 默认（mismatch=4） |
+| RustAlign v2.0 + 库层 mismatch=0、gap-open=0 | **103 / 2000（5.15%）**，全部为 C 拒绝、v2 保留 | 评分可复刻，但 seed 长度不可 |
+| RustAlign v1.0-final（FM-index，`-k 5 -b 0 -o 0`） | **13 / 2000（0.65%）**，6 条 C-only / 7 条 v2-only | XS 完全相等 1628/2000（81.4%） |
+
+- 差异集中在“近缘位点与探针的突变间距 <19 bp”的情况：v2 的 minimizer 种子要求约 19–28 bp 的连续精确匹配，C bwa 的 `-k 5` 只需 5 bp，因此 v2 会漏掉这类 paralog，导致 XS 被低估（常直接为 0）→ 本该剔除的探针被保留。
+- 说明：上述探针是随机精确子串，未经过 Chorus2 的 k-mer 预过滤；真实 golden test 的具体比例可能不同。但分歧的根因（短种子缺失）是结构性的，预过滤主要剔除高拷贝重复，不会消除这类稀疏突变的近缘位点。
+- 对抗性网格（均匀 0–20 个错配 + 中心突变簇，flank 2–22 bp）：v2（含评分修正）在 `even3/even4`、`clust_f16–f19` 上与 C bwa 决策不同（5/33）；v1.0-final 为 0/33。
+- 其他观察：v2 的 `.rli` 在 TAIR10 上约 587 MB（FASTA 116 MB，约 5×），v1 FM-index 约 200 MB（约 1.7×）。
+- **上游修复复查（commit `b3cc05d`）**：`-k/-B/-O` 等 divergent 值现在会输出 `[W::main_mem]` 告警（pin-equal 静默），help 文本已更新；但 stdout 与修复前逐字节相同，TAIR10 决策差异仍为 177/2000，语义未变。可配置 K/W / 短种子模式在提交说明中明确为 out of scope。
+
+**结论**：v2.0 的工程完成度没问题，但“最小种子 19 + 评分常量”是架构选择，不是可配置项；在 Chorus2 的 homology 过滤语义下不能作为等价替代。若坚持 v2 路线，需要上游提供短种子/敏感模式（或 Chorus3 自研过滤器）；否则应以 v1.0-final 为对齐内核。
 
 ---
 
@@ -156,8 +203,8 @@ chorus3/
 | k-mer 大小公式 | 原样复刻 `max(17, log4(size_mb)+1)` | chorus-core |
 | `jellyfish count --canonical -L 2` | `rustkmer::KmerCounter::new(k).canonical()...` + 落盘 `.rkdb` | chorus-kmer |
 | 10Mb 分块滑窗 + Pool 并行 | rayon `par_iter` 按块并行；计数裁剪 0/1/2 原样复刻 | chorus-kmer |
-| `bwa index` | RustAlign v1.0 index 构建函数 | chorus-align |
-| `bwa mem -O 0 -B 0 -k 5` + AS/XS 过滤 | RustAlign v1.0 mem（同参数），直接消费 Alignment 结构取 AS/次优分 | chorus-align |
+| `bwa index` | RustAlign v1.0-final 的 FM-index 构建（可复刻 `-k 5`）；v2 的 minimizer 索引因 k/w 固定，暂不适配 | chorus-align |
+| `bwa mem -O 0 -B 0 -k 5` + AS/XS 过滤 | v1.0-final mem（`-k 5 -b 0 -o 0`），直接消费 Alignment 结构取 AS/次优分；v2 只能设评分、不能设 seed 长度（见 §2.2/§2.4） | chorus-align |
 | `atcg_filter` | 字节扫描（N 检测 + 游程 ≥5） | chorus-core |
 | primer3 dTm | **跳过**（保留 `ProbeFilter` trait 的一个 no-op 实现，未来挂 primer3 crate） | chorus-core |
 | 染色体贪心间距选择 | 原样复刻 | chorus-core |
@@ -248,7 +295,8 @@ P0  Workspace 骨架 + CI（三平台矩阵：build + test + clippy + fmt）
 P1  ★ 基本设计功能（第一步，纯 CLI）
      1. chorus-io: FASTA 索引读写、BED/len 输出
      2. chorus-kmer: rustkmer 封装 + 滑窗打分（复刻计数裁剪与 off-by-one 语义）
-     3. chorus-align: RustAlign v1.0 提取 + 参数映射(-O 0 -B 0 -k 5) + AS/XS 过滤
+     3. chorus-align: 提取 RustAlign v1.0-final（FM-index）+ 参数映射（`-k 5 -b 0 -o 0`）+ AS/XS 过滤；
+        探针 FASTA 在库层直接构造 reads，或 CLI 验证时先转 FASTQ
      4. chorus-core: 管线编排（k 公式、分块、间距选择、输出）+ 取消/进度
      5. chorus-cli: `chorus3 design -g ... -i ...` 子命令
      6. ★ 验收门：Golden test —— 用 TAIR10/水稻等小基因组，
@@ -303,7 +351,7 @@ P6  打包分发（见 §6）
 3. **滑窗求和的 off-by-one**：`sum(count[st : st+len-1])` 故意不含最后一个 k-mer 起点——复刻时建议保留行为但注释说明（或经 golden test 验证后修正）。
 4. **k-mer 计数裁剪**：query 原始计数 → `2→1, ≥3→2, 其他→0`。
 5. **`getch()`（tty/termios）只工作在 Unix**——旧版 Windows CLI 的 Y/N 确认根本不可用；Chorus3 用 `std::io::stdin` 常规读取或 `--force` 参数。
-6. **bwa 参数**：`-O 0 -B 0 -k 5`，`-E` 沿用默认；AS 阈值 = length，XS 阈值 = `length×homology/100`（`int()` 截断）。
+6. **bwa 参数**：`-O 0 -B 0 -k 5`，`-E` 沿用默认；AS 阈值 = length，XS 阈值 = `length×homology/100`（`int()` 截断）。RustAlign v2 的 `-k/-O/-B` 是 pinned no-op，库层只能改评分、不能改 seed 长度（§2.4），映射时必须显式检查。
 7. **间距选择窗口** = `max(len(rprimer),5) + probe_length`；首条探针从 0 起算。
 8. `bwa.bwareflength` 靠发一条假读段取 `@SQ`——RustAlign 直接给参考长度，此 hack 消失。
 
@@ -314,8 +362,8 @@ P6  打包分发（见 §6）
 | # | 风险 | 影响 | 缓解 |
 |---|---|---|---|
 | R-1 | rustkmer 全内存精确计数，>10 Gbp 基因组（小麦 17 Gbp）内存可能超限 | 大基因组用户 | ① 分染色体 count + streaming_merge（已有）；② 给 rustkmer 加 Bloom Filter 前置（jellyfish `--bf-size` 等价）；③ 文档标注内存需求。P1 验收用拟南芥/水稻/玉米（≤2.5 Gbp）。Windows 上 count/query 路径已实测可用（§2.3） |
-| R-2 | RustAlign 代码从 v1.0 tag 提取，含裸指针需清理；v2 重构未完成 | P1 工作量 | 只提取 `mem/index/bntseq/ksw` 所需模块；641 个测试随迁作为安全网。v1.0 已在 Windows 实测端到端可用（§2.3），提取时附带修复：FASTA 输入、索引前缀规则、裸指针输入校验 |
-| R-3 | golden test 对齐：bwa 与 RustAlign 在长重复区段的 MAPQ/次优命中可能有小差异 → XS 过滤边缘差异 | 输出集合差异 | 验收标准定为"探针集合 ≥99.9% 一致 + 差异逐条解释" |
+| R-2 | RustAlign 路线选择：v1.0-final 含裸指针需清理且已冻结；v2.0 虽已完成但 seed 长度/评分固定，无法复刻 Chorus2 的 homology 语义（§2.4） | P1 工作量与正确性 | 优先按 §2.2 决策一提取 v1.0-final（只取 `mem/index/bntseq/ksw` 所需模块，641 个测试随迁）；若改走 v2，需先解决短种子问题 |
+| R-3 | golden test 对齐：bwa 与 RustAlign 在长重复区段的 MAPQ/次优命中可能有小差异 → XS 过滤边缘差异 | 输出集合差异 | 验收标准定为"探针集合 ≥99.9% 一致 + 差异逐条解释"。实测 v1.0-final 在 TAIR10 2000 条探针上为 99.35%（13 条差异，均为阈值附近），v2 为 91.15%/94.85%，因此该门槛本身也需要按路线重新评估 |
 | R-4 | egui_plot 维护者空缺 | P3 | 需求已覆盖；必要时 fork |
 | R-5 | 中文 UI 字体内嵌（体积 +2~5 MB） | 包体积 | 字体子集化 |
 | R-6 | macOS 签名/公证 | 分发体验 | 首版可免签名发布（用户右键打开）；后续补 |
@@ -326,3 +374,4 @@ P6  打包分发（见 §6）
 2. **rustkmer/RustAlign 接入方式**：git submodule / vendor 进 chorus3 仓库 / crates.io 发布后作普通依赖？（建议 vendor 或 submodule，保证可改）
 3. **§7 中两处公式不一致**（step、maxkmerscore）：以 CLI 版为准？
 4. 仓库位置：Chorus3 在当前 Chorus2 仓库的 `Chorus3` 分支上新建 `chorus3/` 目录，还是独立新仓库？
+5. **对齐内核（§2.2/§2.4）——已定**：采用 RustAlign v1.0-final（`-k 5 -b 0 -o 0`）。v2.0 的 `-k/-w/-O/-B` 是 pinned no-op，没有参数可解决；若未来上游提供短种子/敏感模式，再评估切换。
