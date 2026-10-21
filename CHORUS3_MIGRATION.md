@@ -13,7 +13,7 @@
 
 | 脚本 | 功能 | 依赖的外部工具 | 迁移优先级 |
 |---|---|---|---|
-| `Chorus2.py` (753 行) | **核心设计管线**：k-mer 过滤 + 比对过滤 + 简单过滤 + 间距选择，输出 BED | jellyfish、bwa | **P1（第一步）** |
+| `Chorus2.py` (853 行) | **核心设计管线**：k-mer 过滤 + 比对过滤 + 简单过滤 + 间距选择，输出 BED | jellyfish、bwa | **P1（第一步）** |
 | `ChorusGUI.py` (894 行) | PyQt5 三页向导 GUI（程序页/参数页/运行页），QThread 跑管线 | 同上 | **P2** |
 | `ChorusPBGUI.py` (613 行) | 探针浏览器：按染色体查看探针密度图（matplotlib），框选增删探针，导出 | 无（纯 pandas/matplotlib） | P3 |
 | `ChorusNGSfilter.py` (352 行) | 用 NGS reads 的 k-mer 计数给全基因组打分，输出 BigWig | jellyfish | P4 |
@@ -28,9 +28,9 @@
 |---|---|---|
 | `jellyfish.py` (910 行) | 封装 jellyfish 子进程：count（canonical, -L 2）、query 交互式管道、滑窗 k-mer 打分 | **rustkmer**（库直接调用，去掉子进程） |
 | `bwa.py` (444 行) | 封装 bwa 子进程：index、`mem -O 0 -B 0 -k 5`、SAM 解析（AS/XS 过滤） | **RustAlign**（v1.0 BWA-MEM 移植） |
-| `prefilter.py` | N/同聚物过滤（连续 5 个相同碱基） | 内置字节扫描 |
+| `prefilter.py` | N/同聚物过滤（`atcg_filter(seq, 5)`：连续 5 个相同碱基；函数默认值是 7） | 内置字节扫描 |
 | `primer3_filter.py` | Tm/hairpin/dTm 过滤 | **首版移除**（保留接口位，后续可接 `primer3` crate） |
-| `spgenome.py` | >1G 基因组按染色体切成 <1G 子文件 | 内置（或改流式，无需落盘） |
+| `spgenome.py` | >1G 基因组按累计长度切成 ~1G 子文件（单个超大染色体可能使文件超过 1G） | 内置（或改流式，无需落盘） |
 | `loadfa.py` / `revcom.py` | FASTA 读取 / 反向互补 | needletail / 内置 |
 | `pbsearch.py` / `blat.py` / `exonerate.py` | BLAT gfServer / exonerate-server 流程（**GUI 中已禁用，遗留代码**） | 不迁移 |
 | `bamdepth.py` / `Baminfo.py` / `openBam.py` / `bcftools.py` | pysam 读 BAM 深度、bcftools consensus | noodles + rust-htslib 路线（P5） |
@@ -42,23 +42,46 @@
 ```
 输入: -g genome.fa -i input.fa -l 45 --homology 75 --step 5 -t N
 
-1. genomesize = int(文件大小/1e6) Mb
+1. genomesize = int(genome 文件大小/1e6) Mb        # 注意是 -g 参考基因组，不是 -i 输入
    k = max(17, floor(log4(genomesize)) + 1)        # 经验公式
 2. jellyfish count --canonical -m k -L 2 genome → kmer.jf
 3. bwa index genome（拷贝到输出目录）
-4. 滑窗 k-mer 过滤（按 ≤10Mb 分块，multiprocessing 并行）:
-   对每条序列预计算逐位置 k-mer 计数（裁剪: 0→0, 2→1, ≥3→2），
-   滑窗探针: kmerscore = sum(window[st : st+len-1])   # 注意故意排除最后一个 k-mer 起点
+4. 滑窗 k-mer 过滤（按 ≤10Mb 分块，multiprocessing 并行；genomesize ≥1000Mb 时
+   先由 spgenome 按累计长度切成 ~1Gb 子文件，再逐序列分块）:
+   对每条序列预计算逐位置 k-mer 计数（jellyfish query -i 交互管道；
+   count 裁剪: 2→1, ≥3→2；代码对 1 保持 1，但 jellyfish -L 2 使 count=1
+   的 k-mer 不进入索引、查询返回 0）:
+   kmerscore = sum(counts[st : st+probe_len-1])   # 实际是 probe_len-1 个 k-mer 起点；
+                                                  # k>1 时会包含伸出探针 3' 端的 k-mer；
+                                                  # 序列末尾会被 counts 长度截断
    score < maxkmerscore → 候选探针，右移 step；否则右移 1
+   while 条件 st < len(seq)-probe_len，最后一个合法起点不会被评估
    CLI 版 maxkmerscore = int(((len × homology/100) - k) × ploidy/2 + 0.5)
    GUI 版 maxkmerscore = int(len × homology/100) - k          # 两处公式不一致，见 §7
-5. 候选写临时 FASTA → bwa mem -O 0 -B 0 -k 5 → SAM 流解析:
-   保留 AS ≥ probe_length 且 XS < len × homology/100 的探针（取回 seq/chr/start）
-6. atcg_filter: 含 N 或任一碱基连续 ≥5 → 剔除
-7. [primer3 dTm 过滤 —— 首版跳过]
-8. 按染色体贪心间距选择: 探针间距 > (primer长度 or 5) + probe_length 才保留
-9. 输出: <input>.bed（间距选择后）、<input>_all.bed（全部）、<input>.len（染色体长度）
+   ⚠️ 分块用 Python [start:end) 切片（end=min(start+10M-1, chrlen-1)），
+      每个 chunk 的最后一个碱基不参与，chunk 边界会跳过 1 个碱基
+5. 候选写临时 FASTA（>seq0, seq1...）→ bwa mem -O 0 -B 0 -k 5（未覆盖 -T，默认 30）→ SAM 流解析:
+   保留 AS ≥ probe_length 且 XS < len × homology/100 的探针（缺少 AS 或 XS 标签的行直接丢弃）；
+   取 SAM 的 SEQ/RNAME/POS（POS 是 1-based；反向链的 SEQ 是参考方向的序列，
+   即输入探针的反向互补；精确命中时也就是参考正向序列）
+6. atcg_filter(sequence, 5): 含 N 或任一碱基连续 ≥5 → 剔除
+7. [primer3 dTm 过滤 —— 首版跳过]；Chorus2 的 --skipdtm 需要显式值（type=bool），
+   golden test 用 --skipdtm True；-l > 50 也会自动跳过 dTm
+8. 按染色体贪心间距选择: startn 初始 0；若 start > startn + slidwindow 则保留并令
+   startn=start；slidwindow = (len(primer) if primer else 5) + probe_length
+   （不是 max(len(primer),5)），判据是严格 >
+9. 输出: <input>.bed（间距选择后）、<input>_all.bed（BWA + atcg/dTm 过滤后、间距选择前）、<input>.len（染色体长度）；
+   坐标是 1-based inclusive（SAM POS 直接写入，end=start+len-1），不是标准 BED 的
+   0-based half-open；染色体顺序来自 imap_unordered，golden test 应按集合/排序比较
 ```
+
+**复核记录（2026-10-21，合成 2Mb 基因组 + 475bp 输入实测）**
+
+- 输入序列长度必须 > `probe_len + 1` 才可能产生探针：正好 45bp 的输入切完只剩 44bp，`while st < len(seq)-45` 不成立，输出 0 条。真实输入是全基因组/区域，不受影响，但 golden fixture 要注意。
+- 200bp 精确重复块中的探针在 k-mer 预过滤阶段就被剔除，未进入 BWA；k-mer 过滤是重复序列的第一道闸。
+- 反向链探针：BWA FLAG 16，SAM `SEQ` 是参考正向序列（输入探针的反向互补）；Chorus2 直接取 `SEQ` 写 BED，所以输出序列始终是参考方向。
+- k-mer 求和切片实测：k=17/L=45 时窗口起始处为 44 项，序列末尾窗口只有 30 项，确认存在“末尾截断”而不只是简单的 off-by-one。
+- `--skipdtm` 是 `type=bool`，必须写成 `--skipdtm True`（单独写 `--skipdtm` 会报缺少参数）；`-l > 50` 也会自动跳过 dTm。
 
 ### 1.4 GUI 现状
 
@@ -347,13 +370,15 @@ P6  打包分发（见 §6）
 这些是逐行阅读发现的差异，Chorus3 需明确选择一种语义并写进测试：
 
 1. **step 默认值**：CLI 默认 5，GUI 硬编码 4。
-2. **maxkmerscore 公式**：CLI = `int(((len×h/100) - k) × ploidy/2 + 0.5)`；GUI = `int(len×h/100) - k`。
-3. **滑窗求和的 off-by-one**：`sum(count[st : st+len-1])` 故意不含最后一个 k-mer 起点——复刻时建议保留行为但注释说明（或经 golden test 验证后修正）。
-4. **k-mer 计数裁剪**：query 原始计数 → `2→1, ≥3→2, 其他→0`。
+2. **maxkmerscore 公式**：CLI = `int(((len×h/100) - k) × ploidy/2 + 0.5)`；GUI = `int(len×h/100) - k`。默认 ploidy=2 时，L=45/h=75/k=17 对应 CLI 17、GUI 16。
+3. **滑窗求和的真实语义（原文档的“off-by-one”描述不准确）**：代码是 `sum(counts[st : st+probe_len-1])`，即 **probe_len-1 个连续 k-mer 起点**；因为 `counts` 以下标 = k-mer 起点存储，k>1 时这会把伸出探针 3' 端的 k-mer 也算进来。序列末尾 `counts` 长度只有 `seq_len-k+1`，切片会被截断（k=17、L=45 时，末尾窗口只加到约 30 项而非 44 项）。复刻时必须按这个精确切片实现，不能改成“窗口内完整 k-mer”的直观算法。
+4. **k-mer 计数裁剪**：`jfseqkmercount` 把 2→1、≥3→2，1 保持 1；但 jellyfish `-L 2` 使 count=1 的 k-mer 不进入索引、查询返回 0，所以实际输入到求和的取值是 0/1/2。若 Chorus3 的计数器保留 count=1，必须显式映射 1→0（或等价地应用 `-L 2`）。
 5. **`getch()`（tty/termios）只工作在 Unix**——旧版 Windows CLI 的 Y/N 确认根本不可用；Chorus3 用 `std::io::stdin` 常规读取或 `--force` 参数。
-6. **bwa 参数**：`-O 0 -B 0 -k 5`，`-E` 沿用默认；AS 阈值 = length，XS 阈值 = `length×homology/100`（`int()` 截断）。RustAlign v2 的 `-k/-O/-B` 是 pinned no-op，库层只能改评分、不能改 seed 长度（§2.4），映射时必须显式检查。
-7. **间距选择窗口** = `max(len(rprimer),5) + probe_length`；首条探针从 0 起算。
+6. **bwa 参数**：`-O 0 -B 0 -k 5`，`-E`/`-T` 沿用默认（`-T` 默认 30）；AS 阈值 = length，XS 阈值 = `length×homology/100`（`int()` 截断）。SAM POS 是 1-based；反向链的 SEQ 是参考方向的序列（输入探针的反向互补，精确命中时即参考正向序列），Chorus2 直接取 SEQ 写 BED。RustAlign v2 的 `-k/-O/-B` 是 pinned no-op，库层只能改评分、不能改 seed 长度（§2.4），映射时必须显式检查。
+7. **间距选择窗口** = `(len(rprimer) if rprimer else 5) + probe_length`，**不是** `max(len(rprimer),5)`；`startn` 初始 0，判据是严格 `start > startn + slidwindow`，保留后 `startn = start`。
 8. `bwa.bwareflength` 靠发一条假读段取 `@SQ`——RustAlign 直接给参考长度，此 hack 消失。
+9. **序列边界**：`kmerfilterprobe` 的 `while st < len(seq)-probe_len` 不会评估最后一个合法起点；分块切片 `[start:end)` 又少 1 个碱基（chunk 边界跳过 1 个碱基）。因此每条序列/chunk 末尾约 2 个碱基及最后若干起点不会被任何探针覆盖；golden test 需要复刻或明确接受这点。
+10. **输出顺序、坐标与去重**：`.bed`/`_all.bed` 的坐标是 1-based inclusive（`start`=SAM POS，`end=start+len-1`），不是标准 BED 的 0-based half-open；染色体顺序来自 `imap_unordered`，不保证稳定，比较时应按集合或排序后比较。`organize_probes_by_chromosome` 用 `pbdictbychr[chro][start] = seq`，同一 chr/start 的重复命中会被覆盖，只保留一条。
 
 ---
 
